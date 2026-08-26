@@ -1,0 +1,65 @@
+{
+  "key": "group_ndses_page_builder",
+  "title": "NDSES Page Builder",
+  "fields": [
+    {
+      "key": "field_page_hero",
+      "label": "Hero",
+      "name": "hero",
+      "type": "group",
+      "sub_fields": [
+        { "key": "field_hero_eyebrow", "label": "Eyebrow", "name": "eyebrow", "type": "text" },
+        { "key": "field_hero_heading", "label": "Heading", "name": "heading", "type": "text" },
+        { "key": "field_hero_description", "label": "Description", "name": "description", "type": "textarea" },
+        { "key": "field_hero_image", "label": "Image", "name": "image", "type": "image" }
+      ]
+    },
+    {
+      "key": "field_flexible_sections",
+      "label": "Page Sections",
+      "name": "sections",
+      "type": "flexible_content",
+      "instructions": "Add, remove, and reorder approved NDSES website sections.",
+      "layouts": {
+        "layout_hero": {
+          "key": "layout_hero",
+          "name": "hero",
+          "label": "Hero",
+          "display": "block",
+          "sub_fields": []
+        },
+        "layout_text_image": {
+          "key": "layout_text_image",
+          "name": "text_image",
+          "label": "Text and Image",
+          "display": "block",
+          "sub_fields": [
+            { "key": "field_ti_heading", "label": "Heading", "name": "heading", "type": "text" },
+            { "key": "field_ti_body", "label": "Body", "name": "body", "type": "wysiwyg" },
+            { "key": "field_ti_image", "label": "Image", "name": "image", "type": "image" }
+          ]
+        },
+        "layout_faq": {
+          "key": "layout_faq",
+          "name": "faq_section",
+          "label": "FAQ Section",
+          "display": "block",
+          "sub_fields": [
+            { "key": "field_faq_heading", "label": "Heading", "name": "heading", "type": "text" },
+            { "key": "field_faq_relationship", "label": "FAQs", "name": "faqs", "type": "relationship", "post_type": ["faq"] }
+          ]
+        }
+      }
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "page"
+      }
+    ]
+  ],
+  "active": true
+}

@@ -1,0 +1,172 @@
+{
+  "key": "group_ndses_service_notice",
+  "title": "NDSES Service Notice",
+  "fields": [
+    {
+      "key": "field_notice_content_tab",
+      "label": "Notice Content",
+      "name": "",
+      "type": "tab"
+    },
+    {
+      "key": "field_notice_title",
+      "label": "Notice Title",
+      "name": "notice_title",
+      "type": "text",
+      "instructions": "Public title shown on the website."
+    },
+    {
+      "key": "field_notice_summary",
+      "label": "Short Summary",
+      "name": "short_summary",
+      "type": "textarea"
+    },
+    {
+      "key": "field_notice_details",
+      "label": "Full Details",
+      "name": "full_details",
+      "type": "wysiwyg"
+    },
+    {
+      "key": "field_notice_internal_notes",
+      "label": "Internal Notes",
+      "name": "internal_notes",
+      "type": "textarea",
+      "instructions": "Internal only. Do not expose through the public API."
+    },
+    {
+      "key": "field_notice_status_tab",
+      "label": "Status and Priority",
+      "name": "",
+      "type": "tab"
+    },
+    {
+      "key": "field_notice_enabled",
+      "label": "Notice Enabled",
+      "name": "notice_enabled",
+      "type": "true_false"
+    },
+    {
+      "key": "field_notice_status",
+      "label": "Notice Status",
+      "name": "notice_status",
+      "type": "select",
+      "choices": {
+        "Draft": "Draft",
+        "Scheduled": "Scheduled",
+        "Active": "Active",
+        "Resolved": "Resolved",
+        "Expired": "Expired"
+      }
+    },
+    {
+      "key": "field_notice_priority",
+      "label": "Notice Priority",
+      "name": "notice_priority",
+      "type": "select",
+      "choices": {
+        "Informational": "Informational",
+        "Standard": "Standard",
+        "Important": "Important",
+        "Urgent": "Urgent",
+        "Emergency": "Emergency"
+      }
+    },
+    {
+      "key": "field_notice_timing_tab",
+      "label": "Timing",
+      "name": "",
+      "type": "tab"
+    },
+    {
+      "key": "field_display_start",
+      "label": "Display Start",
+      "name": "display_start",
+      "type": "date_time_picker"
+    },
+    {
+      "key": "field_display_end",
+      "label": "Display End",
+      "name": "display_end",
+      "type": "date_time_picker"
+    },
+    {
+      "key": "field_show_until_resolved",
+      "label": "Show Until Manually Resolved",
+      "name": "show_until_resolved",
+      "type": "true_false"
+    },
+    {
+      "key": "field_locations_tab",
+      "label": "Display Locations",
+      "name": "",
+      "type": "tab"
+    },
+    {
+      "key": "field_display_locations",
+      "label": "Display Locations",
+      "name": "display_locations",
+      "type": "checkbox",
+      "choices": {
+        "siteWide": "Site-wide announcement bar",
+        "popup": "Modal popup",
+        "home": "Home page",
+        "residential": "Residential page",
+        "commercial": "Commercial page",
+        "dumpster": "Dumpster rental page",
+        "events": "Special-events page",
+        "community": "Community pages",
+        "contact": "Contact page",
+        "payment": "Payment page",
+        "archive": "Service-notices archive"
+      }
+    },
+    {
+      "key": "field_affected_communities",
+      "label": "Affected Communities",
+      "name": "affected_communities",
+      "type": "relationship",
+      "post_type": ["community"]
+    },
+    {
+      "key": "field_announcement_tab",
+      "label": "Announcement Bar",
+      "name": "",
+      "type": "tab"
+    },
+    {
+      "key": "field_announcement_text",
+      "label": "Announcement Text",
+      "name": "announcement_text",
+      "type": "text"
+    },
+    {
+      "key": "field_popup_tab",
+      "label": "Popup Settings",
+      "name": "",
+      "type": "tab"
+    },
+    {
+      "key": "field_popup_enabled",
+      "label": "Enable Popup",
+      "name": "popup_enabled",
+      "type": "true_false"
+    },
+    {
+      "key": "field_popup_requires_acknowledgment",
+      "label": "Requires Acknowledgment",
+      "name": "popup_requires_acknowledgment",
+      "type": "true_false"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "service_notice"
+      }
+    ]
+  ],
+  "active": true
+}
