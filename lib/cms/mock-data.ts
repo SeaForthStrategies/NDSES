@@ -243,7 +243,7 @@ export const paymentPage: CMSPage = {
   hero: {
     eyebrow: "Secure Payment",
     heading: "Make a payment",
-    description: "Use this page to access online account payment once payment processing is connected.",
+    description: "Pay your NDS account balance securely online by card or ACH bank transfer.",
     actions: []
   },
   sections: [],
@@ -449,6 +449,6 @@ export const aboutContent = {
 };
 
 export const paymentContent = {
-  note: "Online payment processing is being prepared for launch. Do not enter real card or banking details until PayEngine is connected.",
+  note: "Payments are processed securely by PayEngine. Card and bank details are entered directly into PayEngine's secure fields and never touch NDS's servers.",
   methods: ["Card payment", "ACH payment"]
 };
