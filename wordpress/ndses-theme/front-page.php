@@ -28,7 +28,11 @@ ndses_render_service_cards();
         <?php ndses_render_dumpster_cards(); ?>
     </div>
 </section>
-<?php ndses_render_service_area_map(); ?>
+<section class="section soft-section">
+    <div class="container">
+        <?php ndses_render_service_area_map(); ?>
+    </div>
+</section>
 <section class="section">
     <div class="container">
         <div class="section-heading">

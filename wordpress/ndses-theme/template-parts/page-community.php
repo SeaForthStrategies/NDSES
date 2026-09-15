@@ -27,6 +27,13 @@ if (!$community) {
         </div>
     </div>
 </section>
+<?php if ($slug === 'town-of-walworth') : ?>
+<section class="section">
+    <div class="container">
+        <img class="zone-map-image" src="<?php echo esc_url(get_theme_file_uri('/assets/images/walworth-recycling-zone-map.png')); ?>" alt="Town of Walworth recycling service map showing North and South collection zones" width="482" height="512" loading="lazy">
+    </div>
+</section>
+<?php endif; ?>
 <section class="section">
     <div class="container split">
         <div>

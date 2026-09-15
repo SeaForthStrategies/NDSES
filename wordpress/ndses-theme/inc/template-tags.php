@@ -146,24 +146,51 @@ function ndses_render_faqs(?string $category = null): void
     <?php
 }
 
-function ndses_render_service_area_map(): void
+/**
+ * @param string[] $filter_types Optional subset of 'Residential', 'Commercial', 'Roll-off' to
+ *                                include (e.g. the Commercial page shows Commercial + Roll-off
+ *                                only). Omit to show every service area, as on Home and About.
+ */
+function ndses_render_service_area_map(array $filter_types = []): void
 {
+    $areas = ndses_data()['service_areas'];
+    if ($filter_types) {
+        $areas = array_filter($areas, static fn ($area) => array_intersect($area['types'], $filter_types));
+    }
+
+    $legend = ['Residential' => 'residential', 'Commercial' => 'commercial', 'Roll-off' => 'rollOff'];
     ?>
-    <section class="section map-section">
-        <div class="container split">
-            <div>
-                <p class="eyebrow">Service Area</p>
-                <h2>Local coverage with room to confirm your address</h2>
-                <p>NDS serves residential routes in core Walworth County communities and offers commercial and roll-off service in select nearby counties. Call to confirm service at your exact address.</p>
-                <?php ndses_button('Check My Address', home_url('/contact')); ?>
-            </div>
-            <div class="map-panel" aria-label="NDS service area map placeholder">
-                <?php foreach (ndses_data()['service_areas'] as $area) : ?>
-                    <span class="map-pin" style="left: <?php echo esc_attr((string) $area['x']); ?>%; top: <?php echo esc_attr((string) $area['y']); ?>%;" title="<?php echo esc_attr($area['name']); ?>"></span>
+    <div class="service-map-wrap">
+        <div class="service-map" aria-label="NDS service area map">
+            <div class="map-grid" aria-hidden="true"></div>
+            <?php foreach ($areas as $area) :
+                $primary = in_array('Residential', $area['types'], true) ? 'residential' : (in_array('Commercial', $area['types'], true) ? 'commercial' : 'rollOff');
+                ?>
+                <div class="map-point" style="left: <?php echo esc_attr((string) $area['x']); ?>%; top: <?php echo esc_attr((string) $area['y']); ?>%;">
+                    <span class="point-dot <?php echo esc_attr($primary); ?>"></span>
+                    <span class="point-label"><?php echo esc_html($area['name']); ?></span>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="quote-panel map-list">
+            <p class="eyebrow">Service Area</p>
+            <h2>Southern Wisconsin coverage</h2>
+            <p>Residential service is concentrated in listed communities. Commercial and temporary roll-off service is available in select areas of nearby counties.</p>
+            <div class="map-legend">
+                <?php foreach ($legend as $label => $class) : ?>
+                    <span><span class="point-dot <?php echo esc_attr($class); ?>"></span> <?php echo esc_html($label); ?></span>
                 <?php endforeach; ?>
             </div>
+            <ul class="area-list">
+                <?php foreach ($areas as $area) : ?>
+                    <li>
+                        <strong><?php echo esc_html($area['name']); ?></strong>
+                        <span><?php echo esc_html($area['county']); ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         </div>
-    </section>
+    </div>
     <?php
 }
 

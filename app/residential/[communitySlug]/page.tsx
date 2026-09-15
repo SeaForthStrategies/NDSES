@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { DownloadList } from "@/components/sections/DownloadList";
 import { FAQSection } from "@/components/sections/FAQSection";
@@ -51,6 +52,19 @@ export default async function CommunityPage({ params }: { params: Promise<{ comm
           </div>
         </div>
       </section>
+      {community.slug === "town-of-walworth" ? (
+        <section className="section">
+          <div className="container">
+            <Image
+              className="zone-map-image"
+              src="/nds-assets/walworth-recycling-zone-map.png"
+              alt="Town of Walworth recycling service map showing North and South collection zones"
+              width={482}
+              height={512}
+            />
+          </div>
+        </section>
+      ) : null}
       <section className="section alt">
         <div className="container grid two">
           <div>

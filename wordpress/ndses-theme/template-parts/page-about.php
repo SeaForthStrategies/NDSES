@@ -14,6 +14,11 @@
 </section>
 <section class="section soft-section">
     <div class="container">
+        <?php ndses_render_service_area_map(); ?>
+    </div>
+</section>
+<section class="section soft-section">
+    <div class="container">
         <div class="section-heading">
             <p class="eyebrow">Meet The Team</p>
             <h2>Team profiles coming soon</h2>

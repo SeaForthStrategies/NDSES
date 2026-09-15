@@ -1147,6 +1147,17 @@ a.card:focus-visible,
   color: var(--accent);
 }
 
+.zone-map-image {
+  display: block;
+  max-width: 520px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
 .service-map-wrap {
   display: grid;
   gap: clamp(22px, 3vw, 34px);

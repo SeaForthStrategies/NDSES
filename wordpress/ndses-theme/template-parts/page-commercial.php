@@ -13,6 +13,11 @@
         </div>
     </div>
 </section>
+<section class="section soft-section">
+    <div class="container">
+        <?php ndses_render_service_area_map(['Commercial', 'Roll-off']); ?>
+    </div>
+</section>
 <section class="section soft-section" id="containers">
     <div class="container">
         <div class="section-heading">
