@@ -157,7 +157,13 @@
     const submitButton = payEngineForm.querySelector('button[type="submit"]');
     const cardFields = payEngineForm.querySelector('[data-payment-fields="card"]');
     const achFields = payEngineForm.querySelector('[data-payment-fields="ach"]');
-    let secureForm = null;
+    // PayEngine's createCard()/createBankAccount() validate every field
+    // registered on that SecureFields form instance, not just the ones
+    // relevant to the call being made. Card and ACH fields must therefore
+    // live on two separate instances, or submitting a card payment fails
+    // validation against the empty, hidden ACH fields (and vice versa).
+    let cardForm = null;
+    let achForm = null;
 
     payEngineForm.querySelectorAll('input[name="paymentMethod"]').forEach(function (radio) {
       radio.addEventListener('change', function () {
@@ -168,21 +174,26 @@
     });
 
     function initSecureFields() {
-      if (!window.PayEngine || secureForm) return;
-      window.PayEngine.SecureFields.create().then(function (form) {
-        secureForm = form;
-        const css = { fontFamily: 'inherit', fontSize: '16px', width: '100%', height: '46px', padding: '10px 12px', color: '#14211a' };
+      if (!window.PayEngine || (cardForm && achForm)) return;
+      const css = { fontFamily: 'inherit', fontSize: '16px', width: '100%', height: '46px', padding: '10px 12px', color: '#14211a' };
 
-        form.field('#pe-card-name', { type: 'text', name: 'card_holder', placeholder: 'Name on card', validations: ['required'], css: css });
-        form.field('#pe-card-number', { type: 'card-number', name: 'card_number', placeholder: 'Card number', showCardIcon: true, validations: ['required', 'validCardNumber'], css: css });
-        form.field('#pe-card-expiry', { type: 'card-expiration-date', name: 'card_exp', placeholder: 'MM / YY', validations: ['required', 'validCardExpirationDate'], css: css });
-        form.field('#pe-card-cvc', { type: 'card-security-code', name: 'card_cvc', placeholder: 'CVC', maxLength: 4, validations: ['required', 'validCardSecurityCode'], css: css });
-        form.field('#pe-card-zip', { type: 'zip-code', name: 'address_zip', placeholder: 'Billing ZIP', validations: ['required'], css: css });
+      Promise.all([
+        window.PayEngine.SecureFields.create(),
+        window.PayEngine.SecureFields.create()
+      ]).then(function (forms) {
+        cardForm = forms[0];
+        achForm = forms[1];
 
-        form.field('#pe-routing-number', { type: 'number', name: 'routing_number', placeholder: 'Routing number', validations: ['required'], css: css });
-        form.field('#pe-account-number', { type: 'number', name: 'account_number', placeholder: 'Account number', validations: ['required'], css: css });
-        form.field('#pe-ach-first-name', { type: 'text', name: 'first_name', placeholder: 'First name', validations: ['required'], css: css });
-        form.field('#pe-ach-last-name', { type: 'text', name: 'last_name', placeholder: 'Last name', validations: ['required'], css: css });
+        cardForm.field('#pe-card-name', { type: 'text', name: 'card_holder', placeholder: 'Name on card', validations: ['required'], css: css });
+        cardForm.field('#pe-card-number', { type: 'card-number', name: 'card_number', placeholder: 'Card number', showCardIcon: true, validations: ['required', 'validCardNumber'], css: css });
+        cardForm.field('#pe-card-expiry', { type: 'card-expiration-date', name: 'card_exp', placeholder: 'MM / YY', validations: ['required', 'validCardExpirationDate'], css: css });
+        cardForm.field('#pe-card-cvc', { type: 'card-security-code', name: 'card_cvc', placeholder: 'CVC', maxLength: 4, validations: ['required', 'validCardSecurityCode'], css: css });
+        cardForm.field('#pe-card-zip', { type: 'zip-code', name: 'address_zip', placeholder: 'Billing ZIP', validations: ['required'], css: css });
+
+        achForm.field('#pe-routing-number', { type: 'number', name: 'routing_number', placeholder: 'Routing number', validations: ['required'], css: css });
+        achForm.field('#pe-account-number', { type: 'number', name: 'account_number', placeholder: 'Account number', validations: ['required'], css: css });
+        achForm.field('#pe-ach-first-name', { type: 'text', name: 'first_name', placeholder: 'First name', validations: ['required'], css: css });
+        achForm.field('#pe-ach-last-name', { type: 'text', name: 'last_name', placeholder: 'Last name', validations: ['required'], css: css });
 
         if (submitButton) submitButton.disabled = false;
       });
@@ -202,7 +213,7 @@
         payEngineForm.reportValidity();
         return;
       }
-      if (!secureForm) {
+      if (!cardForm || !achForm) {
         if (statusEl) {
           statusEl.textContent = 'Payment fields are still loading. Please wait a moment and try again.';
           statusEl.className = 'form-status is-error';
@@ -220,8 +231,8 @@
       }
 
       const tokenize = paymentMethod === 'ach'
-        ? secureForm.createBankAccount()
-        : secureForm.createCard({ manuallyEntered: true });
+        ? achForm.createBankAccount()
+        : cardForm.createCard({ manuallyEntered: true });
 
       tokenize
         .then(function (tokenObj) {

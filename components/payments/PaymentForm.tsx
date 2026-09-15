@@ -42,7 +42,13 @@ export function PaymentForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [sdkReady, setSdkReady] = useState(false);
-  const secureForm = useRef<PayEngineSecureFieldsForm | null>(null);
+  // PayEngine's createCard()/createBankAccount() validate every field
+  // registered on that SecureFields form instance, not just the ones
+  // relevant to the call being made. Card and ACH fields must therefore
+  // live on two separate instances, or submitting a card payment fails
+  // validation against the empty, hidden ACH fields (and vice versa).
+  const cardForm = useRef<PayEngineSecureFieldsForm | null>(null);
+  const achForm = useRef<PayEngineSecureFieldsForm | null>(null);
   const { formState, handleSubmit, register, watch } = useForm<Omit<PaymentInput, "token">>({
     resolver: undefined,
     defaultValues: { amount: "", paymentMethod: "card", accountNumber: "", email: "" }
@@ -50,21 +56,22 @@ export function PaymentForm() {
   const paymentMethod = watch("paymentMethod");
 
   const initializeSecureFields = useCallback(async () => {
-    if (!window.PayEngine || secureForm.current) return;
-    const form = await window.PayEngine.SecureFields.create();
+    if (!window.PayEngine || (cardForm.current && achForm.current)) return;
+    const [card, ach] = await Promise.all([window.PayEngine.SecureFields.create(), window.PayEngine.SecureFields.create()]);
 
-    form.field("#card-name", { type: "text", name: "card_holder", placeholder: "Name on card", validations: ["required"], css: fieldCss });
-    form.field("#card-number", { type: "card-number", name: "card_number", placeholder: "Card number", showCardIcon: true, validations: ["required", "validCardNumber"], css: fieldCss });
-    form.field("#card-expiry", { type: "card-expiration-date", name: "card_exp", placeholder: "MM / YY", validations: ["required", "validCardExpirationDate"], css: fieldCss });
-    form.field("#card-cvc", { type: "card-security-code", name: "card_cvc", placeholder: "CVC", maxLength: 4, validations: ["required", "validCardSecurityCode"], css: fieldCss });
-    form.field("#cc-zip", { type: "zip-code", name: "address_zip", placeholder: "Billing ZIP", validations: ["required"], css: fieldCss });
+    card.field("#card-name", { type: "text", name: "card_holder", placeholder: "Name on card", validations: ["required"], css: fieldCss });
+    card.field("#card-number", { type: "card-number", name: "card_number", placeholder: "Card number", showCardIcon: true, validations: ["required", "validCardNumber"], css: fieldCss });
+    card.field("#card-expiry", { type: "card-expiration-date", name: "card_exp", placeholder: "MM / YY", validations: ["required", "validCardExpirationDate"], css: fieldCss });
+    card.field("#card-cvc", { type: "card-security-code", name: "card_cvc", placeholder: "CVC", maxLength: 4, validations: ["required", "validCardSecurityCode"], css: fieldCss });
+    card.field("#cc-zip", { type: "zip-code", name: "address_zip", placeholder: "Billing ZIP", validations: ["required"], css: fieldCss });
 
-    form.field("#routing-number", { type: "number", name: "routing_number", placeholder: "Routing number", validations: ["required"], css: fieldCss });
-    form.field("#account-number", { type: "number", name: "account_number", placeholder: "Account number", validations: ["required"], css: fieldCss });
-    form.field("#ach-first-name", { type: "text", name: "first_name", placeholder: "First name", validations: ["required"], css: fieldCss });
-    form.field("#ach-last-name", { type: "text", name: "last_name", placeholder: "Last name", validations: ["required"], css: fieldCss });
+    ach.field("#routing-number", { type: "number", name: "routing_number", placeholder: "Routing number", validations: ["required"], css: fieldCss });
+    ach.field("#account-number", { type: "number", name: "account_number", placeholder: "Account number", validations: ["required"], css: fieldCss });
+    ach.field("#ach-first-name", { type: "text", name: "first_name", placeholder: "First name", validations: ["required"], css: fieldCss });
+    ach.field("#ach-last-name", { type: "text", name: "last_name", placeholder: "Last name", validations: ["required"], css: fieldCss });
 
-    secureForm.current = form;
+    cardForm.current = card;
+    achForm.current = ach;
     setSdkReady(true);
   }, []);
 
@@ -74,7 +81,7 @@ export function PaymentForm() {
   }, [initializeSecureFields]);
 
   async function onSubmit(values: Omit<PaymentInput, "token">) {
-    if (!secureForm.current) {
+    if (!cardForm.current || !achForm.current) {
       setStatus("error");
       setMessage("Payment fields are still loading. Please wait a moment and try again.");
       return;
@@ -87,8 +94,8 @@ export function PaymentForm() {
     try {
       const tokenObj =
         values.paymentMethod === "ach"
-          ? await secureForm.current.createBankAccount()
-          : await secureForm.current.createCard({ manuallyEntered: true });
+          ? await achForm.current.createBankAccount()
+          : await cardForm.current.createCard({ manuallyEntered: true });
       const token = tokenObj.token ?? ("card" in tokenObj ? tokenObj.card?.token : undefined) ?? ("bank_account" in tokenObj ? tokenObj.bank_account?.token : undefined);
 
       if (!token) {
