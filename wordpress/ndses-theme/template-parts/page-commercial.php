@@ -48,13 +48,14 @@
         </div>
     </div>
 </section>
-<section class="cta-band">
-    <div class="container cta-inner">
+<section class="section soft-section" id="quote">
+    <div class="container split">
         <div>
+            <p class="eyebrow">Commercial Inquiry</p>
             <h2>Need commercial service priced?</h2>
-            <p>Call or send details and NDS will help choose the right container and schedule.</p>
+            <p>Tell NDS about your business and the team will help choose the right container and schedule.</p>
         </div>
-        <?php ndses_button('Request A Free Quote', home_url('/contact?service=commercial')); ?>
+        <?php ndses_render_inquiry_form('commercial'); ?>
     </div>
 </section>
 

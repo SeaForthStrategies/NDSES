@@ -1,10 +1,34 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useForm, type UseFormSetValue } from "react-hook-form";
 import { inquirySchema, type InquiryInput } from "@/lib/validation/forms";
 import { trackEvent } from "@/lib/analytics";
+import { DUMPSTER_SIZE_SELECTED_EVENT } from "@/lib/dumpster-events";
+
+const SERVICE_TYPE_VALUES: InquiryInput["serviceType"][] = ["residential", "commercial", "dumpster", "event"];
+
+// Reads ?service=&size= from the URL for the cross-page handoff (a
+// "Request This Size"/"Request a Quote" link elsewhere navigates here with
+// those params). Isolated in its own component because useSearchParams()
+// requires a Suspense boundary in the App Router — without this split, every
+// page that renders InquiryForm would opt out of static generation.
+function SearchParamsPrefill({ setValue }: { setValue: UseFormSetValue<InquiryInput> }) {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const service = searchParams.get("service");
+    if (service && (SERVICE_TYPE_VALUES as string[]).includes(service)) {
+      setValue("serviceType", service as InquiryInput["serviceType"]);
+    }
+    const size = searchParams.get("size");
+    if (size) setValue("selectedDumpsterSize", size);
+  }, [searchParams, setValue]);
+
+  return null;
+}
 
 export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -14,10 +38,16 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
   });
 
   useEffect(() => {
-    if (formType === "dumpster") {
-      const selected = window.sessionStorage.getItem("ndses:selectedDumpsterSize");
-      if (selected) setValue("selectedDumpsterSize", selected);
+    // Same-page handoff: the dumpster size guide on this same page dispatches
+    // this event when a visitor picks "Request This Size" — no navigation, so
+    // the query-param effect above never fires for that interaction.
+    if (formType !== "dumpster") return;
+    function handleSizeSelected(event: Event) {
+      const size = (event as CustomEvent<string>).detail;
+      if (size) setValue("selectedDumpsterSize", size);
     }
+    window.addEventListener(DUMPSTER_SIZE_SELECTED_EVENT, handleSizeSelected);
+    return () => window.removeEventListener(DUMPSTER_SIZE_SELECTED_EVENT, handleSizeSelected);
   }, [formType, setValue]);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,7 +66,10 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
   }
 
   return (
-    <form className="card form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className="card form" id={`${formType}-inquiry-form`} onSubmit={handleSubmit(onSubmit)} noValidate>
+      <Suspense fallback={null}>
+        <SearchParamsPrefill setValue={setValue} />
+      </Suspense>
       <input type="hidden" {...register("formType")} />
       <div className="honeypot-field" aria-hidden="true">
         <label htmlFor={`${formType}-website`}>Leave this field blank</label>

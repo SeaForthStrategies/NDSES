@@ -147,6 +147,57 @@ function ndses_render_faqs(?string $category = null): void
 }
 
 /**
+ * Inquiry form shared by Contact, Commercial, and Dumpster Rentals. Submits
+ * (via the data-inquiry-form handler in theme.js) to the ndses/v1/forms REST
+ * route, which stores the submission and emails the office.
+ *
+ * $form_type is carried as a hidden field so submissions from each page are
+ * distinguishable in the notification email and the Form Submissions list —
+ * it identifies which page the visitor was on, not necessarily what they
+ * picked in the Service Type dropdown.
+ */
+function ndses_render_inquiry_form(string $form_type): void
+{
+    $service_options = [
+        '' => 'Select one',
+        'Residential Trash & Recycling' => 'Residential Trash & Recycling',
+        'Commercial Trash & Recycling' => 'Commercial Trash & Recycling',
+        'Dumpster Rental' => 'Dumpster Rental',
+        'General Question' => 'General Question',
+    ];
+    $default_service = [
+        'commercial' => 'Commercial Trash & Recycling',
+        'dumpster' => 'Dumpster Rental',
+    ][$form_type] ?? '';
+    ?>
+    <form class="site-form" id="<?php echo esc_attr($form_type); ?>-inquiry-form" data-inquiry-form novalidate>
+        <input type="hidden" name="formType" value="<?php echo esc_attr($form_type); ?>">
+        <div class="honeypot-field" aria-hidden="true">
+            <label for="<?php echo esc_attr($form_type); ?>-website">Leave this field blank</label>
+            <input id="<?php echo esc_attr($form_type); ?>-website" type="text" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <label>Name <input required type="text" name="name"></label>
+        <label>Email <input required type="email" name="email"></label>
+        <label>Phone <input required type="tel" name="phone"></label>
+        <label>Service address <input type="text" name="serviceAddress"></label>
+        <label>Service type
+            <select required name="serviceType">
+                <?php foreach ($service_options as $value => $label) : ?>
+                    <option value="<?php echo esc_attr($value); ?>" <?php selected($value, $default_service); ?>><?php echo esc_html($label); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <?php if ($form_type === 'dumpster') : ?>
+            <label>Selected dumpster size <input type="text" name="selectedDumpsterSize" data-dumpster-size-field></label>
+        <?php endif; ?>
+        <label>Message <textarea required minlength="10" name="message" rows="5"></textarea></label>
+        <p class="form-status" role="status"></p>
+        <button class="button button-primary" type="submit">Send Request</button>
+    </form>
+    <?php
+}
+
+/**
  * @param string[] $filter_types Optional subset of 'Residential', 'Commercial', 'Roll-off' to
  *                                include (e.g. the Commercial page shows Commercial + Roll-off
  *                                only). Omit to show every service area, as on Home and About.

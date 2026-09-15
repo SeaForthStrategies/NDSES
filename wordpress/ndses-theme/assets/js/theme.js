@@ -287,9 +287,29 @@
    * REST route, which honeypot-checks, rate-limits, stores the submission
    * as a form_submission post, and emails the office.
    */
+  const SERVICE_TYPE_BY_CODE = {
+    residential: 'Residential Trash & Recycling',
+    commercial: 'Commercial Trash & Recycling',
+    dumpster: 'Dumpster Rental',
+  };
+
   document.querySelectorAll('[data-inquiry-form]').forEach(function (form) {
     const status = form.querySelector('.form-status');
     const submitButton = form.querySelector('button[type="submit"]');
+
+    // Cross-page handoff: "Request This Size"/"Request A Free Quote" links
+    // elsewhere on the site navigate here with ?service=&size= in the URL.
+    const params = new URLSearchParams(window.location.search);
+    const serviceCode = params.get('service');
+    if (serviceCode && SERVICE_TYPE_BY_CODE[serviceCode]) {
+      const serviceSelect = form.querySelector('select[name="serviceType"]');
+      if (serviceSelect) serviceSelect.value = SERVICE_TYPE_BY_CODE[serviceCode];
+    }
+    const size = params.get('size');
+    if (size) {
+      const sizeField = form.querySelector('[data-dumpster-size-field]');
+      if (sizeField) sizeField.value = size;
+    }
 
     form.addEventListener('submit', function (event) {
       event.preventDefault();

@@ -40,4 +40,13 @@
         </div>
     </div>
 </section>
-
+<section class="section soft-section" id="quote">
+    <div class="container split">
+        <div>
+            <p class="eyebrow">Rental Inquiry</p>
+            <h2>Request a dumpster</h2>
+            <p>Arriving from "Request This Size"? The size you picked carries over automatically.</p>
+        </div>
+        <?php ndses_render_inquiry_form('dumpster'); ?>
+    </div>
+</section>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { DumpsterSize } from "@/types/cms";
 import { trackEvent } from "@/lib/analytics";
+import { DUMPSTER_SIZE_SELECTED_EVENT } from "@/lib/dumpster-events";
 
 const projectTypes = ["All", "Cleanout", "Remodel", "Construction", "Commercial"];
 
@@ -16,7 +17,8 @@ export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
 
   function selectSize(size: DumpsterSize) {
     setSelected(size.slug);
-    window.sessionStorage.setItem("ndses:selectedDumpsterSize", size.name);
+    window.dispatchEvent(new CustomEvent(DUMPSTER_SIZE_SELECTED_EVENT, { detail: size.name }));
+    document.getElementById("dumpster-inquiry-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
     trackEvent("dumpster_size_selected", { size: size.name });
   }
 

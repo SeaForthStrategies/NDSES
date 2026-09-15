@@ -33,6 +33,13 @@ add_action('init', function () {
             'supports' => ['title', 'editor', 'thumbnail', 'revisions'],
             'has_archive' => $slug === 'service_notice',
             'rewrite' => ['slug' => str_replace('_', '-', $slug)],
+            // A public post type auto-registers its own slug as a global
+            // query var (e.g. ?service=...), which silently hijacks any page
+            // using that word as an ordinary URL param — as the inquiry
+            // forms' ?service=dumpster&size=... prefill links did, 404ing
+            // instead of reaching /contact. The post type's own permalinks
+            // (/service/post-name/) still resolve correctly without it.
+            'query_var' => false,
         ]);
     }
 
