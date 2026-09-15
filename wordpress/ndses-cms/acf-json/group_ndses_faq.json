@@ -1,0 +1,27 @@
+{
+  "key": "group_ndses_faq",
+  "title": "FAQ",
+  "fields": [
+    { "key": "field_faq_question", "label": "Question", "name": "question", "type": "text" },
+    { "key": "field_faq_answer", "label": "Answer", "name": "answer", "type": "wysiwyg" },
+    {
+      "key": "field_faq_category",
+      "label": "Category",
+      "name": "category",
+      "type": "select",
+      "choices": { "dumpster": "Dumpster", "residential": "Residential", "commercial": "Commercial" }
+    },
+    { "key": "field_faq_sort_order", "label": "Sort Order", "name": "sortOrder", "type": "number" }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "faq"
+      }
+    ]
+  ],
+  "show_in_rest": 1,
+  "active": true
+}

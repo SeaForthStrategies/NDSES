@@ -190,6 +190,78 @@ export const specialEventsPage: CMSPage = {
   seo: { title: "Special Event Waste Services", description: "Temporary waste collection and cleanup support for events." }
 };
 
+export const calculatorPage: CMSPage = {
+  slug: "dumpster-calculator",
+  hero: {
+    eyebrow: "Dumpster Calculator",
+    heading: "Choose the right roll-off dumpster",
+    description: "Use project type and material information to compare available 10/12, 15, 20, and 30 yard dumpster rentals.",
+    actions: []
+  },
+  sections: [],
+  seo: { title: "Dumpster Calculator", description: "Choose the right NDS roll-off dumpster size for cleanouts, remodels, roofing, construction debris, and heavy materials." }
+};
+
+export const faqsPage: CMSPage = {
+  slug: "faqs",
+  hero: {
+    eyebrow: "FAQs",
+    heading: "Questions about NDS service",
+    description: "Find quick answers for dumpster rentals, residential trash and recycling, and commercial waste service.",
+    actions: []
+  },
+  sections: [],
+  seo: { title: "FAQs", description: "Answers to common NDS dumpster rental, residential trash and recycling, and commercial waste questions." }
+};
+
+export const aboutPage: CMSPage = {
+  slug: "about",
+  hero: {
+    eyebrow: "About NDS",
+    heading: "Local waste service built around Wisconsin communities",
+    description: "Learn about the mission, history, and team behind NDS Environmental Solutions.",
+    actions: []
+  },
+  sections: [],
+  seo: { title: "About Us", description: "Learn about NDS Environmental Solutions, a locally owned waste management provider serving Southern Wisconsin." }
+};
+
+export const contactPage: CMSPage = {
+  slug: "contact",
+  hero: {
+    eyebrow: "Contact NDSES",
+    heading: "Questions, quotes, and service support",
+    description: "Send a message for free quotes, estimates, service questions, or account support.",
+    actions: []
+  },
+  sections: [],
+  seo: { title: "Contact", description: "Contact NDS Environmental Solutions for service, quotes, questions, and urgent service updates." }
+};
+
+export const paymentPage: CMSPage = {
+  slug: "make-a-payment",
+  hero: {
+    eyebrow: "Secure Payment",
+    heading: "Make a payment",
+    description: "Use this page to access online account payment once payment processing is connected.",
+    actions: []
+  },
+  sections: [],
+  seo: { title: "Make a Payment", description: "Secure payment entry point for NDS Environmental Solutions accounts." }
+};
+
+export const whatsNewPage: CMSPage = {
+  slug: "whats-new",
+  hero: {
+    eyebrow: "What's New",
+    heading: "Alerts and service updates",
+    description: "Weather delays, holiday schedule changes, closures, announcements, and route updates will appear here.",
+    actions: []
+  },
+  sections: [],
+  seo: { title: "What's New", description: "Service alerts, holiday schedule updates, weather notices, closures, and announcements from NDS Environmental Solutions." }
+};
+
 const acceptedRecycling = ["Aluminum and steel cans", "Food and beverage cartons and containers, non-styrofoam", "Glass bottles and jars", "Flattened cardboard", "Paper", "Cereal boxes", "Plastic bottles and containers"];
 const recyclingNotAccepted = ["Scrap metal", "Construction debris", "Styrofoam"];
 const recyclingNeverAccepted = ["Flammables", "Sharps", "Wires", "Batteries", "Hoses", "Diapers", "Household hazardous waste", "Compressed cylinders", "Electronics of any kind"];
@@ -230,7 +302,7 @@ export const communities: Community[] = [
 const rollOffAccepted = ["Wood", "Furniture", "Construction debris", "Drywall", "Roofing shingles", "Cardboard", "Household junk"];
 const rollOffProhibited = ["Paint", "Batteries", "Tires", "Hazardous chemicals", "Propane tanks", "Electronics", "Appliances", "Yard waste", "Mattresses"];
 const included = ["2 tons of trash", "15 day rental", "Delivery and pickup", "Disposal"];
-const disclaimer = "Dimensions of each dumpster may vary slightly, but capacity remains the same.";
+const dimensionsNote = " Dimensions may vary slightly, but capacity remains the same.";
 
 export const dumpsterSizes: DumpsterSize[] = [
   {
@@ -239,7 +311,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     containerType: "Roll-off",
     capacity: "4-5 truck loads",
     truckLoads: "4-5 truck loads",
-    dimensions: disclaimer,
+    dimensions: `10 Yard: 14' L x 7.5' W x 3.5' H. 12 Yard: 14' L x 7.5' W x 4' H.${dimensionsNote}`,
     recommendedUses: "Small and medium remodeling projects, home cleanouts, and concrete or other heavy materials.",
     idealUses: ["Small/medium remodeling projects", "Home cleanouts", "Concrete/heavy materials"],
     included,
@@ -258,7 +330,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     containerType: "Roll-off",
     capacity: "6 truck loads",
     truckLoads: "6 truck loads",
-    dimensions: disclaimer,
+    dimensions: `16' L x 7.5' W x 4.5' H.${dimensionsNote}`,
     recommendedUses: "Kitchen remodels, multi-room renovations, and moderate construction debris.",
     idealUses: ["Kitchen remodels", "Multi-room renovations", "Moderate construction debris"],
     included,
@@ -277,7 +349,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     containerType: "Roll-off",
     capacity: "8 truck loads",
     truckLoads: "8 truck loads",
-    dimensions: disclaimer,
+    dimensions: `22' L x 7.5' W x 4.5' H.${dimensionsNote}`,
     recommendedUses: "Large home renovations, whole-house cleanouts, and moderate construction debris.",
     idealUses: ["Large home renovations", "Whole-house cleanouts", "Moderate construction debris"],
     included,
@@ -296,7 +368,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     containerType: "Roll-off",
     capacity: "14 truck loads",
     truckLoads: "14 truck loads",
-    dimensions: disclaimer,
+    dimensions: `22' L x 7.5' W x 6' H.${dimensionsNote}`,
     recommendedUses: "Major construction projects, large demolition projects, and large-scale remodeling projects.",
     idealUses: ["Major construction projects", "Large demolition projects", "Large-scale remodeling projects"],
     included,
@@ -349,7 +421,7 @@ export const serviceNotices: ServiceNotice[] = [
     type: "announcement",
     title: "Service alerts and updates",
     summary: "Weather delays, holiday schedule changes, closures, and route updates will be posted here.",
-    details: "This page is structured for local NDS updates now and future Facebook-connected announcements later.",
+    details: "NDS posts alerts here directly as they come up.",
     publicUpdate: "No urgent service alerts are active.",
     lastVerifiedAt: "2026-08-10T12:00:00.000Z",
     displayStartAt: "2026-08-10T12:00:00.000Z",

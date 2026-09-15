@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { PaymentForm } from "@/components/payments/PaymentForm";
-import { getPaymentContent } from "@/lib/cms";
+import { getPaymentContent, getPaymentPage } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Make a Payment",
@@ -8,14 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default async function MakePaymentPage() {
-  const content = await getPaymentContent();
+  const [page, content] = await Promise.all([getPaymentPage(), getPaymentContent()]);
   return (
     <>
       <section className="section page-hero">
         <div className="container">
-          <p className="eyebrow">Secure Payment</p>
-          <h1>Make a payment</h1>
-          <p className="lead">Use this page to access online account payment once payment processing is connected.</p>
+          <p className="eyebrow">{page.hero.eyebrow}</p>
+          <h1>{page.hero.heading}</h1>
+          <p className="lead">{page.hero.description}</p>
         </div>
       </section>
       <section className="section">

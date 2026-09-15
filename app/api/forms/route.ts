@@ -9,9 +9,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Please review the highlighted fields.", issues: parsed.error.flatten() }, { status: 400 });
   }
 
-  // TODO: Form Backend - Connect final webhook, CRM, or email routing.
-  if (!process.env.FORM_WEBHOOK_URL && !process.env.FORM_NOTIFICATION_EMAIL) {
-    return NextResponse.json({ ok: true, message: "Form received." });
+  const wordpressBase = process.env.WORDPRESS_API_URL?.replace(/\/$/, "");
+  if (!wordpressBase) {
+    return NextResponse.json({ error: "Form submission is not connected yet. Please call NDSES directly." }, { status: 502 });
+  }
+
+  try {
+    const response = await fetch(`${wordpressBase}/ndses/v1/forms`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(parsed.data)
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      console.error("Form submission to WordPress failed", response.status, body);
+      return NextResponse.json({ error: body?.message || "We couldn't send your request. Please try again or call NDSES directly." }, { status: response.status === 429 ? 429 : 502 });
+    }
+  } catch (error) {
+    console.error("Form submission to WordPress failed", error);
+    return NextResponse.json({ error: "We couldn't send your request. Please try again or call NDSES directly." }, { status: 502 });
   }
 
   await trackServerEvent("form_submission", { formType: parsed.data.formType });

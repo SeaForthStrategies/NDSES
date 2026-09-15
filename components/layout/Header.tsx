@@ -16,25 +16,25 @@ export function Header({ settings }: { settings: GlobalSettings }) {
         <Link className="brand" href="/" aria-label="NDS Environmental Solutions home">
           <Image className="brand-logo" src="/nds-assets/nds-logo-primary.png" alt="NDS Environmental Solutions logo" width={600} height={373} priority />
         </Link>
-        <NavStack settings={settings} label="Primary navigation" className="desktop-nav-stack" />
+        <NavStack settings={settings} label="Primary navigation" className="desktop-nav-stack" groupName="desktop" />
         <details className="mobile-nav-panel">
           <summary>
             <span>Menu</span>
             <ChevronDown size={18} aria-hidden />
           </summary>
-          <NavStack settings={settings} label="Mobile navigation" />
+          <NavStack settings={settings} label="Mobile navigation" groupName="mobile" />
         </details>
       </div>
     </header>
   );
 }
 
-function NavStack({ className = "", label, settings }: { className?: string; label: string; settings: GlobalSettings }) {
+function NavStack({ className = "", label, settings, groupName }: { className?: string; label: string; settings: GlobalSettings; groupName: string }) {
   return (
     <div className={`nav-stack ${className}`}>
       <nav className="nav-links" aria-label={label}>
         {settings.navigation.map((item) => (
-          <NavigationItem item={item} key={item.href} />
+          <NavigationItem groupName={groupName} item={item} key={item.href} />
         ))}
       </nav>
       <div className="header-actions">
@@ -46,13 +46,13 @@ function NavStack({ className = "", label, settings }: { className?: string; lab
   );
 }
 
-function NavigationItem({ item }: { item: CTA }) {
+function NavigationItem({ groupName, item }: { groupName: string; item: CTA }) {
   if (!item.children?.length) {
     return <Link href={item.href}>{item.label}</Link>;
   }
 
   return (
-    <details className="nav-menu">
+    <details className="nav-menu" name={`nav-menu-${groupName}`}>
       <summary>
         <span>{item.label}</span>
         <ChevronDown size={15} aria-hidden />

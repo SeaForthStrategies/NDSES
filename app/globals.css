@@ -168,14 +168,16 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.45rem, 4.2vw, 4.55rem);
-  letter-spacing: 0;
+  font-size: clamp(2.2rem, 3.6vw, 3.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   max-width: 930px;
 }
 
 h2 {
-  font-size: clamp(1.85rem, 3.1vw, 3.05rem);
-  letter-spacing: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
 }
 
 h3 {
@@ -478,10 +480,9 @@ a.card:focus-visible,
   border-radius: var(--radius);
   box-shadow: 0 24px 70px rgb(8 22 15 / 13%);
   color: var(--ink);
-  display: grid;
-  grid-template-columns: 240px minmax(360px, 1fr);
+  display: block;
   left: 50%;
-  min-width: 620px;
+  min-width: 360px;
   padding: 12px;
   position: absolute;
   top: calc(100% + 12px);
@@ -505,11 +506,7 @@ a.card:focus-visible,
 }
 
 .nav-dropdown-heading {
-  background:
-    linear-gradient(145deg, var(--navy), var(--brand-dark));
-  border-radius: var(--radius-sm);
-  color: var(--white);
-  padding: 18px;
+  display: none;
 }
 
 .nav-dropdown-heading strong,
@@ -531,7 +528,7 @@ a.card:focus-visible,
 .nav-dropdown-links {
   display: grid;
   gap: 3px;
-  padding: 4px 4px 4px 12px;
+  padding: 0;
 }
 
 .nav-dropdown-links a {
@@ -578,9 +575,9 @@ a.card:focus-visible,
   background:
     linear-gradient(90deg, #fffefa 0%, #fbfaf4 48%, #eef3e8 100%);
   color: var(--ink);
-  min-height: clamp(540px, 47vw, 620px);
+  min-height: clamp(500px, 43vw, 590px);
   overflow: hidden;
-  padding: clamp(64px, 7vw, 96px) 0 clamp(108px, 9vw, 126px);
+  padding: clamp(54px, 6vw, 86px) 0 clamp(88px, 8vw, 108px);
   position: relative;
 }
 
@@ -647,7 +644,7 @@ a.card:focus-visible,
 }
 
 .action-dock {
-  margin-top: -76px;
+  margin-top: -62px;
   position: relative;
   z-index: 2;
 }
@@ -981,6 +978,26 @@ a.card:focus-visible,
   box-shadow: var(--shadow);
 }
 
+.dumpster-card,
+.process-card {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.dumpster-card:hover,
+.process-card:hover {
+  border-color: rgb(17 85 46 / 30%);
+  box-shadow: var(--shadow);
+  transform: translateY(-4px);
+}
+
+.dumpster-visual img {
+  transition: transform 320ms ease;
+}
+
+.dumpster-card:hover .dumpster-visual img {
+  transform: scale(1.04);
+}
+
 .dumpster-visual {
   align-items: center;
   background:
@@ -1071,6 +1088,63 @@ a.card:focus-visible,
 .field small {
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+.address-field {
+  position: relative;
+}
+
+.address-suggestions {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-soft);
+  list-style: none;
+  margin: 4px 0 0;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 4px;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 20;
+}
+
+.address-suggestions li + li {
+  margin-top: 2px;
+}
+
+.address-suggestions button {
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  cursor: pointer;
+  display: block;
+  font-size: 0.88rem;
+  padding: 8px 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.address-suggestions button:hover,
+.address-suggestions button:focus-visible {
+  background: var(--panel-strong);
+}
+
+.address-status {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.address-status.in-area {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.address-status.in-area svg {
+  color: var(--accent);
 }
 
 .service-map-wrap {
@@ -1309,6 +1383,15 @@ a.card:focus-visible,
   gap: 8px;
 }
 
+.honeypot-field {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .field label {
   font-weight: 800;
 }
@@ -1334,6 +1417,30 @@ a.card:focus-visible,
 
 .field textarea {
   min-height: 130px;
+}
+
+.field .secure-field {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.field .secure-field iframe {
+  display: block;
+  width: 100%;
+  /* PayEngine's SecureFields (VGS Collect) iframes render at a fixed
+     150px height regardless of the css.height passed at field-creation
+     time — match it here instead of fighting it. */
+  height: 150px;
+  border: 0;
+}
+
+.split-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
 }
 
 .error {
@@ -1402,6 +1509,33 @@ summary {
 }
 
 @media (max-width: 1160px) {
+  .hero {
+    min-height: auto;
+    padding: clamp(48px, 7vw, 72px) 0 clamp(58px, 7vw, 82px);
+  }
+
+  .hero::before {
+    display: none;
+  }
+
+  .hero-copy {
+    max-width: 780px;
+    padding-top: 0;
+  }
+
+  .hero-meta {
+    margin-top: 30px;
+  }
+
+  .page-hero::before {
+    opacity: 0.1;
+    width: min(42vw, 420px);
+  }
+
+  .page-hero::after {
+    opacity: 0.07;
+  }
+
   .nav {
     align-items: center;
     min-height: 74px;
@@ -1494,6 +1628,28 @@ summary {
   .mobile-nav-panel .phone-link {
     width: 100%;
   }
+
+  .grid.four,
+  .grid.five,
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid.three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .action-dock-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .action-dock-grid a:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .action-dock-grid a:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
 }
 
 @media (max-width: 860px) {
@@ -1529,8 +1685,10 @@ summary {
   }
 
   .hero {
+    background:
+      linear-gradient(180deg, #fffefa 0%, #fbfaf4 58%, #eef3e8 100%);
     min-height: auto;
-    padding: 40px 0 76px;
+    padding: 42px 0 46px;
   }
 
   .page-hero {
@@ -1546,14 +1704,6 @@ summary {
     display: none;
   }
 
-  .hero::before {
-    border-radius: 0 0 0 36px;
-    height: 260px;
-    inset: auto 0 0 auto;
-    opacity: 0.18;
-    width: 100%;
-  }
-
   .hero::after {
     display: none;
   }
@@ -1563,12 +1713,16 @@ summary {
   }
 
   .hero-meta {
-    gap: 8px 14px;
-    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
   }
 
   .action-dock {
-    margin-top: -54px;
+    margin-top: 0;
+    padding: 0 0 18px;
+    background: linear-gradient(180deg, #eef3e8 0%, #fbfaf5 100%);
   }
 
   .action-dock-grid a,
@@ -1602,9 +1756,7 @@ summary {
 @media (min-width: 700px) and (max-width: 860px) {
   .grid.three,
   .grid.four,
-  .grid.five,
-  .action-dock-grid,
-  .hero-meta {
+  .grid.five {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1615,7 +1767,7 @@ summary {
   }
 
   h1 {
-    font-size: clamp(2.05rem, 12vw, 3rem);
+    font-size: clamp(2rem, 10vw, 2.8rem);
   }
 
   h2 {
@@ -1636,7 +1788,17 @@ summary {
   }
 
   .hero-meta {
-    display: none;
+    display: flex;
+    margin-top: 22px;
+  }
+
+  .hero-meta span {
+    flex: 1 1 calc(50% - 8px);
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .card {
@@ -1703,6 +1865,55 @@ summary {
   }
 }
 
+/* ---------------------------------------------------------------------
+ * Motion
+ * Hero entrance is pure CSS (always visible without JS). Scroll-reveal on
+ * section content is a progressive enhancement added by ScrollReveal.tsx;
+ * the [data-reveal] rule only takes effect once that component has
+ * attached the attribute, so content is never hidden if JS fails to load.
+ * ------------------------------------------------------------------- */
+.hero-copy > * {
+  animation: ndsFadeUp 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-copy .eyebrow {
+  animation-delay: 40ms;
+}
+
+.hero-copy h1 {
+  animation-delay: 120ms;
+}
+
+.hero-copy .lead {
+  animation-delay: 220ms;
+}
+
+.hero-copy .button-row {
+  animation-delay: 320ms;
+}
+
+@keyframes ndsFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1710,5 +1921,10 @@ summary {
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
   }
 }

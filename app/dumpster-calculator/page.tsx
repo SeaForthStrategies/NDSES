@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DumpsterCalculator } from "@/components/dumpster/DumpsterCalculator";
 import { DumpsterCard } from "@/components/dumpster/DumpsterCard";
-import { getDumpsterSizes } from "@/lib/cms";
+import { getCalculatorPage, getDumpsterSizes } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Dumpster Calculator",
@@ -9,14 +9,14 @@ export const metadata: Metadata = {
 };
 
 export default async function DumpsterCalculatorPage() {
-  const dumpsters = await getDumpsterSizes();
+  const [page, dumpsters] = await Promise.all([getCalculatorPage(), getDumpsterSizes()]);
   return (
     <>
       <section className="section page-hero">
         <div className="container">
-          <p className="eyebrow">Dumpster Calculator</p>
-          <h1>Choose the right roll-off dumpster</h1>
-          <p className="lead">Use project type and material information to compare available 10/12, 15, 20, and 30 yard dumpster rentals.</p>
+          <p className="eyebrow">{page.hero.eyebrow}</p>
+          <h1>{page.hero.heading}</h1>
+          <p className="lead">{page.hero.description}</p>
         </div>
       </section>
       <section className="section">

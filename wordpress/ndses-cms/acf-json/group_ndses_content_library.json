@@ -1,0 +1,79 @@
+{
+  "key": "group_ndses_content_library",
+  "title": "NDSES Content Library Fields",
+  "fields": [
+    { "key": "field_ndses_summary", "label": "Summary", "name": "summary", "type": "textarea" },
+    { "key": "field_ndses_hero_description", "label": "Hero Description", "name": "hero_description", "type": "textarea", "instructions": "Longer intro copy shown above the fold. Falls back to Summary / the post body when blank." },
+    { "key": "field_ndses_service_day", "label": "Service Day", "name": "service_day", "type": "text" },
+    { "key": "field_ndses_trash_schedule", "label": "Trash Schedule", "name": "trash_schedule", "type": "text" },
+    { "key": "field_ndses_recycling_schedule", "label": "Recycling Schedule", "name": "recycling_schedule", "type": "text" },
+    {
+      "key": "field_ndses_simple_items",
+      "label": "Content Items",
+      "name": "content_items",
+      "type": "repeater",
+      "sub_fields": [
+        { "key": "field_ndses_item_title", "label": "Title", "name": "title", "type": "text" },
+        { "key": "field_ndses_item_body", "label": "Body", "name": "body", "type": "textarea" }
+      ]
+    },
+    {
+      "key": "field_ndses_material_lists",
+      "label": "Material Lists",
+      "name": "material_lists",
+      "type": "repeater",
+      "sub_fields": [
+        { "key": "field_ndses_material_heading", "label": "Heading", "name": "heading", "type": "text" },
+        {
+          "key": "field_ndses_material_items",
+          "label": "Items",
+          "name": "items",
+          "type": "repeater",
+          "sub_fields": [
+            { "key": "field_ndses_material_item", "label": "Item", "name": "item", "type": "text" }
+          ]
+        }
+      ]
+    },
+    { "key": "field_ndses_capacity", "label": "Capacity", "name": "capacity", "type": "text" },
+    { "key": "field_ndses_truck_loads", "label": "Truck Loads", "name": "truck_loads", "type": "text" },
+    { "key": "field_ndses_dimensions", "label": "Dimensions", "name": "dimensions", "type": "text", "instructions": "From the workbook's Dumpster Size Guide graphic, e.g. \"22' L x 7.5' W x 4.5' H\"." },
+    { "key": "field_ndses_rental_period", "label": "Rental Period", "name": "rental_period", "type": "text" },
+    { "key": "field_ndses_credit_card_note", "label": "Credit Card Fee Note", "name": "credit_card_note", "type": "textarea", "instructions": "From workbook: credit card payment may include a 3% fee." },
+    { "key": "field_ndses_image", "label": "Image", "name": "image", "type": "image", "return_format": "array" },
+    { "key": "field_ndses_seo_title", "label": "SEO Title", "name": "seo_title", "type": "text" },
+    { "key": "field_ndses_seo_description", "label": "SEO Description", "name": "seo_description", "type": "textarea" }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "community"
+      }
+    ],
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "dumpster_size"
+      }
+    ],
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "service"
+      }
+    ],
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "faq"
+      }
+    ]
+  ],
+  "show_in_rest": 1,
+  "active": true
+}

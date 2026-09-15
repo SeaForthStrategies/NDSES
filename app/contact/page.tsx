@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import { InquiryForm } from "@/components/forms/InquiryForm";
-import { getGlobalSettings, getServiceNotices } from "@/lib/cms";
+import { getContactPage, getGlobalSettings, getServiceNotices } from "@/lib/cms";
 import { activeNoticesForLocation } from "@/lib/notices";
 import { ServiceNoticeList } from "@/components/notices/ServiceNoticeList";
 
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const [settings, notices] = await Promise.all([getGlobalSettings(), getServiceNotices()]);
+  const [page, settings, notices] = await Promise.all([getContactPage(), getGlobalSettings(), getServiceNotices()]);
   return (
     <>
       <section className="section page-hero">
         <div className="container">
-          <p className="eyebrow">Contact NDSES</p>
-          <h1>Questions, quotes, and service support</h1>
-          <p className="lead">Send a message for free quotes, estimates, service questions, or account support.</p>
+          <p className="eyebrow">{page.hero.eyebrow}</p>
+          <h1>{page.hero.heading}</h1>
+          <p className="lead">{page.hero.description}</p>
         </div>
       </section>
       <section className="section">

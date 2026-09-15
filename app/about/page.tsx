@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Users } from "lucide-react";
 import { ServiceAreaMap } from "@/components/sections/ServiceAreaMap";
-import { getAboutContent, getServiceAreas } from "@/lib/cms";
+import { getAboutContent, getAboutPage, getServiceAreas } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const [content, areas] = await Promise.all([getAboutContent(), getServiceAreas()]);
+  const [page, content, areas] = await Promise.all([getAboutPage(), getAboutContent(), getServiceAreas()]);
   return (
     <>
       <section className="section page-hero">
         <div className="container">
-          <p className="eyebrow">{content.hero.eyebrow}</p>
-          <h1>{content.hero.heading}</h1>
-          <p className="lead">{content.hero.description}</p>
+          <p className="eyebrow">{page.hero.eyebrow}</p>
+          <h1>{page.hero.heading}</h1>
+          <p className="lead">{page.hero.description}</p>
         </div>
       </section>
       <section className="section">

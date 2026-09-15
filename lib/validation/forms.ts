@@ -9,7 +9,10 @@ export const inquirySchema = z.object({
   serviceAddress: z.string().optional(),
   selectedDumpsterSize: z.string().optional(),
   eventDate: z.string().optional(),
-  message: z.string().min(10, "Tell us a little more.")
+  message: z.string().min(10, "Tell us a little more."),
+  // Honeypot: left blank by real visitors, often auto-filled by bots.
+  // Enforced server-side; kept permissive here so it never blocks a real submission.
+  website: z.string().optional()
 });
 
 export type InquiryInput = z.infer<typeof inquirySchema>;

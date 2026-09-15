@@ -1,0 +1,89 @@
+{
+  "key": "group_ndses_operations_library",
+  "title": "NDSES Operations Library Fields",
+  "fields": [
+    {
+      "key": "field_ndses_area_county",
+      "label": "County",
+      "name": "county",
+      "type": "text"
+    },
+    {
+      "key": "field_ndses_area_service_types",
+      "label": "Service Types",
+      "name": "service_types",
+      "type": "checkbox",
+      "choices": {
+        "residential": "Residential",
+        "commercial": "Commercial",
+        "rollOff": "Temporary roll-off / dumpster rentals"
+      }
+    },
+    {
+      "key": "field_ndses_area_map_x",
+      "label": "Map X Position",
+      "name": "map_x",
+      "type": "number",
+      "instructions": "TODO: ACF - Replace point coordinates with final GIS/polygon data when available.",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "field_ndses_area_map_y",
+      "label": "Map Y Position",
+      "name": "map_y",
+      "type": "number",
+      "instructions": "TODO: ACF - Replace point coordinates with final GIS/polygon data when available.",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "field_ndses_schedule_description",
+      "label": "Schedule Description",
+      "name": "schedule_description",
+      "type": "textarea"
+    },
+    {
+      "key": "field_ndses_schedule_date",
+      "label": "Schedule Date",
+      "name": "schedule_date",
+      "type": "date_picker"
+    },
+    {
+      "key": "field_ndses_schedule_community",
+      "label": "Community",
+      "name": "schedule_community",
+      "type": "text"
+    },
+    {
+      "key": "field_ndses_schedule_type",
+      "label": "Schedule Type",
+      "name": "schedule_type",
+      "type": "select",
+      "choices": {
+        "regular": "Regular pickup",
+        "holiday": "Holiday",
+        "delay": "Delayed service",
+        "special": "Special date"
+      }
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "service_area"
+      }
+    ],
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "schedule_item"
+      }
+    ]
+  ],
+  "show_in_rest": 1,
+  "active": true
+}

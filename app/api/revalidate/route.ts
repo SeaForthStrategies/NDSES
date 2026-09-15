@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const secret = request.headers.get("x-revalidation-secret") || request.nextUrl.searchParams.get("secret");
-  if (!process.env.WORDPRESS_REVALIDATION_SECRET || secret !== process.env.WORDPRESS_REVALIDATION_SECRET) {
+  const expectedSecret = process.env.WORDPRESS_REVALIDATION_SECRET || process.env.WORDPRESS_REVALIDATE_SECRET;
+  if (!expectedSecret || secret !== expectedSecret) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

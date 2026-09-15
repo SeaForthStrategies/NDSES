@@ -5,4 +5,6 @@ node_modules
 coverage
 dist
 *.log
+*.swp
+.DS_Store
 tsconfig.tsbuildinfo

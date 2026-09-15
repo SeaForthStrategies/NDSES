@@ -20,6 +20,8 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
     }
   }, [formType, setValue]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   async function onSubmit(data: InquiryInput) {
     setStatus("loading");
     const response = await fetch("/api/forms", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
@@ -27,6 +29,8 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
       trackEvent("form_submission", { formType });
       setStatus("success");
     } else {
+      const body = await response.json().catch(() => null);
+      setErrorMessage(body?.error || "Something went wrong. Please try again or contact NDSES directly.");
       setStatus("error");
     }
   }
@@ -34,6 +38,10 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
   return (
     <form className="card form" onSubmit={handleSubmit(onSubmit)} noValidate>
       <input type="hidden" {...register("formType")} />
+      <div className="honeypot-field" aria-hidden="true">
+        <label htmlFor={`${formType}-website`}>Leave this field blank</label>
+        <input id={`${formType}-website`} tabIndex={-1} autoComplete="off" {...register("website")} />
+      </div>
       {formState.errors.root ? <p className="error">{formState.errors.root.message}</p> : null}
       <div className="field">
         <label htmlFor={`${formType}-name`}>Name</label>
@@ -81,8 +89,8 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
         {formState.errors.message ? <span className="error">{formState.errors.message.message}</span> : null}
       </div>
       <button className="btn primary" disabled={status === "loading"} type="submit">{status === "loading" ? "Sending..." : "Submit"}</button>
-      {status === "success" ? <p role="status">Thank you. Your request has been received by the website. Final routing will be connected to the NDS inbox or CRM.</p> : null}
-      {status === "error" ? <p className="error" role="alert">Something went wrong. Please try again or contact NDSES directly.</p> : null}
+      {status === "success" ? <p role="status">Thank you. Your request has been sent to the NDS team — we&apos;ll be in touch soon.</p> : null}
+      {status === "error" ? <p className="error" role="alert">{errorMessage}</p> : null}
     </form>
   );
 }

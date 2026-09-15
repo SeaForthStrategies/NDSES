@@ -1,0 +1,50 @@
+{
+  "key": "group_ndses_site_settings",
+  "title": "NDSES Site Settings",
+  "fields": [
+    { "key": "field_ndses_company_name", "label": "Company Name", "name": "company_name", "type": "text" },
+    { "key": "field_ndses_legal_name", "label": "Legal Name", "name": "legal_name", "type": "text" },
+    { "key": "field_ndses_phone", "label": "Phone", "name": "phone", "type": "text" },
+    { "key": "field_ndses_email", "label": "Email", "name": "email", "type": "email" },
+    { "key": "field_ndses_address", "label": "Facility Address", "name": "address", "type": "textarea" },
+    { "key": "field_ndses_mailing_address", "label": "Mailing Address", "name": "mailing_address", "type": "textarea" },
+    {
+      "key": "field_ndses_hours",
+      "label": "Office Hours",
+      "name": "hours",
+      "type": "repeater",
+      "sub_fields": [
+        { "key": "field_ndses_hours_line", "label": "Line", "name": "line", "type": "text" }
+      ]
+    },
+    { "key": "field_ndses_service_area", "label": "Service Area Summary", "name": "service_area", "type": "textarea" },
+    { "key": "field_ndses_facebook", "label": "Facebook URL", "name": "facebook", "type": "url", "instructions": "TODO: Facebook - Add final page URL and future alert sync settings." },
+    { "key": "field_ndses_instagram", "label": "Instagram URL", "name": "instagram", "type": "url" },
+    { "key": "field_ndses_header_logo", "label": "Header Logo", "name": "header_logo", "type": "image", "return_format": "array" },
+    { "key": "field_ndses_footer_logo", "label": "Footer Logo", "name": "footer_logo", "type": "image", "return_format": "array" },
+    { "key": "field_ndses_footer_description", "label": "Footer Description", "name": "footer_description", "type": "textarea" },
+    { "key": "field_ndses_copyright_text", "label": "Copyright Text", "name": "copyright_text", "type": "text" },
+    {
+      "key": "field_ndses_social_links",
+      "label": "Social Links",
+      "name": "social_links",
+      "type": "repeater",
+      "instructions": "Shown in the footer. Primary navigation itself is defined in code, not here, since it mirrors the site's actual page structure (community sub-pages, section anchors, etc.).",
+      "sub_fields": [
+        { "key": "field_ndses_social_label", "label": "Label", "name": "label", "type": "text" },
+        { "key": "field_ndses_social_href", "label": "URL", "name": "href", "type": "url" }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "ndses-site-settings"
+      }
+    ]
+  ],
+  "show_in_rest": 1,
+  "active": true
+}

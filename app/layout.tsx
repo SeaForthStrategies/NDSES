@@ -4,6 +4,7 @@ import { AnnouncementBar } from "@/components/notices/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ServiceNoticePopup } from "@/components/notices/ServiceNoticePopup";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { getGlobalSettings, getServiceNotices } from "@/lib/cms";
 import { activeNoticesForLocation, highestPriorityNotice } from "@/lib/notices";
 
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main>{children}</main>
         <Footer settings={settings} />
         {popupNotice ? <ServiceNoticePopup notice={popupNotice} /> : null}
+        <ScrollReveal />
       </body>
     </html>
   );

@@ -5,13 +5,12 @@ import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { ServiceAreaMap } from "@/components/sections/ServiceAreaMap";
 import { FAQAccordion } from "@/components/sections/FAQAccordion";
 import { ServiceNoticeList } from "@/components/notices/ServiceNoticeList";
-import { getDumpsterSizes, getHomePage, getServiceAreas, getServiceNotices } from "@/lib/cms";
-import { faqs } from "@/lib/cms/mock-data";
+import { getDumpsterSizes, getFAQs, getHomePage, getServiceAreas, getServiceNotices } from "@/lib/cms";
 import { activeNoticesForLocation } from "@/lib/notices";
 import { localBusinessSchema } from "@/lib/schema";
 
 export default async function HomePage() {
-  const [page, notices, dumpsters, areas] = await Promise.all([getHomePage(), getServiceNotices(), getDumpsterSizes(), getServiceAreas()]);
+  const [page, notices, dumpsters, areas, faqs] = await Promise.all([getHomePage(), getServiceNotices(), getDumpsterSizes(), getServiceAreas(), getFAQs()]);
 
   return (
     <>
@@ -31,12 +30,6 @@ export default async function HomePage() {
                   {action.label} <ArrowRight size={18} aria-hidden />
                 </Link>
               ))}
-            </div>
-            <div className="hero-meta" aria-label="Service summary">
-              <span>Residential</span>
-              <span>Commercial</span>
-              <span>Dumpster Rentals</span>
-              <span>Special Events</span>
             </div>
           </div>
         </div>

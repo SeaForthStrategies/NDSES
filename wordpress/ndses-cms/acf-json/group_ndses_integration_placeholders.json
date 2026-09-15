@@ -1,0 +1,30 @@
+{
+  "key": "group_ndses_integration_placeholders",
+  "title": "NDSES Integration Placeholders",
+  "fields": [
+    { "key": "field_ndses_payengine_status", "label": "PayEngine Status", "name": "payengine_status", "type": "select", "choices": { "placeholder": "Placeholder only", "test": "Test mode", "live": "Live" }, "instructions": "TODO: PayEngine - Do not set live until payment processing is configured and approved." },
+    { "key": "field_ndses_payengine_note", "label": "Payment Page Note", "name": "payengine_note", "type": "textarea" },
+    { "key": "field_ndses_form_backend_status", "label": "Form Backend Status", "name": "form_backend_status", "type": "select", "choices": { "placeholder": "Placeholder only", "email": "Email notifications", "crm": "CRM integration" }, "instructions": "TODO: Form Backend - Add final destination before production submissions are enabled." },
+    { "key": "field_ndses_google_maps_status", "label": "Google Maps Status", "name": "google_maps_status", "type": "select", "choices": { "placeholder": "Static placeholder", "api": "Google Maps API connected" }, "instructions": "TODO: ACF - Service coordinates/polygons can be populated later." },
+    { "key": "field_ndses_facebook_sync_status", "label": "Facebook Alert Sync Status", "name": "facebook_sync_status", "type": "select", "choices": { "placeholder": "Placeholder only", "manual": "Manual links", "automated": "Automated posting" }, "instructions": "TODO: Facebook - Future service alerts may be pushed to Facebook." },
+    { "key": "field_ndses_calendar_status", "label": "Calendar Integration Status", "name": "calendar_status", "type": "select", "choices": { "static": "Static schedule data", "integrated": "Calendar integration connected" } }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "acf-options-integrations"
+      }
+    ],
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "ndses-site-settings"
+      }
+    ]
+  ],
+  "show_in_rest": 1,
+  "active": true
+}

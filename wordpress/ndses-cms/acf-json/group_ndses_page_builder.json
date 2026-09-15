@@ -11,7 +11,8 @@
         { "key": "field_hero_eyebrow", "label": "Eyebrow", "name": "eyebrow", "type": "text" },
         { "key": "field_hero_heading", "label": "Heading", "name": "heading", "type": "text" },
         { "key": "field_hero_description", "label": "Description", "name": "description", "type": "textarea" },
-        { "key": "field_hero_image", "label": "Image", "name": "image", "type": "image" }
+        { "key": "field_hero_image", "label": "Image", "name": "image", "type": "image", "return_format": "array" },
+        { "key": "field_hero_image_alt", "label": "Image Alt Text", "name": "image_alt", "type": "text" }
       ]
     },
     {
@@ -48,9 +49,50 @@
             { "key": "field_faq_heading", "label": "Heading", "name": "heading", "type": "text" },
             { "key": "field_faq_relationship", "label": "FAQs", "name": "faqs", "type": "relationship", "post_type": ["faq"] }
           ]
+        },
+        "layout_service_grid": {
+          "key": "layout_service_grid",
+          "name": "service_grid",
+          "label": "Service Grid",
+          "display": "block",
+          "sub_fields": [
+            { "key": "field_service_grid_heading", "label": "Heading", "name": "heading", "type": "text" },
+            { "key": "field_service_grid_services", "label": "Services", "name": "services", "type": "relationship", "post_type": ["service"] }
+          ]
+        },
+        "layout_material_lists": {
+          "key": "layout_material_lists",
+          "name": "material_lists",
+          "label": "Accepted / Prohibited Materials",
+          "display": "block",
+          "sub_fields": [
+            { "key": "field_material_lists_heading", "label": "Heading", "name": "heading", "type": "text" },
+            { "key": "field_material_lists_copy", "label": "Copy", "name": "copy", "type": "textarea" }
+          ]
+        },
+        "layout_process": {
+          "key": "layout_process",
+          "name": "process_steps",
+          "label": "Process Steps",
+          "display": "block",
+          "sub_fields": [
+            { "key": "field_process_heading", "label": "Heading", "name": "heading", "type": "text" },
+            {
+              "key": "field_process_steps",
+              "label": "Steps",
+              "name": "steps",
+              "type": "repeater",
+              "sub_fields": [
+                { "key": "field_process_step_title", "label": "Title", "name": "title", "type": "text" },
+                { "key": "field_process_step_body", "label": "Body", "name": "body", "type": "textarea" }
+              ]
+            }
+          ]
         }
       }
-    }
+    },
+    { "key": "field_page_seo_title", "label": "SEO Title", "name": "seo_title", "type": "text" },
+    { "key": "field_page_seo_description", "label": "SEO Description", "name": "seo_description", "type": "textarea" }
   ],
   "location": [
     [
@@ -61,5 +103,6 @@
       }
     ]
   ],
+  "show_in_rest": 1,
   "active": true
 }
