@@ -48,16 +48,75 @@ add_action('init', function () {
     ]);
 });
 
-add_action('acf/init', function () {
-    if (!function_exists('acf_add_options_page')) {
+/**
+ * Site settings admin screens.
+ *
+ * `acf_add_options_page()` -- the usual way to give a set of ACF fields a
+ * dedicated wp-admin screen -- is an ACF PRO feature. Only free ACF is
+ * installed here, so that call was always a silent no-op (guarded by the
+ * function_exists() check below): no menu item was ever registered, and
+ * `/wp-admin/admin.php?page=ndses-site-settings` has never resolved to
+ * anything. This isn't a regression, just a paid feature that was never
+ * actually available.
+ *
+ * Free ACF does ship `acf_form()` -- a standalone field-group renderer
+ * normally used for front-end forms -- which works just as well for a
+ * custom admin screen. Field values still live in the same place either
+ * way (post_id 'option', i.e. the wp_options table), which is what
+ * ndses_setting() and the rest of the site already read from, so no data
+ * migration is needed -- this only replaces the missing editing screen.
+ */
+function ndses_settings_pages(): array
+{
+    return [
+        'ndses-site-settings' => [
+            'page_title' => 'NDSES Site Settings',
+            'menu_title' => 'Site Settings',
+            'field_groups' => ['group_ndses_site_settings', 'group_ndses_integration_placeholders'],
+        ],
+        'ndses-site-settings-integrations' => [
+            'page_title' => 'Integration Settings',
+            'menu_title' => 'Integrations',
+            'field_groups' => ['group_ndses_integration_placeholders'],
+            'parent' => 'ndses-site-settings',
+        ],
+    ];
+}
+
+add_action('admin_menu', function () {
+    if (!function_exists('acf_form_head')) {
         return;
     }
 
-    acf_add_options_page(['page_title' => 'NDSES Site Settings', 'menu_title' => 'Site Settings', 'menu_slug' => 'ndses-site-settings']);
-    acf_add_options_sub_page(['page_title' => 'Header Settings', 'menu_title' => 'Header', 'parent_slug' => 'ndses-site-settings']);
-    acf_add_options_sub_page(['page_title' => 'Footer Settings', 'menu_title' => 'Footer', 'parent_slug' => 'ndses-site-settings']);
-    acf_add_options_sub_page(['page_title' => 'Operations Settings', 'menu_title' => 'Operations', 'parent_slug' => 'ndses-site-settings']);
-    acf_add_options_sub_page(['page_title' => 'Integration Settings', 'menu_title' => 'Integrations', 'parent_slug' => 'ndses-site-settings']);
+    $render = function (array $page) {
+        return function () use ($page) {
+            echo '<div class="wrap"><h1>' . esc_html($page['page_title']) . '</h1>';
+            acf_form([
+                'id' => 'ndses-settings-form',
+                'post_id' => 'option',
+                'field_groups' => $page['field_groups'],
+                'submit_value' => 'Save Settings',
+                'updated_message' => 'Settings saved.',
+            ]);
+            echo '</div>';
+        };
+    };
+
+    foreach (ndses_settings_pages() as $slug => $page) {
+        if (empty($page['parent'])) {
+            $hook = add_menu_page($page['page_title'], $page['menu_title'], 'edit_posts', $slug, $render($page), 'dashicons-admin-generic', 59);
+        } else {
+            $hook = add_submenu_page($page['parent'], $page['page_title'], $page['menu_title'], 'edit_posts', $slug, $render($page));
+        }
+
+        // acf_form_head() enqueues ACF's admin assets and processes the
+        // POST-back on save -- both need to happen before this screen's
+        // own HTML is output, so it's hooked to the page's load event
+        // rather than called inline in the render callback above.
+        if ($hook) {
+            add_action("load-{$hook}", 'acf_form_head');
+        }
+    }
 });
 
 add_filter('acf/settings/save_json', function () {

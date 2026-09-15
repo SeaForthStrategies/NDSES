@@ -655,10 +655,12 @@ textarea:focus {
 .secure-field iframe {
   display: block;
   width: 100%;
-  /* PayEngine's SecureFields (VGS Collect) iframes render at a fixed
-     150px height regardless of the css.height passed at field-creation
-     time — match it here instead of fighting it. */
-  height: 150px;
+  /* PayEngine's SecureFields (VGS Collect) iframes always render at a
+     fixed internal height regardless of the css.height passed at
+     field-creation time. The actual input row sits at the very top of
+     that space, so cropping the iframe itself to a normal input height
+     keeps the field usable without the tall dead space below it. */
+  height: 46px;
   border: 0;
 }
 
