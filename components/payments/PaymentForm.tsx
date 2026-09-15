@@ -189,7 +189,6 @@ export function PaymentForm() {
           </div>
         </div>
 
-        <p className="fine-print">Card and bank details are entered directly into PayEngine&apos;s secure fields and never touch NDSES&apos;s servers.</p>
         <button className="btn primary" disabled={status === "loading" || !sdkReady} type="submit">
           {status === "loading" ? "Processing..." : sdkReady ? "Submit payment" : "Loading secure payment form..."}
         </button>

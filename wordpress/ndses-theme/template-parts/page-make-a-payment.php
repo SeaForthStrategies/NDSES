@@ -32,7 +32,6 @@
             </div>
 
             <p class="form-status" role="status"></p>
-            <p class="small-note">Card and bank details are entered directly into PayEngine's secure fields and never touch NDS's servers.</p>
             <button class="button button-primary" type="submit">Submit Payment</button>
         </form>
         <aside class="quote-panel">
