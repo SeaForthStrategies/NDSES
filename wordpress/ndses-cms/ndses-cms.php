@@ -196,3 +196,150 @@ function ndses_handle_form_submission(WP_REST_Request $request)
 
     return rest_ensure_response(['ok' => true, 'id' => $post_id]);
 }
+
+/**
+ * PayEngine payments. Card/bank details are tokenized client-side via
+ * PayEngine's SecureFields JS SDK (see inc/payengine.php for the embed +
+ * theme.js for the submit handler) — this endpoint only ever sees the
+ * resulting token, never raw card or bank numbers.
+ *
+ * Auth against PayEngine is `Authorization: Basic <secret key>` (PayEngine's
+ * own non-standard use of the "Basic" scheme — just the literal word
+ * "Basic" plus the raw secret key), confirmed against the authenticated
+ * merchant API reference at docs.payengine.co/merchant-api-reference.
+ *
+ * The secret key is stored as an ACF field on the Make a Payment page
+ * itself (id 158) rather than the site's options page, because this
+ * install's custom options-page admin menu entry isn't registering
+ * (pre-existing bug, unrelated to this feature) — Pages > Make a Payment
+ * has a "PayEngine Secret Key" field in the sidebar instead.
+ */
+add_action('rest_api_init', function () {
+    register_rest_route('ndses/v1', '/payments/charge', [
+        'methods' => 'POST',
+        'permission_callback' => '__return_true',
+        'callback' => 'ndses_handle_payment_charge',
+    ]);
+});
+
+function ndses_payengine_credentials(): ?array
+{
+    $secret = get_field('payengine_secret_key', 158);
+    $api_url = get_option('ndses_payengine_api_url');
+    $merchant_id = get_option('ndses_payengine_merchant_id');
+
+    if (!$secret || !$api_url || !$merchant_id) {
+        return null;
+    }
+
+    return ['secret' => $secret, 'api_url' => rtrim((string) $api_url, '/'), 'merchant_id' => $merchant_id];
+}
+
+/** PayEngine's order_number field only accepts [a-zA-Z0-9], max 20 chars. */
+function ndses_payengine_order_number(string $account_number): string
+{
+    $clean = preg_replace('/[^a-zA-Z0-9]/', '', $account_number);
+    $clean = substr((string) $clean, 0, 20);
+
+    return $clean !== '' ? $clean : 'NDSES';
+}
+
+function ndses_handle_payment_charge(WP_REST_Request $request)
+{
+    $body = $request->get_json_params();
+    if (!is_array($body)) {
+        return new WP_Error('invalid_body', 'Invalid request body.', ['status' => 400]);
+    }
+
+    $token = sanitize_text_field($body['token'] ?? '');
+    $payment_method = sanitize_text_field($body['paymentMethod'] ?? 'card');
+    $amount = (string) ($body['amount'] ?? '');
+    $account_number = sanitize_text_field($body['accountNumber'] ?? '');
+    $email = sanitize_email($body['email'] ?? '');
+
+    if ($token === '' || !preg_match('/^\d+(\.\d{1,2})?$/', $amount) || mb_strlen($account_number) < 3) {
+        return new WP_Error('validation_failed', 'Payment information is incomplete.', ['status' => 400]);
+    }
+
+    $creds = ndses_payengine_credentials();
+    if (!$creds) {
+        return rest_ensure_response([
+            'mode' => 'placeholder',
+            'message' => ($payment_method === 'ach' ? 'ACH' : 'Card') . ' payments are not available yet. Please contact NDSES for current payment options.',
+        ]);
+    }
+
+    $rate_key = 'ndses_pay_rl_' . md5(ndses_get_client_ip());
+    $count = (int) get_transient($rate_key);
+    if ($count >= 10) {
+        return new WP_Error('rate_limited', 'Too many attempts. Please try again shortly.', ['status' => 429]);
+    }
+    set_transient($rate_key, $count + 1, 10 * MINUTE_IN_SECONDS);
+
+    $order_number = ndses_payengine_order_number($account_number);
+    $description = 'NDSES account ' . $account_number;
+    $metadata = ['accountNumber' => $account_number, 'email' => $email];
+
+    if ($payment_method === 'ach') {
+        $endpoint = $creds['api_url'] . '/api/payment/ach';
+        $data = [
+            'transactionAmount' => number_format((float) $amount, 2, '.', ''),
+            'accountToken' => $token,
+            'order_number' => $order_number,
+            'internalTransactionID' => $account_number,
+            'description' => $description,
+            'metadata' => $metadata,
+        ];
+    } else {
+        $endpoint = $creds['api_url'] . '/api/payment/sale';
+        $data = [
+            'transactionAmount' => number_format((float) $amount, 2, '.', ''),
+            'cardToken' => $token,
+            'currencyCode' => 'USD',
+            'order_number' => $order_number,
+            'internalTransactionID' => $account_number,
+            'description' => $description,
+            'metadata' => $metadata,
+        ];
+    }
+
+    $response = wp_remote_post($endpoint, [
+        'timeout' => 20,
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic ' . $creds['secret'],
+        ],
+        'body' => wp_json_encode(['merchant_id' => $creds['merchant_id'], 'data' => $data]),
+    ]);
+
+    if (is_wp_error($response)) {
+        error_log('PayEngine charge request failed: ' . $response->get_error_message());
+
+        return rest_ensure_response(['mode' => 'error', 'message' => 'We could not reach the payment processor. Please try again shortly.']);
+    }
+
+    $status = wp_remote_retrieve_response_code($response);
+    $json = json_decode(wp_remote_retrieve_body($response), true);
+
+    if ($status < 200 || $status >= 300 || !is_array($json) || !empty($json['error'])) {
+        error_log('PayEngine charge failed: HTTP ' . $status . ' ' . wp_remote_retrieve_body($response));
+
+        return rest_ensure_response(['mode' => 'error', 'message' => 'We could not process the payment. Please try again shortly.']);
+    }
+
+    $sale_response = $json['data']['SaleResponse'] ?? $json['data']['AchResponse'] ?? null;
+    $transaction_id = $json['data']['TransactionID'] ?? $json['data']['ID'] ?? null;
+
+    if (($sale_response['status'] ?? '') === 'PASS' && $transaction_id) {
+        return rest_ensure_response([
+            'mode' => 'success',
+            'message' => 'Thank you! Your payment has been received.',
+            'transactionId' => $transaction_id,
+        ]);
+    }
+
+    return rest_ensure_response([
+        'mode' => 'declined',
+        'message' => 'Payment failed. Please try again or contact NDSES.',
+    ]);
+}

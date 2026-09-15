@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NDSES_THEME_VERSION', '1.9.0');
+define('NDSES_THEME_VERSION', '2.0.0');
 define('NDSES_THEME_DIR', get_template_directory());
 
 require_once NDSES_THEME_DIR . '/inc/data.php';
@@ -29,7 +29,19 @@ add_action('after_setup_theme', function () {
 
 add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('ndses-theme', get_theme_file_uri('/assets/css/theme.css'), [], NDSES_THEME_VERSION);
-    wp_enqueue_script('ndses-theme', get_theme_file_uri('/assets/js/theme.js'), [], NDSES_THEME_VERSION, true);
+
+    $theme_deps = [];
+    if (ndses_current_slug() === 'make-a-payment') {
+        $public_key = get_option('ndses_payengine_public_key');
+        $host = get_option('ndses_payengine_host') ?: 'https://console.payengine.dev';
+
+        if ($public_key) {
+            wp_enqueue_script('payengine-securefields', $host . '/js/1.0.0/securefields.min.js?key=' . urlencode((string) $public_key), [], null, true);
+            $theme_deps[] = 'payengine-securefields';
+        }
+    }
+
+    wp_enqueue_script('ndses-theme', get_theme_file_uri('/assets/js/theme.js'), $theme_deps, NDSES_THEME_VERSION, true);
     wp_localize_script('ndses-theme', 'ndsesData', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'restUrl' => esc_url_raw(rest_url('ndses/v1/')),

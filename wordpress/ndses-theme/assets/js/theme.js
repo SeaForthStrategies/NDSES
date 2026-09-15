@@ -145,19 +145,131 @@
     });
   }
 
-  document.querySelectorAll('[data-payment-placeholder]').forEach(function (form) {
-    form.addEventListener('submit', function (event) {
+  /**
+   * PayEngine payment form. Card/bank details are tokenized client-side by
+   * PayEngine's SecureFields JS SDK (hosted iframes — the raw numbers never
+   * touch this page or NDS's server), then the resulting token is posted to
+   * the ndses/v1/payments/charge REST route, which charges it server-side.
+   */
+  const payEngineForm = document.querySelector('[data-payengine-form]');
+  if (payEngineForm) {
+    const statusEl = payEngineForm.querySelector('.form-status');
+    const submitButton = payEngineForm.querySelector('button[type="submit"]');
+    const cardFields = payEngineForm.querySelector('[data-payment-fields="card"]');
+    const achFields = payEngineForm.querySelector('[data-payment-fields="ach"]');
+    let secureForm = null;
+
+    payEngineForm.querySelectorAll('input[name="paymentMethod"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        if (!radio.checked) return;
+        cardFields.hidden = radio.value !== 'card';
+        achFields.hidden = radio.value !== 'ach';
+      });
+    });
+
+    function initSecureFields() {
+      if (!window.PayEngine || secureForm) return;
+      window.PayEngine.SecureFields.create().then(function (form) {
+        secureForm = form;
+        const css = { fontFamily: 'inherit', fontSize: '16px', width: '100%', height: '46px', padding: '10px 12px', color: '#14211a' };
+
+        form.field('#pe-card-name', { type: 'text', name: 'card_holder', placeholder: 'Name on card', validations: ['required'], css: css });
+        form.field('#pe-card-number', { type: 'card-number', name: 'card_number', placeholder: 'Card number', showCardIcon: true, validations: ['required', 'validCardNumber'], css: css });
+        form.field('#pe-card-expiry', { type: 'card-expiration-date', name: 'card_exp', placeholder: 'MM / YY', validations: ['required', 'validCardExpirationDate'], css: css });
+        form.field('#pe-card-cvc', { type: 'card-security-code', name: 'card_cvc', placeholder: 'CVC', maxLength: 4, validations: ['required', 'validCardSecurityCode'], css: css });
+        form.field('#pe-card-zip', { type: 'zip-code', name: 'address_zip', placeholder: 'Billing ZIP', validations: ['required'], css: css });
+
+        form.field('#pe-routing-number', { type: 'number', name: 'routing_number', placeholder: 'Routing number', validations: ['required'], css: css });
+        form.field('#pe-account-number', { type: 'number', name: 'account_number', placeholder: 'Account number', validations: ['required'], css: css });
+        form.field('#pe-ach-first-name', { type: 'text', name: 'first_name', placeholder: 'First name', validations: ['required'], css: css });
+        form.field('#pe-ach-last-name', { type: 'text', name: 'last_name', placeholder: 'Last name', validations: ['required'], css: css });
+
+        if (submitButton) submitButton.disabled = false;
+      });
+    }
+
+    if (submitButton) submitButton.disabled = true;
+    if (window.PayEngine) {
+      initSecureFields();
+    } else {
+      const securefieldsScript = document.getElementById('payengine-securefields-js');
+      if (securefieldsScript) securefieldsScript.addEventListener('load', initSecureFields);
+    }
+
+    payEngineForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
+      if (!payEngineForm.checkValidity()) {
+        payEngineForm.reportValidity();
         return;
       }
-      const note = document.createElement('p');
-      note.className = 'small-note';
-      note.textContent = 'Payment flow is ready for PayEngine connection. No payment was processed.';
-      form.appendChild(note);
+      if (!secureForm) {
+        if (statusEl) {
+          statusEl.textContent = 'Payment fields are still loading. Please wait a moment and try again.';
+          statusEl.className = 'form-status is-error';
+        }
+        return;
+      }
+
+      const paymentMethod = (payEngineForm.querySelector('input[name="paymentMethod"]:checked') || {}).value || 'card';
+      const values = Object.fromEntries(new FormData(payEngineForm).entries());
+
+      if (submitButton) submitButton.disabled = true;
+      if (statusEl) {
+        statusEl.textContent = 'Processing your payment…';
+        statusEl.className = 'form-status';
+      }
+
+      const tokenize = paymentMethod === 'ach'
+        ? secureForm.createBankAccount()
+        : secureForm.createCard({ manuallyEntered: true });
+
+      tokenize
+        .then(function (tokenObj) {
+          const token = tokenObj.token
+            || (tokenObj.card && tokenObj.card.token)
+            || (tokenObj.bank_account && tokenObj.bank_account.token);
+
+          if (!token) {
+            throw new Error('no-token');
+          }
+
+          return fetch(ndsesData.restUrl + 'payments/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              token: token,
+              paymentMethod: paymentMethod,
+              accountNumber: values.accountNumber,
+              amount: values.amount,
+              email: values.email
+            })
+          });
+        })
+        .then(function (response) { return response.json().then(function (body) { return { ok: response.ok, body: body }; }); })
+        .then(function (result) {
+          const mode = result.body && result.body.mode;
+          if (result.ok && mode === 'success') {
+            payEngineForm.reset();
+            if (statusEl) {
+              statusEl.textContent = result.body.message || 'Thank you! Your payment has been received.';
+              statusEl.className = 'form-status is-success';
+            }
+          } else if (statusEl) {
+            statusEl.textContent = (result.body && result.body.message) || 'Payment could not be completed. Please try again or contact NDS.';
+            statusEl.className = 'form-status is-error';
+          }
+        })
+        .catch(function () {
+          if (statusEl) {
+            statusEl.textContent = 'We could not process those payment details. Please check them and try again.';
+            statusEl.className = 'form-status is-error';
+          }
+        })
+        .finally(function () {
+          if (submitButton) submitButton.disabled = false;
+        });
     });
-  });
+  }
 
   /**
    * Inquiry forms (contact, quote requests) submit to the ndses/v1/forms

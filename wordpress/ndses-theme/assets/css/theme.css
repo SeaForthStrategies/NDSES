@@ -646,6 +646,34 @@ textarea:focus {
   outline: 3px solid rgba(215, 165, 31, 0.22);
 }
 
+.secure-field {
+  border: 1px solid var(--nds-line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.secure-field iframe {
+  display: block;
+  width: 100%;
+  /* PayEngine's SecureFields (VGS Collect) iframes render at a fixed
+     150px height regardless of the css.height passed at field-creation
+     time — match it here instead of fighting it. */
+  height: 150px;
+  border: 0;
+}
+
+.payment-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border: none;
+  padding: 0;
+}
+
+.payment-methods .check-row {
+  margin-top: 0;
+}
+
 fieldset {
   margin: 0;
   border: 1px solid var(--nds-line);
