@@ -56,6 +56,97 @@ add_action('init', function () {
 });
 
 /**
+ * form_submission only supports('title'), so by default its edit screen
+ * shows nothing but the auto-generated title -- the submitted message,
+ * email, phone, etc. (stored in post_content / postmeta by
+ * ndses_handle_form_submission()) are otherwise invisible in wp-admin,
+ * findable only via the notification email or a database query. This adds
+ * a read-only details box with everything that was actually submitted.
+ */
+add_action('add_meta_boxes_form_submission', function (WP_Post $post) {
+    add_meta_box(
+        'ndses_submission_details',
+        'Submission Details',
+        'ndses_render_submission_details_metabox',
+        'form_submission',
+        'normal',
+        'high'
+    );
+});
+
+function ndses_render_submission_details_metabox(WP_Post $post): void
+{
+    $rows = [
+        'Name' => get_post_meta($post->ID, 'name', true),
+        'Email' => get_post_meta($post->ID, 'email', true),
+        'Phone' => get_post_meta($post->ID, 'Phone', true),
+        'Form' => get_post_meta($post->ID, 'form_type', true),
+        'Service type' => get_post_meta($post->ID, 'Service type', true),
+        'Service address' => get_post_meta($post->ID, 'Service address', true),
+        'Selected dumpster size' => get_post_meta($post->ID, 'Selected dumpster size', true),
+        'Event date' => get_post_meta($post->ID, 'Event date', true),
+    ];
+    ?>
+    <table class="widefat" style="border: none; box-shadow: none;">
+        <tbody>
+            <?php foreach ($rows as $label => $value) :
+                if ($value === '') {
+                    continue;
+                }
+                ?>
+                <tr>
+                    <th style="width: 180px; text-align: left; padding: 8px 12px 8px 0;"><?php echo esc_html($label); ?></th>
+                    <td style="padding: 8px 0;">
+                        <?php if ($label === 'Email') : ?>
+                            <a href="mailto:<?php echo esc_attr($value); ?>"><?php echo esc_html($value); ?></a>
+                        <?php elseif ($label === 'Phone') : ?>
+                            <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', $value)); ?>"><?php echo esc_html($value); ?></a>
+                        <?php else : ?>
+                            <?php echo esc_html($value); ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <h4 style="margin-bottom: 6px;">Message</h4>
+    <p style="white-space: pre-wrap; max-width: 640px;"><?php echo esc_html($post->post_content); ?></p>
+    <?php
+}
+
+/**
+ * Surface the key fields as list-table columns so submissions can be
+ * triaged at a glance without opening each one.
+ */
+add_filter('manage_form_submission_posts_columns', function (array $columns): array {
+    $new = [];
+    foreach ($columns as $key => $label) {
+        $new[$key] = $label;
+        if ($key === 'title') {
+            $new['ndses_email'] = 'Email';
+            $new['ndses_phone'] = 'Phone';
+            $new['ndses_service_type'] = 'Service Type';
+        }
+    }
+
+    return $new;
+});
+
+add_action('manage_form_submission_posts_custom_column', function (string $column, int $post_id) {
+    switch ($column) {
+        case 'ndses_email':
+            echo esc_html((string) get_post_meta($post_id, 'email', true));
+            break;
+        case 'ndses_phone':
+            echo esc_html((string) get_post_meta($post_id, 'Phone', true));
+            break;
+        case 'ndses_service_type':
+            echo esc_html((string) get_post_meta($post_id, 'Service type', true));
+            break;
+    }
+}, 10, 2);
+
+/**
  * Site settings admin screens.
  *
  * `acf_add_options_page()` -- the usual way to give a set of ACF fields a
