@@ -8,6 +8,7 @@ If a question isn't answered here, see [Who to Contact](#who-to-contact) at the 
 
 - [Logging In](#logging-in)
 - [How Editing Works](#how-editing-works)
+- [Self-Check Checklist](#self-check-checklist)
 - [Site Settings — Your Company Info](#site-settings--your-company-info)
 - [Editing Page Content](#editing-page-content)
 - [Managing Services](#managing-services)
@@ -39,6 +40,51 @@ A few things that are true everywhere:
 - **Nothing goes live until you click Publish/Update.** You can leave a page half-edited and come back later — WordPress keeps it as a draft.
 - **Changes appear on the live site within a few minutes**, not instantly. If you don't see your change right away, wait 5 minutes and refresh. (See [Common Questions](#common-questions) if it still hasn't shown up.)
 - **Required fields are marked** and the Publish button will tell you if something's missing.
+
+## Self-Check Checklist
+
+Use this to confirm the site is set up correctly and everything is working, without needing to ask your developer. It's organized to match the sections below — if a step doesn't make sense, click through to that section for details. Nothing here requires technical knowledge; it's all things you can see and click yourself.
+
+**Access**
+- [ ] I can log in at `https://ndses.flywheelsites.com/wp-admin`
+- [ ] I can see the full black admin menu on the left (Pages, Services, Communities, Dumpster Sizes, FAQs, Documents, Service Notices, Service Areas, Schedule Items, Form Submissions, Site Settings)
+
+**Company info** — [Site Settings](#site-settings--your-company-info)
+- [ ] Phone number is correct
+- [ ] Email address is correct (this is also where form submissions get emailed — see below)
+- [ ] Facility address and mailing address are both correct
+- [ ] Office hours are accurate
+- [ ] Facebook URL and Instagram URL point to your real pages (not left blank or placeholder)
+- [ ] Header logo and footer logo both look right
+- [ ] Footer description and copyright text read correctly
+
+**Page content** — [Editing Page Content](#editing-page-content)
+- [ ] Home, About, Contact, Commercial, and Dumpster Rentals pages all have a heading, description, and image in their Hero
+- [ ] I opened Page Sections on at least one page and understand how to add/reorder a section
+
+**Services, communities, sizes, FAQs**
+- [ ] All three [Services](#managing-services) (Residential, Commercial, Dumpster Rentals) have a summary and image
+- [ ] Every [Community](#managing-communities-residential-service-areas) you serve has the correct service day, trash schedule, and recycling schedule
+- [ ] Every [Dumpster Size](#managing-dumpster-sizes) you offer is listed with correct capacity, dimensions, and rental period
+- [ ] [FAQs](#managing-faqs) cover the real questions customers ask, sorted into the right category (Dumpster, Residential, Commercial)
+
+**Coverage map & schedule** — [Service Areas & Schedules](#managing-service-areas--schedules-the-coverage-map)
+- [ ] Every town/county you service has a Service Area entry with the right Service Types checked
+- [ ] The map on the Home/About/Commercial pages shows a dot in roughly the right place for each area
+
+**Payments** — [Accepting Payments](#accepting-payments-payengine)
+- [ ] I know where the Make a Payment page is, and I have NOT touched the PayEngine Secret Key field
+- [ ] I've asked my developer to confirm whether the payment page is in test mode or live mode before real customers use it
+
+**Contact form** — [Viewing Contact Form Submissions](#viewing-contact-form-submissions)
+- [ ] I submitted a test entry through the Contact page myself
+- [ ] I received the notification email for it
+- [ ] I can see it listed under Form Submissions, and clicking it shows the full message
+
+**Alerts** — [Posting Alerts & Notices](#posting-alerts--notices)
+- [ ] I created one test Service Notice, saw it appear on the site, then set it to Resolved (or deleted it) to confirm I know the full cycle
+
+Once every box is checked, the content side of the site is in your hands — you shouldn't need a developer for day-to-day updates.
 
 ## Site Settings — Your Company Info
 
