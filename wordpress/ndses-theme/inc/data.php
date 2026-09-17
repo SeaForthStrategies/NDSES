@@ -46,6 +46,7 @@ function ndses_data(): array
             ['label' => 'Commercial', 'url' => '/commercial'],
             ['label' => 'Dumpster Rentals', 'url' => '/dumpster-rentals'],
             ['label' => 'Calculator', 'url' => '/dumpster-calculator'],
+            ['label' => 'Special Events', 'url' => '/special-events'],
             ['label' => 'FAQs', 'url' => '/faqs'],
             ['label' => 'What\'s New', 'url' => '/whats-new'],
             ['label' => 'Contact', 'url' => '/contact'],
@@ -94,13 +95,28 @@ function ndses_data(): array
             ],
             'make-a-payment' => [
                 'eyebrow' => 'Make a Payment',
-                'heading' => 'Payment and ACH forms prepared for PayEngine',
-                'description' => 'This page is ready for the PayEngine integration. Do not enter real card or bank details until live processing is connected.',
+                'heading' => 'Pay your NDS account online',
+                'description' => 'Pay by card or bank transfer using our secure PayEngine payment form.',
             ],
             'whats-new' => [
                 'eyebrow' => 'What\'s New',
                 'heading' => 'Service alerts, updates, and local notices',
                 'description' => 'Weather delays, holiday updates, route notices, and announcements will appear here.',
+            ],
+            'special-events' => [
+                'eyebrow' => 'Special Events',
+                'heading' => 'Temporary waste service for events and gatherings',
+                'description' => 'Plan containers, collection support, setup timing, and cleanup needs for community events, corporate events, weddings, and temporary service needs.',
+            ],
+            'privacy-policy' => [
+                'eyebrow' => 'Legal',
+                'heading' => 'Privacy Policy',
+                'description' => 'How NDS Environmental Solutions handles information submitted through this website.',
+            ],
+            'terms' => [
+                'eyebrow' => 'Legal',
+                'heading' => 'Terms and content sources',
+                'description' => 'Terms of use for this website, and attribution for its content and images.',
             ],
         ],
         'services' => [

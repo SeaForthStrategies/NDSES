@@ -147,9 +147,10 @@ function ndses_render_faqs(?string $category = null): void
 }
 
 /**
- * Inquiry form shared by Contact, Commercial, and Dumpster Rentals. Submits
- * (via the data-inquiry-form handler in theme.js) to the ndses/v1/forms REST
- * route, which stores the submission and emails the office.
+ * Inquiry form shared by Contact, Commercial, Dumpster Rentals, and Special
+ * Events. Submits (via the data-inquiry-form handler in theme.js) to the
+ * ndses/v1/forms REST route, which stores the submission and emails the
+ * office.
  *
  * $form_type is carried as a hidden field so submissions from each page are
  * distinguishable in the notification email and the Form Submissions list —
@@ -163,11 +164,13 @@ function ndses_render_inquiry_form(string $form_type): void
         'Residential Trash & Recycling' => 'Residential Trash & Recycling',
         'Commercial Trash & Recycling' => 'Commercial Trash & Recycling',
         'Dumpster Rental' => 'Dumpster Rental',
+        'Special Event Service' => 'Special Event Service',
         'General Question' => 'General Question',
     ];
     $default_service = [
         'commercial' => 'Commercial Trash & Recycling',
         'dumpster' => 'Dumpster Rental',
+        'event' => 'Special Event Service',
     ][$form_type] ?? '';
     ?>
     <form class="site-form" id="<?php echo esc_attr($form_type); ?>-inquiry-form" data-inquiry-form novalidate>
@@ -189,6 +192,9 @@ function ndses_render_inquiry_form(string $form_type): void
         </label>
         <?php if ($form_type === 'dumpster') : ?>
             <label>Selected dumpster size <input type="text" name="selectedDumpsterSize" data-dumpster-size-field></label>
+        <?php endif; ?>
+        <?php if ($form_type === 'event') : ?>
+            <label>Event date <input type="date" name="eventDate"></label>
         <?php endif; ?>
         <label>Message <textarea required minlength="10" name="message" rows="5"></textarea></label>
         <p class="form-status" role="status"></p>

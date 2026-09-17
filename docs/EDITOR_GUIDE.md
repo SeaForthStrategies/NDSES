@@ -124,6 +124,8 @@ Each page has two things you can edit:
 
 There's also an **SEO Title** and **SEO Description** field near the bottom of each page — this is what shows up in Google search results, separate from the page's visible heading.
 
+**Special Events, Privacy Policy, and Terms** are ordinary pages edited the same way as any other page listed above — Special Events also has its own inquiry form (formType "event") like Commercial and Dumpster Rentals do. Privacy Policy and Terms currently hold placeholder legal text pending formal review — replace it with NDSES's actual reviewed policy before relying on it.
+
 ## Managing Services
 
 **Menu: Services**

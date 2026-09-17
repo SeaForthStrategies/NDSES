@@ -6,7 +6,7 @@ $slug = ndses_current_slug();
 
 if ($community_slug) {
     get_template_part('template-parts/page', 'community', ['community_slug' => $community_slug]);
-} elseif (in_array($slug, ['residential', 'commercial', 'dumpster-rentals', 'dumpster-calculator', 'faqs', 'about', 'contact', 'make-a-payment', 'whats-new'], true)) {
+} elseif (in_array($slug, ['residential', 'commercial', 'dumpster-rentals', 'dumpster-calculator', 'faqs', 'about', 'contact', 'make-a-payment', 'whats-new', 'special-events'], true)) {
     get_template_part('template-parts/page', $slug);
 } elseif ($slug === 'photo-credits') {
     ?>

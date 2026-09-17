@@ -32,7 +32,13 @@
     </div>
     <div class="container footer-bottom">
         <p><?php echo esc_html(ndses_setting('copyright_text', 'Copyright ' . date('Y') . ' NDS Environmental Solutions, LLC. All rights reserved.')); ?></p>
-        <p>Client-supplied images are used as NDSES project assets. Some service photos are licensed stock &mdash; <a href="<?php echo esc_url(home_url('/photo-credits')); ?>">photo credits</a>. Third-party integrations remain placeholders until configured.</p>
+        <p>
+            <a href="<?php echo esc_url(home_url('/privacy-policy')); ?>">Privacy Policy</a>
+            &middot;
+            <a href="<?php echo esc_url(home_url('/terms')); ?>">Terms &amp; Content Sources</a>
+            &middot;
+            <a href="<?php echo esc_url(home_url('/photo-credits')); ?>">Photo Credits</a>
+        </p>
     </div>
 </footer>
 <?php wp_footer(); ?>
