@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NDSES_THEME_VERSION', '2.0.5');
+define('NDSES_THEME_VERSION', '2.0.6');
 define('NDSES_THEME_DIR', get_template_directory());
 
 require_once NDSES_THEME_DIR . '/inc/data.php';
@@ -41,12 +41,19 @@ add_action('wp_enqueue_scripts', function () {
         }
     }
 
+    $recaptcha_site_key = function_exists('get_field') ? get_field('recaptcha_site_key', 'ndses-site-settings') : '';
+    if ($recaptcha_site_key) {
+        wp_enqueue_script('recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . urlencode((string) $recaptcha_site_key), [], null, true);
+        $theme_deps[] = 'recaptcha-v3';
+    }
+
     wp_enqueue_script('ndses-theme', get_theme_file_uri('/assets/js/theme.js'), $theme_deps, NDSES_THEME_VERSION, true);
     wp_localize_script('ndses-theme', 'ndsesData', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'restUrl' => esc_url_raw(rest_url('ndses/v1/')),
         'serviceCounties' => NDSES_SERVICE_COUNTIES,
         'phone' => ndses_setting('phone'),
+        'recaptchaSiteKey' => $recaptcha_site_key ?: '',
     ]);
 });
 

@@ -170,7 +170,7 @@ function ndses_settings_pages(): array
         'ndses-site-settings' => [
             'page_title' => 'NDSES Site Settings',
             'menu_title' => 'Site Settings',
-            'field_groups' => ['group_ndses_site_settings', 'group_ndses_integration_placeholders'],
+            'field_groups' => ['group_ndses_site_settings', 'group_ndses_recaptcha', 'group_ndses_integration_placeholders'],
         ],
         'ndses-site-settings-integrations' => [
             'page_title' => 'Integration Settings',
@@ -191,7 +191,17 @@ add_action('admin_menu', function () {
             echo '<div class="wrap"><h1>' . esc_html($page['page_title']) . '</h1>';
             acf_form([
                 'id' => 'ndses-settings-form',
-                'post_id' => 'option',
+                // Every field group here has a location rule of
+                // options_page == 'ndses-site-settings', and ACF namespaces
+                // options-page storage by that slug rather than the generic
+                // 'option' post_id -- confirmed empirically via wp_options
+                // rows like ndses-site-settings_phone. Passing 'option'
+                // here made this form silently load every field empty
+                // (while the live site read the real data fine via
+                // get_field($key, 'ndses-site-settings') elsewhere) --
+                // saving it as shown would have overwritten every real
+                // value with blanks.
+                'post_id' => 'ndses-site-settings',
                 'field_groups' => $page['field_groups'],
                 'submit_value' => 'Save Settings',
                 'updated_message' => 'Settings saved.',
@@ -282,6 +292,39 @@ function ndses_get_client_ip(): string
     return '0.0.0.0';
 }
 
+/**
+ * Verifies a reCAPTCHA v3 token with Google. Returns true when reCAPTCHA
+ * isn't configured yet (Site Settings > reCAPTCHA Secret Key empty) so
+ * forms keep working exactly as before until a real key is added -- this
+ * is a defense-in-depth layer on top of the honeypot, not a replacement.
+ */
+function ndses_verify_recaptcha(string $token): bool
+{
+    $secret = get_field('recaptcha_secret_key', 'ndses-site-settings');
+    if (!$secret) {
+        return true;
+    }
+
+    if ($token === '') {
+        return false;
+    }
+
+    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+        'timeout' => 10,
+        'body' => ['secret' => $secret, 'response' => $token],
+    ]);
+
+    if (is_wp_error($response)) {
+        error_log('reCAPTCHA verification request failed: ' . $response->get_error_message());
+
+        return false;
+    }
+
+    $result = json_decode(wp_remote_retrieve_body($response), true);
+
+    return !empty($result['success']) && ($result['score'] ?? 0) >= 0.5;
+}
+
 function ndses_handle_form_submission(WP_REST_Request $request)
 {
     $body = $request->get_json_params();
@@ -294,6 +337,10 @@ function ndses_handle_form_submission(WP_REST_Request $request)
     // don't learn the field is being checked.
     if (!empty($body['website'])) {
         return rest_ensure_response(['ok' => true]);
+    }
+
+    if (!ndses_verify_recaptcha(sanitize_text_field($body['captchaToken'] ?? ''))) {
+        return new WP_Error('captcha_failed', 'We could not verify this submission. Please try again.', ['status' => 400]);
     }
 
     $rate_key = 'ndses_form_rl_' . md5(ndses_get_client_ip());

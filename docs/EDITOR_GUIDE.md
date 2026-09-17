@@ -233,4 +233,4 @@ No — those are informational notes for developers, not real switches.
 
 ## Who to Contact
 
-For anything beyond day-to-day content edits — new page types, design changes, payment/PayEngine configuration, technical errors, or account access — contact your developer.
+For anything beyond day-to-day content edits — new page types, design changes, payment/PayEngine configuration, technical errors, or account access — contact Abby Lehr at **abby.lehr@radicalsurfaces.com**.

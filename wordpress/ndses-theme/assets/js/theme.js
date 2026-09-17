@@ -325,11 +325,26 @@
         status.className = 'form-status';
       }
 
-      fetch(ndsesData.restUrl + 'forms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
+      // reCAPTCHA v3 runs invisibly -- no checkbox, no challenge. Resolves
+      // to an empty token if it isn't configured yet, which the server
+      // treats as "spam protection not enabled" rather than a failure.
+      const getToken = ndsesData.recaptchaSiteKey && window.grecaptcha
+        ? new Promise(function (resolve) {
+            grecaptcha.ready(function () {
+              grecaptcha.execute(ndsesData.recaptchaSiteKey, { action: 'submit' }).then(resolve);
+            });
+          })
+        : Promise.resolve('');
+
+      getToken
+        .then(function (token) {
+          data.captchaToken = token;
+          return fetch(ndsesData.restUrl + 'forms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        })
         .then(function (response) {
           return response.json().then(function (body) { return { ok: response.ok, body: body }; });
         })

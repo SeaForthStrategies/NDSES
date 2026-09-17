@@ -1,12 +1,26 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Script from "next/script";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm, type UseFormSetValue } from "react-hook-form";
 import { inquirySchema, type InquiryInput } from "@/lib/validation/forms";
 import { trackEvent } from "@/lib/analytics";
 import { DUMPSTER_SIZE_SELECTED_EVENT } from "@/lib/dumpster-events";
+
+// reCAPTCHA v3 runs invisibly (no checkbox, no challenge) and is verified
+// server-side by the WordPress endpoint every form proxies to. Not
+// configured yet? The site key is empty, the script never loads, and the
+// form submits with an empty token -- WordPress treats that as "spam
+// protection not enabled" rather than a failure.
+declare global {
+  interface Window {
+    grecaptcha?: { ready: (cb: () => void) => void; execute: (siteKey: string, opts: { action: string }) => Promise<string> };
+  }
+}
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY;
 
 const SERVICE_TYPE_VALUES: InquiryInput["serviceType"][] = ["residential", "commercial", "dumpster", "event"];
 
@@ -52,8 +66,18 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  async function getCaptchaToken(): Promise<string> {
+    if (!RECAPTCHA_SITE_KEY || !window.grecaptcha) return "";
+    return new Promise((resolve) => {
+      window.grecaptcha!.ready(() => {
+        window.grecaptcha!.execute(RECAPTCHA_SITE_KEY!, { action: "submit" }).then(resolve).catch(() => resolve(""));
+      });
+    });
+  }
+
   async function onSubmit(data: InquiryInput) {
     setStatus("loading");
+    data.captchaToken = await getCaptchaToken();
     const response = await fetch("/api/forms", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
     if (response.ok) {
       trackEvent("form_submission", { formType });
@@ -67,6 +91,7 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
 
   return (
     <form className="card form" id={`${formType}-inquiry-form`} onSubmit={handleSubmit(onSubmit)} noValidate>
+      {RECAPTCHA_SITE_KEY ? <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" /> : null}
       <Suspense fallback={null}>
         <SearchParamsPrefill setValue={setValue} />
       </Suspense>

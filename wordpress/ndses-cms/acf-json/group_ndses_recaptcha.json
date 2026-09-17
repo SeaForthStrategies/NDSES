@@ -1,0 +1,31 @@
+{
+  "key": "group_ndses_recaptcha",
+  "title": "Spam Protection (reCAPTCHA)",
+  "fields": [
+    {
+      "key": "field_ndses_recaptcha_site_key",
+      "label": "reCAPTCHA Site Key",
+      "name": "recaptcha_site_key",
+      "type": "text",
+      "instructions": "From the Google reCAPTCHA admin console (google.com/recaptcha/admin) -- register a reCAPTCHA v3 site covering this site's domains. This key is public and safe to expose in the page source."
+    },
+    {
+      "key": "field_ndses_recaptcha_secret_key",
+      "label": "reCAPTCHA Secret Key",
+      "name": "recaptcha_secret_key",
+      "type": "password",
+      "instructions": "From the same reCAPTCHA registration. Never exposed via REST -- read server-side only, used to verify submitted tokens with Google before a form is accepted."
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "ndses-site-settings"
+      }
+    ]
+  ],
+  "show_in_rest": 0,
+  "active": true
+}
