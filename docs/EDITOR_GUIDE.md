@@ -148,6 +148,8 @@ One entry per town/city you service (e.g. Town of Walworth, City of Delavan). Ea
 
 One entry per roll-off size you offer (10/12 Yard, 15 Yard, 20 Yard, 30 Yard, etc.): capacity, dimensions, rental period, an image, and a credit-card-fee note if applicable.
 
+**Note on the Dumpster Calculator tool** (the "recommend a size" quiz on the Dumpster Calculator page): its sizing logic is fixed in the site's code, not editable here in wp-admin. By design, checking **Other Heavy Materials** always caps the recommendation at 10/12 Yard regardless of project type — heavy materials (concrete, dirt, roofing tear-off) hit a dumpster's weight limit long before it's visually full, so a bigger box wouldn't help. The tool shows an explanatory note whenever that happens. If you ever want the underlying project-type-to-size mapping changed, that's a developer change, not a content edit.
+
 ## Managing FAQs
 
 **Menu: FAQs**

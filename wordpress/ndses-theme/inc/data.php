@@ -119,10 +119,15 @@ function ndses_data(): array
                 'description' => 'Terms of use for this website, and attribution for its content and images.',
             ],
         ],
+        // These previously pointed at stock photos -- a rusty unbranded
+        // dumpster, and (worse) a competitor's roll-off container with
+        // their own logo and phone number clearly visible. Replaced with
+        // brand-styled icon cards (see ndses_render_service_cards()) so
+        // the homepage doesn't advertise another waste company.
         'services' => [
-            ['title' => 'Residential Trash & Recycling', 'body' => 'Curbside and drive-up garbage and recycling services depending on your community.', 'url' => '/residential', 'image' => 'residential-bins-curbside.jpg'],
-            ['title' => 'Commercial Trash & Recycling', 'body' => 'Permanent trash and recycling dumpsters with collection schedules matched to your business.', 'url' => '/commercial', 'image' => 'commercial-cardboard-dumpster.jpg'],
-            ['title' => 'Dumpster Rentals', 'body' => 'Temporary roll-off dumpsters for renovations, construction debris, cleanouts, and events.', 'url' => '/dumpster-rentals', 'image' => 'dumpster-rental-rolloff.jpg'],
+            ['title' => 'Residential Trash & Recycling', 'body' => 'Curbside and drive-up garbage and recycling services depending on your community.', 'url' => '/residential', 'icon' => 'residential'],
+            ['title' => 'Commercial Trash & Recycling', 'body' => 'Permanent trash and recycling dumpsters with collection schedules matched to your business.', 'url' => '/commercial', 'icon' => 'commercial'],
+            ['title' => 'Dumpster Rentals', 'body' => 'Temporary roll-off dumpsters for renovations, construction debris, cleanouts, and events.', 'url' => '/dumpster-rentals', 'icon' => 'rolloff'],
         ],
         'communities' => [
             'town-of-walworth' => ndses_community_seed('Town of Walworth', 'Town', 'Thursday', 'Weekly', 'Every Other Week (see service calendar and map below)', 'We will collect up to the equivalent of four 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not),

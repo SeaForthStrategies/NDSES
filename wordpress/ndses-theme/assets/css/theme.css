@@ -414,24 +414,54 @@ img {
   color: var(--nds-muted);
 }
 
-.media-card {
-  overflow: hidden;
-  padding: 0;
-}
-
-.media-card img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: contain;
-  background: #eef3eb;
-}
-
 .dumpster-card img {
   width: 100%;
   height: auto;
 }
 
-.media-card div {
+.icon-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.icon-card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--nds-green) 0%, var(--nds-forest) 100%);
+}
+
+.icon-card-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.icon-card-media::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(215, 165, 31, 0.4), transparent 70%);
+}
+
+.icon-card-media svg {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  color: var(--nds-gold);
+  filter: drop-shadow(0 8px 16px rgba(5, 25, 14, 0.45));
+}
+
+.icon-card div {
   padding: 22px;
 }
 
@@ -787,6 +817,7 @@ textarea:focus {
 }
 
 .secure-field {
+  height: 46px;
   border: 1px solid var(--nds-line);
   border-radius: 6px;
   overflow: hidden;
@@ -797,10 +828,14 @@ textarea:focus {
   width: 100%;
   /* PayEngine's SecureFields (VGS Collect) iframes always render at a
      fixed internal height regardless of the css.height passed at
-     field-creation time. The actual input row sits at the very top of
-     that space, so cropping the iframe itself to a normal input height
-     keeps the field usable without the tall dead space below it. */
-  height: 46px;
+     field-creation time. The input row sits near the top of that space
+     with a few extra pixels of padding above it before the text/caret
+     line, which left the placeholder text looking low/off-center inside
+     our cropped 46px window. Rendering the iframe a bit taller and
+     shifting it up by that same amount keeps the visible window at 46px
+     but re-centers which slice of the iframe's content lands inside it. */
+  height: 52px;
+  margin-top: -6px;
   border: 0;
 }
 
@@ -924,6 +959,14 @@ fieldset {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+}
+
+/* The card/ACH field groups on the payment form are each a single
+   `.site-form` grid item wrapping several labels, so `.site-form`'s own
+   `gap` never reaches the labels nested inside -- they need their own. */
+[data-payment-fields]:not([hidden]) {
+  display: grid;
+  gap: 16px;
 }
 
 .content-body {
@@ -1128,13 +1171,17 @@ fieldset {
     box-shadow: 0 22px 44px rgba(13, 79, 43, 0.16);
   }
 
-  .media-card img,
-  .dumpster-card img {
+  .dumpster-card img,
+  .icon-card-media svg {
     transition: transform 320ms ease;
   }
 
   .feature-card:hover img {
     transform: scale(1.035);
+  }
+
+  .icon-card:hover .icon-card-media svg {
+    transform: scale(1.08);
   }
 
   .hero-copy > * {
@@ -1169,14 +1216,15 @@ fieldset {
   }
 
   [data-reveal] {
+    /* Opacity-only: an earlier version also translated 22px on entry, which
+     * left interactive elements (e.g. calculator checkboxes) visibly moving
+     * for ~600ms after becoming visible, causing real mis-clicks. */
     opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 620ms ease, transform 620ms ease;
+    transition: opacity 420ms ease;
   }
 
   [data-reveal].is-visible {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

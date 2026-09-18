@@ -5,7 +5,7 @@
             <?php if (has_custom_logo()) : ?>
                 <div class="brand footer-brand"><?php the_custom_logo(); ?></div>
             <?php else : ?>
-                <img class="footer-logo" src="<?php echo ndses_asset('nds-logo-primary.png'); ?>" alt="NDS Environmental Solutions">
+                <img class="footer-logo" src="<?php echo ndses_asset('nds-logo-primary.png'); ?>" alt="NDS Environmental Solutions" loading="lazy" decoding="async">
             <?php endif; ?>
             <p><?php echo esc_html(ndses_setting('footer_description', 'Local waste management for homes, businesses, communities, projects, and events in Southern Wisconsin.')); ?></p>
         </div>

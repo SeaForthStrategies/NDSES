@@ -20,6 +20,17 @@ function ndses_handle_geocode_request(): void
         wp_send_json(['results' => []]);
     }
 
+    // Nominatim's usage policy requires caching identical requests rather
+    // than re-querying on every keystroke -- addresses don't change, and
+    // this also means repeat/common searches (same street, same town)
+    // across different visitors are served instantly from cache instead
+    // of hitting the external API at all.
+    $cache_key = 'ndses_geocode_' . md5(mb_strtolower($query));
+    $cached = get_transient($cache_key);
+    if ($cached !== false) {
+        wp_send_json(['results' => $cached]);
+    }
+
     $params = [
         'format' => 'jsonv2',
         'q' => $query,
@@ -55,6 +66,8 @@ function ndses_handle_geocode_request(): void
             ];
         }
     }
+
+    set_transient($cache_key, $results, DAY_IN_SECONDS);
 
     wp_send_json(['results' => $results]);
 }

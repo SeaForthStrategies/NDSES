@@ -12,6 +12,13 @@ function ndses_render_hero(?string $slug = null): void
     $hero = ndses_page_hero($slug);
     $image = $hero['image'] ?? '';
     $image_url = is_array($image) && isset($image['url']) ? $image['url'] : ($image ? ndses_asset((string) $image) : '');
+    // Width/height (available whenever the image comes from an ACF image
+    // field with return_format=array) reserve the image's box before it
+    // loads, avoiding layout shift -- this is the largest image on the
+    // page and almost always the Largest Contentful Paint element, so it
+    // loads eagerly with high priority rather than lazily.
+    $width = is_array($image) ? ($image['width'] ?? null) : null;
+    $height = is_array($image) ? ($image['height'] ?? null) : null;
     ?>
     <section class="hero-section">
         <div class="container hero-grid<?php echo $image_url ? '' : ' hero-grid--no-media'; ?>">
@@ -29,12 +36,29 @@ function ndses_render_hero(?string $slug = null): void
             </div>
             <?php if ($image_url) : ?>
             <div class="hero-media">
-                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(($hero['heading'] ?? 'NDS Environmental Solutions') . ' visual'); ?>">
+                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(($hero['heading'] ?? 'NDS Environmental Solutions') . ' visual'); ?>" <?php echo $width ? 'width="' . esc_attr((string) $width) . '"' : ''; ?> <?php echo $height ? 'height="' . esc_attr((string) $height) . '"' : ''; ?> fetchpriority="high" decoding="async">
             </div>
             <?php endif; ?>
         </div>
     </section>
     <?php
+}
+
+/**
+ * Hand-drawn line icons for the service cards -- avoids relying on stock
+ * photography (see the note on ndses_data()['services']). Simple 2px
+ * stroke style, deliberately restrained so it reads as clean/premium
+ * rather than decorative.
+ */
+function ndses_service_icon(string $name): string
+{
+    $icons = [
+        'residential' => '<path d="M8 28 L32 10 L56 28"/><path d="M14 24 V54 H50 V24"/><path d="M26 54 V38 H38 V54"/>',
+        'commercial' => '<rect x="10" y="14" width="26" height="42" rx="1"/><rect x="38" y="24" width="16" height="32" rx="1"/><path d="M17 22h4M27 22h4M17 30h4M27 30h4M17 38h4M27 38h4M17 46h4M27 46h4M44 32h4M44 40h4M44 48h4"/>',
+        'rolloff' => '<path d="M9 22 H55 L48 47 H16 Z"/><path d="M9 22 L4 15 M55 22 L60 15"/><circle cx="20" cy="52" r="4"/><circle cx="44" cy="52" r="4"/>',
+    ];
+
+    return $icons[$name] ?? '';
 }
 
 function ndses_render_service_cards(): void
@@ -48,8 +72,10 @@ function ndses_render_service_cards(): void
             </div>
             <div class="card-grid three">
                 <?php foreach (ndses_data()['services'] as $service) : ?>
-                    <article class="feature-card media-card">
-                        <img src="<?php echo ndses_asset($service['image']); ?>" alt="<?php echo esc_attr($service['title']); ?>">
+                    <article class="feature-card icon-card">
+                        <div class="icon-card-media" aria-hidden="true">
+                            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><?php echo ndses_service_icon($service['icon']); ?></svg>
+                        </div>
                         <div>
                             <h3><?php echo esc_html($service['title']); ?></h3>
                             <p><?php echo esc_html($service['body']); ?></p>
@@ -77,7 +103,7 @@ function ndses_material_list_items(array $material_lists, string $heading): arra
 function ndses_render_dumpster_cards(): void
 {
     $posts = function_exists('get_field')
-        ? get_posts(['post_type' => 'dumpster_size', 'numberposts' => -1, 'orderby' => 'menu_order title', 'order' => 'ASC'])
+        ? get_posts(['post_type' => 'dumpster_size', 'numberposts' => -1, 'orderby' => 'menu_order title', 'order' => 'ASC', 'no_found_rows' => true])
         : [];
 
     if (empty($posts)) {
@@ -85,7 +111,7 @@ function ndses_render_dumpster_cards(): void
         <div class="card-grid four">
             <?php foreach (ndses_data()['dumpsters'] as $dumpster) : ?>
                 <article class="feature-card dumpster-card">
-                    <img src="<?php echo ndses_asset($dumpster['image']); ?>" alt="<?php echo esc_attr($dumpster['name']); ?>">
+                    <img src="<?php echo ndses_asset($dumpster['image']); ?>" alt="<?php echo esc_attr($dumpster['name']); ?>" loading="lazy" decoding="async">
                     <p class="kicker"><?php echo esc_html($dumpster['capacity']); ?></p>
                     <h3><?php echo esc_html($dumpster['name']); ?></h3>
                     <?php ndses_list($dumpster['uses'], 'compact-list'); ?>
@@ -110,7 +136,7 @@ function ndses_render_dumpster_cards(): void
             $image_url = is_array($image) && !empty($image['url']) ? $image['url'] : '';
             ?>
             <article class="feature-card dumpster-card">
-                <?php if ($image_url) : ?><img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title($dumpster_post)); ?>"><?php endif; ?>
+                <?php if ($image_url) : ?><img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title($dumpster_post)); ?>" loading="lazy" decoding="async"><?php endif; ?>
                 <?php if ($capacity) : ?><p class="kicker"><?php echo esc_html($capacity); ?></p><?php endif; ?>
                 <h3><?php echo esc_html(get_the_title($dumpster_post)); ?></h3>
                 <?php if ($uses) : ?><?php ndses_list($uses, 'compact-list'); ?><?php endif; ?>

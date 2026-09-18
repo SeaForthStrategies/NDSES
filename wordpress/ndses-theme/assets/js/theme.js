@@ -51,14 +51,20 @@
       const project = data.get('project') || 'Home Remodel';
       const materials = data.getAll('materials');
       let recommendation = rules[project] || '15 Yard Dumpster';
+      let materialsNote = '';
 
+      // Heavy materials (concrete, dirt, roofing tear-off, etc.) hit a
+      // dumpster's weight limit long before it's visually full, so the
+      // safe size is capped regardless of project type. The note always
+      // shows when this box is checked -- even for a project that already
+      // maps to 10/12 Yard -- so the result doesn't silently match the
+      // untouched default and read as the tool ignoring the selection.
       if (materials.includes('Other Heavy Materials')) {
         recommendation = '10/12 Yard Dumpster';
-      } else if (project === 'Roofing/Siding Teardown') {
-        recommendation = '20 Yard Dumpster';
+        materialsNote = ' Heavy materials (concrete, dirt, roofing tear-off, etc.) hit a dumpster’s weight limit well before it fills up, so we cap the recommended size for heavy loads regardless of project type.';
       }
 
-      result.innerHTML = '<p class="eyebrow">Recommendation</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project. NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p><p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dimensions may vary slightly, but capacity remains the same.</p><a class="button button-primary" href="' + window.location.origin + '/contact?service=dumpster">Request Quote</a>';
+      result.innerHTML = '<p class="eyebrow">Recommendation</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p><p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dimensions may vary slightly, but capacity remains the same.</p><a class="button button-primary" href="' + window.location.origin + '/contact?service=dumpster">Request Quote</a>';
     });
 
     ndsesInitAddressLookup(form.querySelector('input[name="address"]'));
