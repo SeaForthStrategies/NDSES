@@ -30,7 +30,25 @@ if (!$community) {
 <?php if ($slug === 'town-of-walworth') : ?>
 <section class="section">
     <div class="container">
-        <img class="zone-map-image" src="<?php echo esc_url(get_theme_file_uri('/assets/images/walworth-recycling-zone-map.png')); ?>" alt="Town of Walworth recycling service map showing North and South collection zones" width="482" height="512" loading="lazy">
+        <img class="zone-map-image" src="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-zone-map.jpg" alt="Town of Walworth recycling service map showing North and South collection zones" width="1100" height="870" loading="lazy">
+    </div>
+</section>
+<?php endif; ?>
+<?php if (!empty($community['documents'])) : ?>
+<section class="section soft-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Downloads</p>
+            <h2>Printable schedules & guides</h2>
+        </div>
+        <div class="card-grid three">
+            <?php foreach ($community['documents'] as $document) : ?>
+                <article class="feature-card">
+                    <h3><?php echo esc_html($document['title']); ?></h3>
+                    <a class="text-link" href="<?php echo esc_url($document['url']); ?>" download>Download</a>
+                </article>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>
 <?php endif; ?>

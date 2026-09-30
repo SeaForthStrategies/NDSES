@@ -66,7 +66,7 @@ function ndses_data(): array
             'commercial' => [
                 'eyebrow' => 'Commercial Waste Management',
                 'heading' => 'Commercial waste and recycling tailored to your business',
-                'description' => 'Permanent trash and recycling dumpsters with flexible collection schedules for businesses in Walworth County and select nearby areas.',
+                'description' => "At NDS Environmental Solutions, we understand the unique demands of businesses, which is why we offer the best commercial waste management solutions tailored to your needs. Our permanent dumpster services are ideal for businesses requiring ongoing waste and recycling solutions. For temporary needs, such as office cleanouts or construction projects, we provide roll-off dumpsters to keep your workspace efficient and organized. From small businesses to large industrial operations, our team delivers timely, cost-effective solutions designed to enhance productivity and reduce environmental impact. Whether you're in Walworth, Rock, Jefferson, Waukesha, or Kenosha County, NDS Environmental Solutions is your partner for professional waste solutions.",
             ],
             'dumpster-rentals' => [
                 'eyebrow' => 'Dumpster Rentals',
@@ -130,11 +130,34 @@ function ndses_data(): array
             ['title' => 'Dumpster Rentals', 'body' => 'Temporary roll-off dumpsters for renovations, construction debris, cleanouts, and events.', 'url' => '/dumpster-rentals', 'icon' => 'rolloff'],
         ],
         'communities' => [
-            'town-of-walworth' => ndses_community_seed('Town of Walworth', 'Town', 'Thursday', 'Weekly', 'Every Other Week (see service calendar and map below)', 'We will collect up to the equivalent of four 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not),
-            'town-of-delavan' => ndses_community_seed('Town of Delavan', 'Town', 'Monday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not),
-            'city-of-delavan' => ndses_community_seed('City of Delavan', 'City', 'Wednesday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not),
-            'town-of-darien' => ndses_community_seed('Town of Darien', 'Town', 'Tuesday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not),
-            'town-of-sharon' => ndses_community_seed('Town of Sharon', 'Town', 'Tuesday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not),
+            'town-of-walworth' => array_merge(ndses_community_seed('Town of Walworth', 'Town', 'Thursday', 'Weekly', 'Every Other Week (see service calendar and map below)', 'We will collect up to the equivalent of four 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
+                'documents' => [
+                    ['title' => '2026 Collection Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-1.webp'],
+                    ['title' => '2026 Service Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-2.webp'],
+                    ['title' => 'Resident Flyer - Welcome & Bulk Item Guidelines', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-3.webp'],
+                    ['title' => 'Trash & Recycling Guide (Guidelines & Service Map)', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-4.webp'],
+                ],
+            ]),
+            'town-of-delavan' => array_merge(ndses_community_seed('Town of Delavan', 'Town', 'Monday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
+                'documents' => [
+                    ['title' => '2026 Service Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/nds-service-schedule-2026.png'],
+                ],
+            ]),
+            'city-of-delavan' => array_merge(ndses_community_seed('City of Delavan', 'City', 'Wednesday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
+                'documents' => [
+                    ['title' => '2026 Service Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/nds-service-schedule-2026.png'],
+                ],
+            ]),
+            'town-of-darien' => array_merge(ndses_community_seed('Town of Darien', 'Town', 'Tuesday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
+                'documents' => [
+                    ['title' => '2026 Service Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/nds-service-schedule-2026.png'],
+                ],
+            ]),
+            'town-of-sharon' => array_merge(ndses_community_seed('Town of Sharon', 'Town', 'Tuesday', 'Weekly, Every Other Week, Monthly', 'Weekly, Every Other Week, Monthly', 'We will collect up to the equivalent of three 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
+                'documents' => [
+                    ['title' => '2026 Service Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/nds-service-schedule-2026.png'],
+                ],
+            ]),
         ],
         'dumpsters' => [
             ['name' => '10/12 Yard Dumpster', 'slug' => '10-12-yard', 'capacity' => '4-5 truck loads', 'uses' => ['Small/medium remodeling projects', 'Home cleanouts', 'Concrete/heavy materials'], 'included' => $included, 'image' => 'dumpster-calculator---com-temp-01-316b2e7632.png'],
@@ -187,6 +210,7 @@ function ndses_community_seed(string $name, string $type, string $day, string $t
         'bulk_accepted' => $bulk_accepted,
         'bulk_not_accepted' => $bulk_not,
         'bulk_policy' => 'This is not an inclusive list. Please contact us to schedule a bulk pickup. Electronics and certain items can be collected by contacting our office; a fee may apply.',
+        'documents' => [],
     ];
 }
 

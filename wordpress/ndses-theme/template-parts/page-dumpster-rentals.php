@@ -9,6 +9,7 @@
             <?php ndses_button('Use Calculator', home_url('/dumpster-calculator'), 'button button-secondary'); ?>
         </div>
         <?php ndses_render_dumpster_cards(); ?>
+        <p class="small-note"><a class="text-link" href="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/dumpster-size-guide.png" download>Download the printable Dumpster Size Guide</a></p>
     </div>
 </section>
 <section class="section soft-section" id="materials">

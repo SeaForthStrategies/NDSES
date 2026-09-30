@@ -429,8 +429,11 @@ add_action('rest_api_init', function () {
 function ndses_payengine_credentials(): ?array
 {
     $secret = get_field('payengine_secret_key', 158);
-    $api_url = get_option('ndses_payengine_api_url');
-    $merchant_id = get_option('ndses_payengine_merchant_id');
+    // Falls back to the wp_option (set once via WP-CLI during initial setup)
+    // if the ACF Site Settings fields are empty, so an existing deploy keeps
+    // working until someone re-enters these through the admin fields.
+    $api_url = get_field('payengine_api_url', 'ndses-site-settings') ?: get_option('ndses_payengine_api_url');
+    $merchant_id = get_field('payengine_merchant_id', 'ndses-site-settings') ?: get_option('ndses_payengine_merchant_id');
 
     if (!$secret || !$api_url || !$merchant_id) {
         return null;

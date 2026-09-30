@@ -6,6 +6,7 @@
             <h2>Commercial service across select Southern Wisconsin counties</h2>
             <?php ndses_list(['Walworth County', 'Rock County', 'Jefferson County', 'Waukesha County', 'Kenosha County']); ?>
             <p class="small-note">We service select areas of each county. Please call <?php echo esc_html(ndses_setting('phone')); ?> to see if we service your area.</p>
+            <img class="zone-map-image" src="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/commercial-county-map.png" alt="Map of Walworth, Rock, Jefferson, Waukesha, and Kenosha counties served by NDS Environmental Solutions" width="1300" height="842" loading="lazy">
         </div>
         <div class="quote-panel">
             <h3>Flexible collection schedules</h3>

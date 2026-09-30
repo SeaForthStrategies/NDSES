@@ -33,6 +33,7 @@
 <section class="section soft-section">
     <div class="container">
         <?php ndses_render_dumpster_cards(); ?>
+        <p class="small-note"><a class="text-link" href="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/dumpster-size-guide.png" download>Download the printable Dumpster Size Guide</a></p>
     </div>
 </section>
 

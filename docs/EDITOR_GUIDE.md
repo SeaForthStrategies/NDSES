@@ -105,7 +105,7 @@ This is the one screen that controls information shown across the *entire* site 
 | Copyright Text | The line at the very bottom of every page |
 | Social Links | A repeatable list of label + URL pairs shown in the footer |
 
-At the bottom of this screen you'll also see a few **Integration Status** fields (PayEngine Status, Form Backend Status, Google Maps Status, Facebook Alert Sync Status, Calendar Integration Status). These are informational notes for your developer, not switches — changing them doesn't turn anything on or off. Leave them alone unless your developer asks you to change one.
+At the bottom of this screen you'll also see a few **Integration Status** fields (PayEngine Status, Form Backend Status, Google Maps Status, Facebook Alert Sync Status, Calendar Integration Status). Most of these are informational notes for your developer, not switches — changing them doesn't turn anything on or off. **PayEngine Status is the exception**: it's a real switch, and it sits next to the actual PayEngine credential fields (Public Key, API Host, Server API URL, Merchant ID) — see [Accepting Payments](#accepting-payments-payengine) before touching any of these.
 
 ## Editing Page Content
 
@@ -205,9 +205,18 @@ Click into any submission to see everything they entered — name, email, phone,
 
 The payment page uses a service called PayEngine to securely process credit card and bank payments — card/account numbers are entered directly into PayEngine's secure fields and never touch this website or its database.
 
-The one thing specific to this page: in the page's right-hand **Settings** panel (not the main content area) there's a **PayEngine Secret Key** field. This is a real credential, not content — treat it like a password. Only your developer should need to touch this, typically once during setup or if the key is ever rotated. Don't share it or paste it anywhere outside this field.
+**Two places hold PayEngine credentials, both treat their values like passwords — don't share or paste them anywhere else:**
 
-For anything about switching between test and live payments, transaction fees, or refunds, talk to your developer or PayEngine support directly — this isn't something to change from the content side.
+1. **Pages → Make a Payment → edit → right-hand Settings panel → PayEngine Secret Key.**
+2. **Site Settings → PayEngine Public Key, PayEngine API Host, PayEngine Server API URL, PayEngine Merchant ID.** (Site Settings also has the **PayEngine Status** dropdown — Test mode / Live.)
+
+**To switch the site from test to real, live payments:**
+1. Log in to your actual PayEngine dashboard (not this site) and find your **live-mode** keys under API Keys — they start with `pk_live_` and `sk_live_`, not `pk_test_`/`sk_test_`.
+2. Paste the live secret key into the Make a Payment page's Secret Key field (above) and Update.
+3. Paste the live public key, API host, server API URL, and merchant ID into the four Site Settings fields above and Update. PayEngine's dashboard will tell you the correct host/API URL for live mode if they differ from sandbox.
+4. Only after both of those are saved, set **PayEngine Status** to **Live** and Update.
+
+Until step 4, the site keeps working exactly as before — nothing changes just from filling in the fields. Once "Live" is set with real `pk_live_`/`sk_live_` keys, real customer cards will be charged, so double-check everything before that last step. If anything's unclear, contact your developer rather than guessing.
 
 ## Common Questions
 

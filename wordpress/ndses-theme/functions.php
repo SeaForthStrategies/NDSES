@@ -32,8 +32,12 @@ add_action('wp_enqueue_scripts', function () {
 
     $theme_deps = [];
     if (ndses_current_slug() === 'make-a-payment') {
-        $public_key = get_option('ndses_payengine_public_key');
-        $host = get_option('ndses_payengine_host') ?: 'https://console.payengine.dev';
+        // Falls back to the wp_option (set once via WP-CLI during initial
+        // setup) if the ACF Site Settings field is empty, so an existing
+        // deploy keeps working until someone re-enters the key through the
+        // new admin field.
+        $public_key = (function_exists('get_field') ? get_field('payengine_public_key', 'ndses-site-settings') : '') ?: get_option('ndses_payengine_public_key');
+        $host = (function_exists('get_field') ? get_field('payengine_host', 'ndses-site-settings') : '') ?: (get_option('ndses_payengine_host') ?: 'https://console.payengine.dev');
 
         if ($public_key) {
             wp_enqueue_script('payengine-securefields', $host . '/js/1.0.0/securefields.min.js?key=' . urlencode((string) $public_key), [], null, true);
