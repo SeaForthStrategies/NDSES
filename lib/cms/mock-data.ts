@@ -195,7 +195,7 @@ export const calculatorPage: CMSPage = {
   hero: {
     eyebrow: "Dumpster Calculator",
     heading: "Choose the right roll-off dumpster",
-    description: "Use project type and material information to compare available 10/12, 15, 20, and 30 yard dumpster rentals.",
+    description: "Use project type and material information to compare available 10, 12, 15, 20, and 30 yard dumpster rentals.",
     actions: []
   },
   sections: [],
@@ -302,35 +302,54 @@ export const communities: Community[] = [
 const rollOffAccepted = ["Wood", "Furniture", "Construction debris", "Drywall", "Roofing shingles", "Cardboard", "Household junk"];
 const rollOffProhibited = ["Paint", "Batteries", "Tires", "Hazardous chemicals", "Propane tanks", "Electronics", "Appliances", "Yard waste", "Mattresses"];
 const included = ["2 tons of trash", "15 day rental", "Delivery and pickup", "Disposal"];
-const dimensionsNote = " Dimensions may vary slightly, but capacity remains the same.";
+const dimensionsNote = " Dumpster dimensions may vary based on different manufacturers.";
 
 export const dumpsterSizes: DumpsterSize[] = [
   {
-    name: "10/12 Yard Dumpster",
-    slug: "10-12-yard",
+    name: "10 Yard Dumpster",
+    slug: "10-yard",
     containerType: "Roll-off",
-    capacity: "4-5 truck loads",
-    truckLoads: "4-5 truck loads",
-    dimensions: `10 Yard: 14' L x 7.5' W x 3.5' H. 12 Yard: 14' L x 7.5' W x 4' H.${dimensionsNote}`,
-    recommendedUses: "Small and medium remodeling projects, home cleanouts, and concrete or other heavy materials.",
-    idealUses: ["Small/medium remodeling projects", "Home cleanouts", "Concrete/heavy materials"],
+    capacity: "8-10 pickup truck loads",
+    truckLoads: "8-10 pickup truck loads",
+    dimensions: `11' L x 8' W x 3.5' H.${dimensionsNote}`,
+    recommendedUses: "Small remodeling projects, home cleanouts, and concrete or other heavy materials.",
+    idealUses: ["Small remodeling projects", "Home cleanouts", "Concrete/heavy materials"],
     included,
     rentalPeriod: "15 days",
-    exampleProjects: ["Home/Garage Cleanout", "Bathroom/Kitchen Demo", "Concrete, Dirt, and Rocks"],
+    exampleProjects: ["Home/Garage Cleanout", "Concrete, Dirt, and Rocks"],
     restrictions: "Materials must remain below the top edge. Credit card payments include a 3% fee.",
     acceptedMaterials: rollOffAccepted,
     prohibitedMaterials: rollOffProhibited,
-    image: "/nds-assets/dumpster-calculator---com-temp-01-316b2e7632.png",
+    image: "/nds-assets/dumpster-10-yard.png",
     availability: "Call for availability",
-    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=10-12-yard" }
+    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=10-yard" }
+  },
+  {
+    name: "12 Yard Dumpster",
+    slug: "12-yard",
+    containerType: "Roll-off",
+    capacity: "11-14 pickup truck loads",
+    truckLoads: "11-14 pickup truck loads",
+    dimensions: `11' L x 8' W x 4' H.${dimensionsNote}`,
+    recommendedUses: "Medium home renovations, estate cleanouts, deck removals, and roofing projects.",
+    idealUses: ["Medium home renovations", "Estate cleanouts", "Deck removals", "Roofing projects"],
+    included,
+    rentalPeriod: "15 days",
+    exampleProjects: ["Home/Garage Cleanout", "Bathroom/Kitchen Demo"],
+    restrictions: "Materials must remain below the top edge. Credit card payments include a 3% fee.",
+    acceptedMaterials: rollOffAccepted,
+    prohibitedMaterials: rollOffProhibited,
+    image: "/nds-assets/dumpster-12-yard.png",
+    availability: "Call for availability",
+    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=12-yard" }
   },
   {
     name: "15 Yard Dumpster",
     slug: "15-yard",
     containerType: "Roll-off",
-    capacity: "6 truck loads",
-    truckLoads: "6 truck loads",
-    dimensions: `16' L x 7.5' W x 4.5' H.${dimensionsNote}`,
+    capacity: "14-16 pickup truck loads",
+    truckLoads: "14-16 pickup truck loads",
+    dimensions: `15' L x 8' W x 4.5' H.${dimensionsNote}`,
     recommendedUses: "Kitchen remodels, multi-room renovations, and moderate construction debris.",
     idealUses: ["Kitchen remodels", "Multi-room renovations", "Moderate construction debris"],
     included,
@@ -339,7 +358,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     restrictions: "Materials must remain below the top edge. Credit card payments include a 3% fee.",
     acceptedMaterials: rollOffAccepted,
     prohibitedMaterials: rollOffProhibited,
-    image: "/nds-assets/dumpster-calculator---com-temp-02-2f0227232b.png",
+    image: "/nds-assets/dumpster-15-yard.png",
     availability: "Call for availability",
     cta: { label: "Request This Size", href: "/contact?service=dumpster&size=15-yard" }
   },
@@ -347,18 +366,18 @@ export const dumpsterSizes: DumpsterSize[] = [
     name: "20 Yard Dumpster",
     slug: "20-yard",
     containerType: "Roll-off",
-    capacity: "8 truck loads",
-    truckLoads: "8 truck loads",
-    dimensions: `22' L x 7.5' W x 4.5' H.${dimensionsNote}`,
-    recommendedUses: "Large home renovations, whole-house cleanouts, and moderate construction debris.",
-    idealUses: ["Large home renovations", "Whole-house cleanouts", "Moderate construction debris"],
+    capacity: "17-20 pickup truck loads",
+    truckLoads: "17-20 pickup truck loads",
+    dimensions: `22' L x 8' W x 4.5' H.${dimensionsNote}`,
+    recommendedUses: "Large home renovations, whole-house cleanouts, and construction debris.",
+    idealUses: ["Large home renovations", "Whole-house cleanouts", "Construction debris"],
     included,
     rentalPeriod: "15 days",
     exampleProjects: ["Home Remodel", "Roofing/Siding Teardown", "Construction Debris"],
     restrictions: "Materials must remain below the top edge. Credit card payments include a 3% fee.",
     acceptedMaterials: rollOffAccepted,
     prohibitedMaterials: rollOffProhibited,
-    image: "/nds-assets/dumpster-calculator---com-temp-04-447a7c0385.png",
+    image: "/nds-assets/dumpster-20-yard.png",
     availability: "Call for availability",
     cta: { label: "Request This Size", href: "/contact?service=dumpster&size=20-yard" }
   },
@@ -366,9 +385,9 @@ export const dumpsterSizes: DumpsterSize[] = [
     name: "30 Yard Dumpster",
     slug: "30-yard",
     containerType: "Roll-off",
-    capacity: "14 truck loads",
-    truckLoads: "14 truck loads",
-    dimensions: `22' L x 7.5' W x 6' H.${dimensionsNote}`,
+    capacity: "20-26 pickup truck loads",
+    truckLoads: "20-26 pickup truck loads",
+    dimensions: `22' L x 8' W x 6' H.${dimensionsNote}`,
     recommendedUses: "Major construction projects, large demolition projects, and large-scale remodeling projects.",
     idealUses: ["Major construction projects", "Large demolition projects", "Large-scale remodeling projects"],
     included,
@@ -377,7 +396,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     restrictions: "Materials must remain below the top edge. Credit card payments include a 3% fee.",
     acceptedMaterials: rollOffAccepted,
     prohibitedMaterials: rollOffProhibited,
-    image: "/nds-assets/dumpster-calculator---com-temp-03-20780e623e.png",
+    image: "/nds-assets/dumpster-30-yard.png",
     availability: "Call for availability",
     cta: { label: "Request This Size", href: "/contact?service=dumpster&size=30-yard" }
   }
@@ -385,10 +404,10 @@ export const dumpsterSizes: DumpsterSize[] = [
 
 export const commercialContainers: CommercialContainer[] = [
   { name: "96 Gallon", slug: "96-gallon", description: "Compact container for lower-volume recurring trash or recycling service.", idealFor: ["Small offices", "Low-volume retail", "Churches"] },
-  { name: "2 Yard", slug: "2-yard", description: "Small rear-load dumpster for businesses with steady weekly disposal needs.", idealFor: ["Restaurants", "Small retail", "Offices"] },
-  { name: "4 Yard", slug: "4-yard", description: "Mid-size commercial container for growing waste streams.", idealFor: ["Retail stores", "Apartment complexes", "Schools"] },
-  { name: "6 Yard", slug: "6-yard", description: "Larger container for busy sites that need more capacity.", idealFor: ["Restaurants", "Manufacturing", "Apartment complexes"] },
-  { name: "8 Yard", slug: "8-yard", description: "High-capacity permanent dumpster for demanding commercial accounts.", idealFor: ["Manufacturing", "Schools", "Large retail"] }
+  { name: "2 Yard", slug: "2-yard", description: "Small rear-load dumpster for businesses with steady weekly disposal needs.", dimensions: `66" L x 38" W x 48" H`, capacity: "1-2 pickup truck loads", image: "/nds-assets/dumpster-2-yard.png", idealFor: ["Small offices & businesses", "1-4 unit properties"] },
+  { name: "4 Yard", slug: "4-yard", description: "Mid-size commercial container for growing waste streams.", dimensions: `87" L x 66" W x 48" H`, capacity: "3-4 pickup truck loads", image: "/nds-assets/dumpster-4-yard.png", idealFor: ["Restaurants", "Small apartment complexes", "Medium retail stores"] },
+  { name: "6 Yard", slug: "6-yard", description: "Larger container for busy sites that need more capacity.", dimensions: `111" L x 66" W x 53" H`, capacity: "5-6 pickup truck loads", image: "/nds-assets/dumpster-6-yard.png", idealFor: ["Large restaurants", "Large apartment complexes", "Schools", "Small remodeling projects", "Areas with space constraints"] },
+  { name: "8 Yard", slug: "8-yard", description: "High-capacity permanent dumpster for demanding commercial accounts.", dimensions: `116" L x 66" W x 73" H`, capacity: "7-8 pickup truck loads", image: "/nds-assets/dumpster-8-yard.png", idealFor: ["Large restaurants", "Large apartment complexes", "Schools", "Small remodeling projects", "Areas with space constraints"] }
 ];
 
 export const serviceAreas: ServiceArea[] = [
@@ -443,7 +462,12 @@ export const aboutContent = {
     heading: "Local waste service built around Wisconsin communities",
     description: "Learn about the mission, history, and team behind NDS Environmental Solutions."
   },
-  historyPlaceholder: "Our history content is ready for final NDS details.",
+  history: [
+    "Founded in the fall of 2024 by Dustin Nieuwenhuis, NDS Environmental Solutions, LLC was built on a simple belief: our community deserves reliable, honest waste collection from a company that puts its customers first.",
+    "For Dustin, waste management has always been a family business. Growing up in the industry gave him firsthand experience and a deep understanding of what it takes to provide dependable service.",
+    "In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.",
+    "Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home."
+  ],
   mission,
   teamPlaceholder: "Team member names, roles, and photos can be added through the future CMS."
 };

@@ -1228,3 +1228,11 @@ fieldset {
   }
 }
 
+
+.feature-card .container-image {
+  aspect-ratio: 4 / 3;
+  height: auto;
+  margin-bottom: 14px;
+  object-fit: contain;
+  width: 100%;
+}

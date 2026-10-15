@@ -28,8 +28,13 @@
         <div class="card-grid five">
             <?php foreach (ndses_data()['commercial_containers'] as $container) : ?>
                 <article class="feature-card">
+                    <?php if (!empty($container['image'])) : ?>
+                        <img class="container-image" src="<?php echo ndses_asset($container['image']); ?>" alt="<?php echo esc_attr($container['name'] . ' dumpster dimensions'); ?>" loading="lazy" decoding="async">
+                    <?php endif; ?>
                     <h3><?php echo esc_html($container['name']); ?></h3>
                     <p><?php echo esc_html($container['body']); ?></p>
+                    <?php if (!empty($container['dimensions'])) : ?><p><strong>Dimensions:</strong> <?php echo esc_html($container['dimensions']); ?></p><?php endif; ?>
+                    <?php if (!empty($container['capacity'])) : ?><p><strong>Capacity:</strong> <?php echo esc_html($container['capacity']); ?></p><?php endif; ?>
                     <?php ndses_list($container['ideal'], 'compact-list'); ?>
                 </article>
             <?php endforeach; ?>

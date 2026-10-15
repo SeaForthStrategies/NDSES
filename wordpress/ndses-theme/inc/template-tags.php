@@ -108,7 +108,7 @@ function ndses_render_dumpster_cards(): void
 
     if (empty($posts)) {
         ?>
-        <div class="card-grid four">
+        <div class="card-grid five">
             <?php foreach (ndses_data()['dumpsters'] as $dumpster) : ?>
                 <article class="feature-card dumpster-card">
                     <img src="<?php echo ndses_asset($dumpster['image']); ?>" alt="<?php echo esc_attr($dumpster['name']); ?>" loading="lazy" decoding="async">
@@ -125,7 +125,7 @@ function ndses_render_dumpster_cards(): void
     }
 
     ?>
-    <div class="card-grid four">
+    <div class="card-grid five">
         <?php foreach ($posts as $dumpster_post) :
             $capacity = get_field('truck_loads', $dumpster_post->ID) ?: get_field('capacity', $dumpster_post->ID);
             $dimensions = get_field('dimensions', $dumpster_post->ID);

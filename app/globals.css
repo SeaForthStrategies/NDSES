@@ -914,6 +914,19 @@ a.card:focus-visible,
   font-size: 0.94rem;
 }
 
+.service-card .container-image {
+  aspect-ratio: 4 / 3;
+  height: auto;
+  margin-bottom: 14px;
+  object-fit: contain;
+  width: 100%;
+}
+
+.service-card .spec-list {
+  grid-template-columns: 1fr;
+  margin-bottom: 12px;
+}
+
 .section-actions {
   margin-top: 28px;
 }

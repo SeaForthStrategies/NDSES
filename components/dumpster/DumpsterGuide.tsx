@@ -31,7 +31,7 @@ export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
           <button aria-selected={filter === type} className="tab" key={type} onClick={() => setFilter(type)} role="tab" type="button">{type}</button>
         ))}
       </div>
-      <div className="grid four">
+      <div className="grid five">
         {filtered.map((size) => (
           <article className={`card ${selected === size.slug ? "tint" : ""}`} key={size.slug}>
             <span className="badge">{size.availability}</span>

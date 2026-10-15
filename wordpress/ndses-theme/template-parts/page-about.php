@@ -3,8 +3,11 @@
     <div class="container split">
         <div>
             <p class="eyebrow">Our History</p>
-            <h2>Built for local service</h2>
-            <p>Our full company story is coming soon. In the meantime, reach out any time &mdash; we're happy to tell you more about NDS over the phone.</p>
+            <h2>Our Story</h2>
+            <p>Founded in the fall of 2024 by Dustin Nieuwenhuis, NDS Environmental Solutions, LLC was built on a simple belief: our community deserves reliable, honest waste collection from a company that puts its customers first.</p>
+            <p>For Dustin, waste management has always been a family business. Growing up in the industry gave him firsthand experience and a deep understanding of what it takes to provide dependable service.</p>
+            <p>In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.</p>
+            <p>Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home.</p>
         </div>
         <div class="quote-panel">
             <h3>Our Mission</h3>

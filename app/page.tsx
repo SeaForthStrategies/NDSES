@@ -86,7 +86,7 @@ export default async function HomePage() {
             <h2>Popular roll-off sizes at a glance</h2>
             <p className="lead">Compare capacity, included rental details, and ideal uses before requesting a quote.</p>
           </div>
-          <div className="grid four service-grid">
+          <div className="grid five service-grid">
             {dumpsters.map((dumpster) => <DumpsterCard dumpster={dumpster} key={dumpster.slug} />)}
           </div>
           <div className="button-row section-actions">

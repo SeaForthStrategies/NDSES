@@ -56,9 +56,28 @@ export default async function CommercialPage() {
           <div className="grid five service-grid">
             {containers.map((container) => (
               <article className="card service-card" key={container.slug}>
+                {container.image ? (
+                  <Image src={container.image} alt={`${container.name} dumpster dimension graphic supplied by NDS`} width={280} height={220} className="container-image" />
+                ) : null}
                 <span className="badge">{container.name}</span>
                 <h3>{container.name}</h3>
                 <p>{container.description}</p>
+                {container.dimensions || container.capacity ? (
+                  <dl className="spec-list">
+                    {container.dimensions ? (
+                      <div>
+                        <dt>Dimensions</dt>
+                        <dd>{container.dimensions}</dd>
+                      </div>
+                    ) : null}
+                    {container.capacity ? (
+                      <div>
+                        <dt>Capacity</dt>
+                        <dd>{container.capacity}</dd>
+                      </div>
+                    ) : null}
+                  </dl>
+                ) : null}
                 <ul>{container.idealFor.map((item) => <li key={item}>{item}</li>)}</ul>
               </article>
             ))}

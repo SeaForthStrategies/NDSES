@@ -24,8 +24,10 @@ export default async function AboutPage() {
         <div className="container grid two">
           <div>
             <p className="eyebrow">Our History</p>
-            <h2>Built for local service</h2>
-            <p>{content.historyPlaceholder}</p>
+            <h2>Our Story</h2>
+            {content.history.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
             <figure className="asset-frame stack-top">
               <Image src="/nds-assets/branding-03-bffd0f61cb.png" alt="NDS Environmental Solutions branded collection truck" width={1795} height={877} />
             </figure>
