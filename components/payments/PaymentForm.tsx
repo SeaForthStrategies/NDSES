@@ -111,8 +111,11 @@ export function PaymentForm() {
       });
       const body = await response.json();
       setMessage(body.message || "");
-      setStatus(response.ok ? "success" : "error");
-      trackEvent(response.ok ? "payment_completion" : "payment_failure");
+      // The route answers 2xx for placeholder/declined results too, so only
+      // an explicit success counts as a completed payment.
+      const succeeded = response.ok && body.mode === "success";
+      setStatus(succeeded ? "success" : "error");
+      trackEvent(succeeded ? "payment_completion" : "payment_failure");
     } catch {
       setStatus("error");
       setMessage("We could not process that payment. Please try again or contact NDSES.");

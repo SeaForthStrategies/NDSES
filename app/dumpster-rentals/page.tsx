@@ -74,7 +74,7 @@ export default async function DumpsterRentalsPage() {
         </div>
       </section>
       <SectionRenderer sections={page.sections} />
-      <section className="section alt">
+      <section className="section alt" id="quote">
         <div className="container grid two">
           <div>
             <p className="eyebrow">Rental Inquiry</p>

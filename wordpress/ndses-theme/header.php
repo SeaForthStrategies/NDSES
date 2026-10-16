@@ -14,7 +14,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="announcement">
     <div class="container announcement-inner">
-        <span>No urgent service alerts are active.</span>
+        <span><?php echo esc_html(ndses_get_announcement() ?: 'No urgent service alerts are active.'); ?></span>
         <a href="<?php echo esc_url(home_url('/whats-new')); ?>">View updates</a>
     </div>
 </div>

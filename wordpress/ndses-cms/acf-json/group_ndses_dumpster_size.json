@@ -1,0 +1,41 @@
+{
+  "key": "group_ndses_dumpster_size",
+  "title": "Dumpster Size Lists",
+  "fields": [
+    {
+      "key": "field_ndses_dumpster_ideal_uses",
+      "label": "Ideal For",
+      "name": "ideal_uses",
+      "type": "textarea",
+      "rows": 4,
+      "new_lines": "",
+      "instructions": "One project type per line, e.g. \"Home cleanouts\". Shown as a bulleted list on the size card."
+    },
+    {
+      "key": "field_ndses_dumpster_included",
+      "label": "Included",
+      "name": "included",
+      "type": "textarea",
+      "rows": 4,
+      "new_lines": "",
+      "instructions": "One item per line, e.g. \"15 day rental\". Shown as \"Includes: ...\" on the size card."
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "dumpster_size"
+      }
+    ]
+  ],
+  "menu_order": 1,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1792159580
+}

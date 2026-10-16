@@ -26,10 +26,10 @@
             <h2>Find the right size dumpster for your business</h2>
         </div>
         <div class="card-grid five">
-            <?php foreach (ndses_data()['commercial_containers'] as $container) : ?>
+            <?php foreach (ndses_get_commercial_containers() as $container) : ?>
                 <article class="feature-card">
                     <?php if (!empty($container['image'])) : ?>
-                        <img class="container-image" src="<?php echo ndses_asset($container['image']); ?>" alt="<?php echo esc_attr($container['name'] . ' dumpster dimensions'); ?>" loading="lazy" decoding="async">
+                        <img class="container-image" src="<?php echo ndses_image_url($container['image']); ?>" alt="<?php echo esc_attr($container['name'] . ' dumpster dimensions'); ?>" loading="lazy" decoding="async">
                     <?php endif; ?>
                     <h3><?php echo esc_html($container['name']); ?></h3>
                     <p><?php echo esc_html($container['body']); ?></p>

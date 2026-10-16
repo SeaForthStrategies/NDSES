@@ -12,7 +12,7 @@ ndses_render_service_cards();
         </div>
         <div class="quote-panel">
             <h3>Our Mission</h3>
-            <p><?php echo esc_html(ndses_data()['mission']); ?></p>
+            <p><?php echo esc_html(ndses_get_mission()); ?></p>
         </div>
     </div>
 </section>

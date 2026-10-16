@@ -322,7 +322,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     prohibitedMaterials: rollOffProhibited,
     image: "/nds-assets/dumpster-10-yard.png",
     availability: "Call for availability",
-    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=10-yard" }
+    cta: { label: "Request This Size", href: "/dumpster-rentals?service=dumpster&size=10-yard#quote" }
   },
   {
     name: "12 Yard Dumpster",
@@ -341,7 +341,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     prohibitedMaterials: rollOffProhibited,
     image: "/nds-assets/dumpster-12-yard.png",
     availability: "Call for availability",
-    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=12-yard" }
+    cta: { label: "Request This Size", href: "/dumpster-rentals?service=dumpster&size=12-yard#quote" }
   },
   {
     name: "15 Yard Dumpster",
@@ -360,7 +360,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     prohibitedMaterials: rollOffProhibited,
     image: "/nds-assets/dumpster-15-yard.png",
     availability: "Call for availability",
-    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=15-yard" }
+    cta: { label: "Request This Size", href: "/dumpster-rentals?service=dumpster&size=15-yard#quote" }
   },
   {
     name: "20 Yard Dumpster",
@@ -379,7 +379,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     prohibitedMaterials: rollOffProhibited,
     image: "/nds-assets/dumpster-20-yard.png",
     availability: "Call for availability",
-    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=20-yard" }
+    cta: { label: "Request This Size", href: "/dumpster-rentals?service=dumpster&size=20-yard#quote" }
   },
   {
     name: "30 Yard Dumpster",
@@ -398,7 +398,7 @@ export const dumpsterSizes: DumpsterSize[] = [
     prohibitedMaterials: rollOffProhibited,
     image: "/nds-assets/dumpster-30-yard.png",
     availability: "Call for availability",
-    cta: { label: "Request This Size", href: "/contact?service=dumpster&size=30-yard" }
+    cta: { label: "Request This Size", href: "/dumpster-rentals?service=dumpster&size=30-yard#quote" }
   }
 ];
 

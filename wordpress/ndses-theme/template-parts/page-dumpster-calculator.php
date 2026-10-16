@@ -25,15 +25,14 @@
             <p class="eyebrow">Recommendation</p>
             <h2>Start with the 15 Yard Dumpster</h2>
             <p>Choose project details to update the recommendation. You can still compare all sizes below.</p>
-            <p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dimensions may vary slightly, but capacity remains the same.</p>
-            <?php ndses_button('Request Quote', home_url('/contact?service=dumpster')); ?>
+            <p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dumpster dimensions may vary based on different manufacturers.</p>
+            <?php ndses_button('Request Quote', ndses_dumpster_request_url()); ?>
         </aside>
     </div>
 </section>
 <section class="section soft-section">
     <div class="container">
         <?php ndses_render_dumpster_cards(); ?>
-        <p class="small-note"><a class="text-link" href="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/dumpster-size-guide.png" download>Download the printable Dumpster Size Guide</a></p>
     </div>
 </section>
 

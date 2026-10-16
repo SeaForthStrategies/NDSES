@@ -5,7 +5,7 @@ import type { DumpsterSize } from "@/types/cms";
 import { trackEvent } from "@/lib/analytics";
 import { DUMPSTER_SIZE_SELECTED_EVENT } from "@/lib/dumpster-events";
 
-const projectTypes = ["All", "Cleanout", "Remodel", "Construction", "Commercial"];
+const projectTypes = ["All", "Cleanout", "Remodel", "Construction"];
 
 export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
   const [filter, setFilter] = useState("All");

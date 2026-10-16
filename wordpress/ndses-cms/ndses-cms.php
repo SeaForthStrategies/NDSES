@@ -14,6 +14,7 @@ add_action('init', function () {
         'service' => ['Services', 'Service'],
         'community' => ['Communities', 'Community'],
         'dumpster_size' => ['Dumpster Sizes', 'Dumpster Size'],
+        'commercial_container' => ['Commercial Containers', 'Commercial Container'],
         'faq' => ['FAQs', 'FAQ'],
         'document' => ['Documents', 'Document'],
         'service_notice' => ['Service Notices', 'Service Notice'],
@@ -30,7 +31,8 @@ add_action('init', function () {
             'graphql_single_name' => str_replace('_', '', $slug),
             'graphql_plural_name' => str_replace('_', '', $slug) . 's',
             'menu_icon' => $slug === 'service_notice' ? 'dashicons-warning' : 'dashicons-admin-page',
-            'supports' => ['title', 'editor', 'thumbnail', 'revisions'],
+            // page-attributes adds the "Order" box the theme sorts by.
+            'supports' => ['title', 'editor', 'thumbnail', 'revisions', 'page-attributes'],
             'has_archive' => $slug === 'service_notice',
             'rewrite' => ['slug' => str_replace('_', '-', $slug)],
             // A public post type auto-registers its own slug as a global
@@ -160,9 +162,9 @@ add_action('manage_form_submission_posts_custom_column', function (string $colum
  * Free ACF does ship `acf_form()` -- a standalone field-group renderer
  * normally used for front-end forms -- which works just as well for a
  * custom admin screen. Field values still live in the same place either
- * way (post_id 'option', i.e. the wp_options table), which is what
- * ndses_setting() and the rest of the site already read from, so no data
- * migration is needed -- this only replaces the missing editing screen.
+ * way (stored under post_id 'ndses-site-settings' -- see the note in the
+ * render callback below), which is what ndses_setting() and the rest of the
+ * site read from, so no data migration is needed.
  */
 function ndses_settings_pages(): array
 {
@@ -255,7 +257,7 @@ add_action('rest_api_init', function () {
                 'company_name', 'legal_name', 'phone', 'email', 'address',
                 'mailing_address', 'hours', 'service_area', 'facebook',
                 'instagram', 'header_logo', 'footer_logo',
-                'footer_description', 'copyright_text', 'social_links',
+                'footer_description', 'copyright_text', 'mission', 'our_story',
             ];
 
             $settings = [];
@@ -281,15 +283,38 @@ add_action('rest_api_init', function () {
     ]);
 });
 
+/**
+ * Reads an ACF field without fataling when ACF is inactive (e.g. mid-update),
+ * so forms and payments degrade instead of returning a 500.
+ */
+function ndses_cms_field(string $key, $post_id = 'ndses-site-settings')
+{
+    return function_exists('get_field') ? get_field($key, $post_id) : null;
+}
+
+/**
+ * Client IP for rate limiting. REMOTE_ADDR can't be spoofed, so it wins
+ * whenever it's a public address. Forwarded headers are client-controlled
+ * and only consulted when REMOTE_ADDR is a private/reserved proxy address
+ * (i.e. the request reached PHP through a local reverse proxy) -- trusting
+ * them first let anyone bypass the form and payment rate limits by sending
+ * a random X-Forwarded-For.
+ */
 function ndses_get_client_ip(): string
 {
-    foreach (['HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'REMOTE_ADDR'] as $key) {
-        if (!empty($_SERVER[$key])) {
-            return trim(explode(',', sanitize_text_field(wp_unslash($_SERVER[$key])))[0]);
+    $remote = isset($_SERVER['REMOTE_ADDR']) ? trim(sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']))) : '';
+    if ($remote !== '' && filter_var($remote, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+        return $remote;
+    }
+
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $forwarded = trim(explode(',', sanitize_text_field(wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR'])))[0]);
+        if (filter_var($forwarded, FILTER_VALIDATE_IP)) {
+            return $forwarded;
         }
     }
 
-    return '0.0.0.0';
+    return $remote !== '' ? $remote : '0.0.0.0';
 }
 
 /**
@@ -300,7 +325,7 @@ function ndses_get_client_ip(): string
  */
 function ndses_verify_recaptcha(string $token): bool
 {
-    $secret = get_field('recaptcha_secret_key', 'ndses-site-settings');
+    $secret = ndses_cms_field('recaptcha_secret_key');
     if (!$secret) {
         return true;
     }
@@ -382,7 +407,7 @@ function ndses_handle_form_submission(WP_REST_Request $request)
         return new WP_Error('storage_failed', 'Could not store submission.', ['status' => 500]);
     }
 
-    $notify_to = get_field('email', 'ndses-site-settings') ?: get_option('admin_email');
+    $notify_to = ndses_cms_field('email') ?: get_option('admin_email');
     $lines = ["Name: {$name}", "Email: {$email}"];
     foreach (array_filter($extra_fields) as $label => $value) {
         $lines[] = "{$label}: {$value}";
@@ -428,12 +453,12 @@ add_action('rest_api_init', function () {
 
 function ndses_payengine_credentials(): ?array
 {
-    $secret = get_field('payengine_secret_key', 158);
+    $secret = ndses_cms_field('payengine_secret_key', 158);
     // Falls back to the wp_option (set once via WP-CLI during initial setup)
     // if the ACF Site Settings fields are empty, so an existing deploy keeps
     // working until someone re-enters these through the admin fields.
-    $api_url = get_field('payengine_api_url', 'ndses-site-settings') ?: get_option('ndses_payengine_api_url');
-    $merchant_id = get_field('payengine_merchant_id', 'ndses-site-settings') ?: get_option('ndses_payengine_merchant_id');
+    $api_url = ndses_cms_field('payengine_api_url') ?: get_option('ndses_payengine_api_url');
+    $merchant_id = ndses_cms_field('payengine_merchant_id') ?: get_option('ndses_payengine_merchant_id');
 
     if (!$secret || !$api_url || !$merchant_id) {
         return null;
@@ -441,6 +466,9 @@ function ndses_payengine_credentials(): ?array
 
     return ['secret' => $secret, 'api_url' => rtrim((string) $api_url, '/'), 'merchant_id' => $merchant_id];
 }
+
+/** Upper bound for a single online payment, as a guard against typos (e.g. 15000 for 150.00). */
+const NDSES_MAX_PAYMENT_AMOUNT = 50000;
 
 /** PayEngine's order_number field only accepts [a-zA-Z0-9], max 20 chars. */
 function ndses_payengine_order_number(string $account_number): string
@@ -464,7 +492,8 @@ function ndses_handle_payment_charge(WP_REST_Request $request)
     $account_number = sanitize_text_field($body['accountNumber'] ?? '');
     $email = sanitize_email($body['email'] ?? '');
 
-    if ($token === '' || !preg_match('/^\d+(\.\d{1,2})?$/', $amount) || mb_strlen($account_number) < 3) {
+    $amount_valid = preg_match('/^\d+(\.\d{1,2})?$/', $amount) && (float) $amount > 0 && (float) $amount <= NDSES_MAX_PAYMENT_AMOUNT;
+    if ($token === '' || !$amount_valid || mb_strlen($account_number) < 3) {
         return new WP_Error('validation_failed', 'Payment information is incomplete.', ['status' => 400]);
     }
 
@@ -522,7 +551,10 @@ function ndses_handle_payment_charge(WP_REST_Request $request)
     if (is_wp_error($response)) {
         error_log('PayEngine charge request failed: ' . $response->get_error_message());
 
-        return rest_ensure_response(['mode' => 'error', 'message' => 'We could not reach the payment processor. Please try again shortly.']);
+        // A timeout doesn't mean the charge failed -- PayEngine may still
+        // have completed it. Tell the customer not to retry (a retry could
+        // double-charge) and to confirm with the office instead.
+        return rest_ensure_response(['mode' => 'error', 'message' => 'We could not confirm whether your payment went through. Please do not submit it again. Call NDSES so we can check your account.']);
     }
 
     $status = wp_remote_retrieve_response_code($response);

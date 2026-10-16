@@ -115,8 +115,9 @@ function ndses_render_dumpster_cards(): void
                     <p class="kicker"><?php echo esc_html($dumpster['capacity']); ?></p>
                     <h3><?php echo esc_html($dumpster['name']); ?></h3>
                     <?php ndses_list($dumpster['uses'], 'compact-list'); ?>
+                    <?php if (!empty($dumpster['dimensions'])) : ?><p class="small-note"><strong>Dimensions:</strong> <?php echo esc_html($dumpster['dimensions']); ?></p><?php endif; ?>
                     <p class="small-note">Includes: <?php echo esc_html(implode(', ', $dumpster['included'])); ?>.</p>
-                    <?php ndses_button('Request This Size', home_url('/contact?service=dumpster&size=' . $dumpster['slug']), 'button button-small'); ?>
+                    <?php ndses_button('Request This Size', ndses_dumpster_request_url($dumpster['slug']), 'button button-small'); ?>
                 </article>
             <?php endforeach; ?>
         </div>
@@ -130,8 +131,10 @@ function ndses_render_dumpster_cards(): void
             $capacity = get_field('truck_loads', $dumpster_post->ID) ?: get_field('capacity', $dumpster_post->ID);
             $dimensions = get_field('dimensions', $dumpster_post->ID);
             $material_lists = get_field('material_lists', $dumpster_post->ID) ?: [];
-            $uses = ndses_material_list_items($material_lists, 'Ideal For');
-            $included = ndses_material_list_items($material_lists, 'Included');
+            // One-per-line textareas (free ACF); the older material_lists
+            // repeater headings are still honored if a site has ACF PRO.
+            $uses = ndses_lines(get_field('ideal_uses', $dumpster_post->ID)) ?: ndses_material_list_items($material_lists, 'Ideal For');
+            $included = ndses_lines(get_field('included', $dumpster_post->ID)) ?: ndses_material_list_items($material_lists, 'Included');
             $image = get_field('field_ndses_image', $dumpster_post->ID);
             $image_url = is_array($image) && !empty($image['url']) ? $image['url'] : '';
             ?>
@@ -142,7 +145,7 @@ function ndses_render_dumpster_cards(): void
                 <?php if ($uses) : ?><?php ndses_list($uses, 'compact-list'); ?><?php endif; ?>
                 <?php if ($dimensions) : ?><p class="small-note"><strong>Dimensions:</strong> <?php echo esc_html($dimensions); ?></p><?php endif; ?>
                 <?php if ($included) : ?><p class="small-note">Includes: <?php echo esc_html(implode(', ', $included)); ?>.</p><?php endif; ?>
-                <?php ndses_button('Request This Size', home_url('/contact?service=dumpster&size=' . $dumpster_post->post_name), 'button button-small'); ?>
+                <?php ndses_button('Request This Size', ndses_dumpster_request_url($dumpster_post->post_name), 'button button-small'); ?>
             </article>
         <?php endforeach; ?>
     </div>
@@ -151,7 +154,7 @@ function ndses_render_dumpster_cards(): void
 
 function ndses_render_faqs(?string $category = null): void
 {
-    $groups = ndses_data()['faqs'];
+    $groups = ndses_get_faqs();
     if ($category && isset($groups[$category])) {
         $groups = [$category => $groups[$category]];
     }
@@ -163,7 +166,7 @@ function ndses_render_faqs(?string $category = null): void
                 <?php foreach ($faqs as $faq) : ?>
                     <details class="faq-item">
                         <summary><?php echo esc_html($faq[0]); ?></summary>
-                        <p><?php echo esc_html($faq[1]); ?></p>
+                        <div class="faq-answer"><?php echo wp_kses_post($faq[1]); ?></div>
                     </details>
                 <?php endforeach; ?>
             </section>
@@ -236,7 +239,7 @@ function ndses_render_inquiry_form(string $form_type): void
  */
 function ndses_render_service_area_map(array $filter_types = []): void
 {
-    $areas = ndses_data()['service_areas'];
+    $areas = ndses_get_service_areas();
     if ($filter_types) {
         $areas = array_filter($areas, static fn ($area) => array_intersect($area['types'], $filter_types));
     }
@@ -279,13 +282,12 @@ function ndses_render_service_area_map(array $filter_types = []): void
 
 function ndses_print_schema(): void
 {
-    $settings = ndses_data()['settings'];
     $schema = [
         '@context' => 'https://schema.org',
         '@type' => 'LocalBusiness',
-        'name' => $settings['company_name'],
-        'telephone' => $settings['phone'],
-        'email' => $settings['email'],
+        'name' => ndses_setting('company_name'),
+        'telephone' => ndses_setting('phone'),
+        'email' => ndses_setting('email'),
         'address' => [
             '@type' => 'PostalAddress',
             'streetAddress' => '1635 Mound Rd',
@@ -293,7 +295,7 @@ function ndses_print_schema(): void
             'addressRegion' => 'WI',
             'postalCode' => '53115',
         ],
-        'areaServed' => $settings['service_area'],
+        'areaServed' => wp_strip_all_tags((string) ndses_setting('service_area')),
     ];
 
     echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES) . '</script>';

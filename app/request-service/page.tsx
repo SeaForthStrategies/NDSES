@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { InquiryForm } from "@/components/forms/InquiryForm";
+
+export const metadata: Metadata = {
+  title: "Request Service",
+  description: "Start a residential trash and recycling service inquiry with NDS Environmental Solutions."
+};
 
 export default function RequestServicePage() {
   return (

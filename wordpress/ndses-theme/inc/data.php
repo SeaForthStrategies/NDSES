@@ -41,6 +41,12 @@ function ndses_data(): array
             'instagram' => 'https://www.instagram.com/',
         ],
         'mission' => $mission,
+        'our_story' => [
+            'Founded in the fall of 2024 by Dustin Nieuwenhuis, NDS Environmental Solutions, LLC was built on a simple belief: our community deserves reliable, honest waste collection from a company that puts its customers first.',
+            'For Dustin, waste management has always been a family business. Growing up in the industry gave him firsthand experience and a deep understanding of what it takes to provide dependable service.',
+            'In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.',
+            'Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home.',
+        ],
         'nav' => [
             ['label' => 'Residential', 'url' => '/residential'],
             ['label' => 'Commercial', 'url' => '/commercial'],
@@ -160,11 +166,11 @@ function ndses_data(): array
             ]),
         ],
         'dumpsters' => [
-            ['name' => '10 Yard Dumpster', 'slug' => '10-yard', 'capacity' => '8-10 pickup truck loads', 'uses' => ['Small remodeling projects', 'Home cleanouts', 'Concrete/heavy materials'], 'included' => $included, 'image' => 'dumpster-10-yard.png'],
-            ['name' => '12 Yard Dumpster', 'slug' => '12-yard', 'capacity' => '11-14 pickup truck loads', 'uses' => ['Medium home renovations', 'Estate cleanouts', 'Deck removals', 'Roofing projects'], 'included' => $included, 'image' => 'dumpster-12-yard.png'],
-            ['name' => '15 Yard Dumpster', 'slug' => '15-yard', 'capacity' => '14-16 pickup truck loads', 'uses' => ['Kitchen remodels', 'Multi-room renovations', 'Moderate construction debris'], 'included' => $included, 'image' => 'dumpster-15-yard.png'],
-            ['name' => '20 Yard Dumpster', 'slug' => '20-yard', 'capacity' => '17-20 pickup truck loads', 'uses' => ['Large home renovations', 'Whole-house cleanouts', 'Construction debris'], 'included' => $included, 'image' => 'dumpster-20-yard.png'],
-            ['name' => '30 Yard Dumpster', 'slug' => '30-yard', 'capacity' => '20-26 pickup truck loads', 'uses' => ['Major construction projects', 'Large demolition projects', 'Large-scale remodeling projects'], 'included' => $included, 'image' => 'dumpster-30-yard.png'],
+            ['name' => '10 Yard Dumpster', 'slug' => '10-yard', 'capacity' => '8-10 pickup truck loads', 'dimensions' => "11' L x 8' W x 3.5' H", 'uses' => ['Small remodeling projects', 'Home cleanouts', 'Concrete/heavy materials'], 'included' => $included, 'image' => 'dumpster-10-yard.png'],
+            ['name' => '12 Yard Dumpster', 'slug' => '12-yard', 'capacity' => '11-14 pickup truck loads', 'dimensions' => "11' L x 8' W x 4' H", 'uses' => ['Medium home renovations', 'Estate cleanouts', 'Deck removals', 'Roofing projects'], 'included' => $included, 'image' => 'dumpster-12-yard.png'],
+            ['name' => '15 Yard Dumpster', 'slug' => '15-yard', 'capacity' => '14-16 pickup truck loads', 'dimensions' => "15' L x 8' W x 4.5' H", 'uses' => ['Kitchen remodels', 'Multi-room renovations', 'Moderate construction debris'], 'included' => $included, 'image' => 'dumpster-15-yard.png'],
+            ['name' => '20 Yard Dumpster', 'slug' => '20-yard', 'capacity' => '17-20 pickup truck loads', 'dimensions' => "22' L x 8' W x 4.5' H", 'uses' => ['Large home renovations', 'Whole-house cleanouts', 'Construction debris'], 'included' => $included, 'image' => 'dumpster-20-yard.png'],
+            ['name' => '30 Yard Dumpster', 'slug' => '30-yard', 'capacity' => '20-26 pickup truck loads', 'dimensions' => "22' L x 8' W x 6' H", 'uses' => ['Major construction projects', 'Large demolition projects', 'Large-scale remodeling projects'], 'included' => $included, 'image' => 'dumpster-30-yard.png'],
         ],
         'commercial_containers' => [
             ['name' => '96 Gallon', 'body' => 'Compact container for lower-volume recurring trash or recycling service.', 'ideal' => ['Small offices', 'Low-volume retail', 'Churches']],

@@ -210,7 +210,9 @@ export const getWordPressGlobals = unstable_cache(async (fallback?: GlobalSettin
     email: asString(acf.email, fallback?.email),
     address: asString(acf.address, fallback?.address),
     mailingAddress: asString(acf.mailing_address, fallback?.mailingAddress),
-    businessHours: Array.isArray(acf.hours) ? acf.hours.map((line) => asString(asRecord(line).line)).filter(Boolean).join("; ") : fallback?.businessHours ?? "",
+    businessHours: typeof acf.hours === "string" && acf.hours.trim()
+      ? acf.hours.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).join("; ")
+      : Array.isArray(acf.hours) ? acf.hours.map((line) => asString(asRecord(line).line)).filter(Boolean).join("; ") : fallback?.businessHours ?? "",
     serviceArea: asString(acf.service_area, fallback?.serviceArea),
     footerDescription: asString(acf.footer_description, fallback?.footerDescription),
     copyrightText: asString(acf.copyright_text, fallback?.copyrightText),
@@ -293,7 +295,7 @@ export async function getWordPressDumpsterSizes(fallback: DumpsterSize[] = []): 
       prohibitedMaterials: base?.prohibitedMaterials ?? [],
       image: mapImageUrl(acf.image) || base?.image,
       availability: base?.availability ?? "Call for availability",
-      cta: base?.cta ?? { label: "Request This Size", href: "/contact?service=dumpster" }
+      cta: base?.cta ?? { label: "Request This Size", href: `/dumpster-rentals?service=dumpster&size=${post.slug}#quote` }
     };
   });
 }

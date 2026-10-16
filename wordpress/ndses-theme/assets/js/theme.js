@@ -64,7 +64,7 @@
         materialsNote = ' Heavy materials (concrete, dirt, roofing tear-off, etc.) hit a dumpster’s weight limit well before it fills up, so we cap the recommended size for heavy loads regardless of project type.';
       }
 
-      result.innerHTML = '<p class="eyebrow">Recommendation</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p><p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dimensions may vary slightly, but capacity remains the same.</p><a class="button button-primary" href="' + window.location.origin + '/contact?service=dumpster">Request Quote</a>';
+      result.innerHTML = '<p class="eyebrow">Recommendation</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p><p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dumpster dimensions may vary based on different manufacturers.</p><a class="button button-primary" href="' + window.location.origin + '/dumpster-rentals/?service=dumpster&size=' + encodeURIComponent(recommendation.split(' ')[0] + '-yard') + '#quote">Request Quote</a>';
     });
 
     ndsesInitAddressLookup(form.querySelector('input[name="address"]'));
