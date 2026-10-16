@@ -171,7 +171,7 @@ function ndses_data(): array
             ['name' => '2 Yard', 'body' => 'Small rear-load dumpster for businesses with steady weekly disposal needs.', 'dimensions' => '66" L x 38" W x 48" H', 'capacity' => '1-2 pickup truck loads', 'image' => 'dumpster-2-yard.png', 'ideal' => ['Small offices & businesses', '1-4 unit properties']],
             ['name' => '4 Yard', 'body' => 'Mid-size commercial container for growing waste streams.', 'dimensions' => '87" L x 66" W x 48" H', 'capacity' => '3-4 pickup truck loads', 'image' => 'dumpster-4-yard.png', 'ideal' => ['Restaurants', 'Small apartment complexes', 'Medium retail stores']],
             ['name' => '6 Yard', 'body' => 'Larger container for busy sites that need more capacity.', 'dimensions' => '111" L x 66" W x 53" H', 'capacity' => '5-6 pickup truck loads', 'image' => 'dumpster-6-yard.png', 'ideal' => ['Large restaurants', 'Large apartment complexes', 'Schools', 'Small remodeling projects', 'Areas with space constraints']],
-            ['name' => '8 Yard', 'body' => 'High-capacity permanent dumpster for demanding commercial accounts.', 'dimensions' => '116" L x 66" W x 73" H', 'capacity' => '7-8 pickup truck loads', 'image' => 'dumpster-8-yard.png', 'ideal' => ['Large restaurants', 'Large apartment complexes', 'Schools', 'Small remodeling projects', 'Areas with space constraints']],
+            ['name' => '8 Yard', 'body' => 'High-capacity permanent dumpster for demanding commercial accounts.', 'dimensions' => '116" L x 66" W x 73" H', 'capacity' => '7-8 pickup truck loads', 'image' => 'dumpster-8-yard.png', 'ideal' => ['Manufacturing', 'Schools', 'Large retail']],
         ],
         'faqs' => ndses_faq_seed(),
         'accepted_materials' => $rolloff_accepted,

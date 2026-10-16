@@ -50,9 +50,6 @@ export default async function CommercialPage() {
             <p className="eyebrow">Container Options</p>
             <h2>Find the right size dumpster for your business</h2>
           </div>
-          <figure className="asset-frame stack-top">
-            <Image src="/nds-assets/commercial-02-68026192ad.png" alt="NDS dumpster size guide for commercial and roll-off container options" width={912} height={1178} />
-          </figure>
           <div className="grid five service-grid">
             {containers.map((container) => (
               <article className="card service-card" key={container.slug}>
