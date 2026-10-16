@@ -78,7 +78,14 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
   async function onSubmit(data: InquiryInput) {
     setStatus("loading");
     data.captchaToken = await getCaptchaToken();
-    const response = await fetch("/api/forms", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+    let response: Response;
+    try {
+      response = await fetch("/api/forms", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+    } catch {
+      setErrorMessage("We couldn't send your request. Check your connection and try again, or call NDSES directly.");
+      setStatus("error");
+      return;
+    }
     if (response.ok) {
       trackEvent("form_submission", { formType });
       setStatus("success");

@@ -11,11 +11,10 @@ If a question isn't answered here, see [Who to Contact](#who-to-contact) at the 
 - [Self-Check Checklist](#self-check-checklist)
 - [Site Settings — Your Company Info](#site-settings--your-company-info)
 - [Editing Page Content](#editing-page-content)
-- [Managing Services](#managing-services)
 - [Managing Communities (Residential Service Areas)](#managing-communities-residential-service-areas)
 - [Managing Dumpster Sizes](#managing-dumpster-sizes)
+- [Managing Commercial Containers](#managing-commercial-containers)
 - [Managing FAQs](#managing-faqs)
-- [Managing Documents](#managing-documents)
 - [Managing Service Areas & Schedules (the coverage map)](#managing-service-areas--schedules-the-coverage-map)
 - [Posting Alerts & Notices](#posting-alerts--notices)
 - [Viewing Contact Form Submissions](#viewing-contact-form-submissions)
@@ -47,7 +46,7 @@ Use this to confirm the site is set up correctly and everything is working, with
 
 **Access**
 - [ ] I can log in at `https://ndses.flywheelsites.com/wp-admin`
-- [ ] I can see the full black admin menu on the left (Pages, Services, Communities, Dumpster Sizes, FAQs, Documents, Service Notices, Service Areas, Schedule Items, Form Submissions, Site Settings)
+- [ ] I can see the full black admin menu on the left (Pages, Communities, Dumpster Sizes, Commercial Containers, FAQs, Service Notices, Service Areas, Form Submissions, Site Settings)
 
 **Company info** — [Site Settings](#site-settings--your-company-info)
 - [ ] Phone number is correct
@@ -57,15 +56,15 @@ Use this to confirm the site is set up correctly and everything is working, with
 - [ ] Facebook URL and Instagram URL point to your real pages (not left blank or placeholder)
 - [ ] Header logo and footer logo both look right
 - [ ] Footer description and copyright text read correctly
+- [ ] Mission Statement and About Page: Our Story read correctly
 
 **Page content** — [Editing Page Content](#editing-page-content)
 - [ ] Home, About, Contact, Commercial, and Dumpster Rentals pages all have a heading, description, and image in their Hero
-- [ ] I opened Page Sections on at least one page and understand how to add/reorder a section
 
-**Services, communities, sizes, FAQs**
-- [ ] All three [Services](#managing-services) (Residential, Commercial, Dumpster Rentals) have a summary and image
+**Communities, sizes, containers, FAQs**
 - [ ] Every [Community](#managing-communities-residential-service-areas) you serve has the correct service day, trash schedule, and recycling schedule
-- [ ] Every [Dumpster Size](#managing-dumpster-sizes) you offer is listed with correct capacity, dimensions, and rental period
+- [ ] Every [Dumpster Size](#managing-dumpster-sizes) you offer is listed with correct capacity, dimensions, Ideal For list, and image
+- [ ] Every [Commercial Container](#managing-commercial-containers) you offer is listed with correct dimensions, capacity, and image
 - [ ] [FAQs](#managing-faqs) cover the real questions customers ask, sorted into the right category (Dumpster, Residential, Commercial)
 
 **Coverage map & schedule** — [Service Areas & Schedules](#managing-service-areas--schedules-the-coverage-map)
@@ -97,13 +96,14 @@ This is the one screen that controls information shown across the *entire* site 
 | Company Name / Legal Name | Displayed name vs. official registered name |
 | Phone / Email | Shown in the header, footer, and contact page |
 | Facility Address / Mailing Address | Contact page and footer |
-| Office Hours | A repeatable list — click "Add Row" to add a line, e.g. "Monday–Thursday: 8am–4pm" |
+| Office Hours | One line per row, e.g. "Monday - Thursday: 8:00am - 4:00pm" (press Enter between lines) |
 | Service Area Summary | The one-line description of your coverage area |
 | Facebook URL / Instagram URL | Powers the social icons in the footer |
 | Header Logo / Footer Logo | Upload a new logo image to replace either |
 | Footer Description | The short blurb under your logo in the footer |
 | Copyright Text | The line at the very bottom of every page |
-| Social Links | A repeatable list of label + URL pairs shown in the footer |
+| Mission Statement | The "Our Mission" box on the Home and About pages |
+| About Page: Our Story | The company history on the About page. Leave blank to keep the current text |
 
 At the bottom of this screen you'll also see a few **Integration Status** fields (PayEngine Status, Form Backend Status, Google Maps Status, Facebook Alert Sync Status, Calendar Integration Status). Most of these are informational notes for your developer, not switches — changing them doesn't turn anything on or off. **PayEngine Status is the exception**: it's a real switch, and it sits next to the actual PayEngine credential fields (Public Key, API Host, Server API URL, Merchant ID) — see [Accepting Payments](#accepting-payments-payengine) before touching any of these.
 
@@ -111,26 +111,13 @@ At the bottom of this screen you'll also see a few **Integration Status** fields
 
 **Menu: Pages → pick a page (Home, About, Contact, etc.)**
 
-Each page has two things you can edit:
+Each page's **Hero** — the big banner at the top — is editable: eyebrow text, heading, description, and an optional image. Leave a box blank to keep the site's current text for it.
 
-1. **Hero** — the big banner at the top of the page: eyebrow text, heading, description, and an optional image.
-2. **Page Sections** — the building blocks that make up the rest of the page. Click "Add Row" to add a new section, choose a layout, and fill it in. Drag sections by the move handle to reorder them. Available layouts:
-   - **Hero** — a secondary banner mid-page
-   - **Text and Image** — a heading, rich text, and an image side by side
-   - **FAQ Section** — pick existing FAQs to display (see [Managing FAQs](#managing-faqs))
-   - **Service Grid** — pick existing Services to display as cards
-   - **Accepted / Prohibited Materials** — a simple heading + text block
-   - **Process Steps** — a numbered list of steps (e.g. "How rental works")
+The rest of each page's layout (section order, service cards, the "Why NDS" block, accepted/prohibited materials lists) is built into the site's design. Text that changes often is pulled from the menus below — Site Settings, Dumpster Sizes, Commercial Containers, FAQs, Service Notices, Service Areas, and Communities. For a layout or wording change outside those, contact your developer.
 
-There's also an **SEO Title** and **SEO Description** field near the bottom of each page — this is what shows up in Google search results, separate from the page's visible heading.
+> **Note:** You may see a **Page Sections** box on page edit screens. It requires the paid ACF PRO plugin, which this site doesn't use, so it has no effect — ignore it.
 
 **Special Events, Privacy Policy, and Terms** are ordinary pages edited the same way as any other page listed above — Special Events also has its own inquiry form (formType "event") like Commercial and Dumpster Rentals do. Privacy Policy and Terms currently hold placeholder legal text pending formal review — replace it with NDSES's actual reviewed policy before relying on it.
-
-## Managing Services
-
-**Menu: Services**
-
-These are your three core service lines (Residential, Commercial, Dumpster Rentals) shown as cards on the homepage and in the Service Grid page section. Each entry has a summary, hero description, and image.
 
 ## Managing Communities (Residential Service Areas)
 
@@ -138,40 +125,48 @@ These are your three core service lines (Residential, Commercial, Dumpster Renta
 
 One entry per town/city you service (e.g. Town of Walworth, City of Delavan). Each has:
 
-- Service Day, Trash Schedule, Recycling Schedule
-- Content Items — a flexible list for things like service guidelines
-- Material Lists — accepted/not-accepted items, grouped under a heading (e.g. "Accepted Recycling")
+- **Service Day, Trash Schedule, Recycling Schedule** — these update the community's page and the Residential page.
+
+The entry's **slug** (the part of its URL, e.g. `town-of-walworth`) must match the community's existing page address for its schedule to show. The five current communities are Town of Walworth, Town of Delavan, City of Delavan, Town of Darien, and Town of Sharon. Adding a brand-new community, or changing its recycling and bulk-item lists, is a developer change.
 
 ## Managing Dumpster Sizes
 
 **Menu: Dumpster Sizes**
 
-One entry per roll-off size you offer (10/12 Yard, 15 Yard, 20 Yard, 30 Yard, etc.): capacity, dimensions, rental period, an image, and a credit-card-fee note if applicable.
+One entry per roll-off size you offer (10 Yard, 12 Yard, 15 Yard, 20 Yard, 30 Yard): Capacity (or Truck Loads), Dimensions, an Image (the dimension graphic), plus **Ideal For** and **Included** lists — type one item per line. Use the **Order** box (right-hand sidebar) to control the order sizes appear in: 1, 2, 3…
 
-**Note on the Dumpster Calculator tool** (the "recommend a size" quiz on the Dumpster Calculator page): its sizing logic is fixed in the site's code, not editable here in wp-admin. By design, checking **Other Heavy Materials** always caps the recommendation at 10/12 Yard regardless of project type — heavy materials (concrete, dirt, roofing tear-off) hit a dumpster's weight limit long before it's visually full, so a bigger box wouldn't help. The tool shows an explanatory note whenever that happens. If you ever want the underlying project-type-to-size mapping changed, that's a developer change, not a content edit.
+> **Important:** until at least one Dumpster Size is published, the site shows its built-in sizes. As soon as you publish one, the site shows *only* published entries — so enter all five sizes before publishing any, or publish them together.
+
+## Managing Commercial Containers
+
+**Menu: Commercial Containers**
+
+The permanent dumpster options on the Commercial page (96 Gallon, 2 Yard, 4 Yard, 6 Yard, 8 Yard). Each entry has a title (e.g. "4 Yard"), Description, Dimensions, Capacity, a Dimension Graphic image, and an **Ideal For** list (one item per line). Use the **Order** box to set display order.
+
+Same rule as dumpster sizes: the built-in list shows until you publish your first entry, then only published entries show — enter all of them before publishing.
+
+**Note on the Dumpster Calculator tool** (the "recommend a size" quiz on the Dumpster Calculator page): its sizing logic is fixed in the site's code, not editable here in wp-admin. By design, checking **Other Heavy Materials** always caps the recommendation at 10 Yard regardless of project type — heavy materials (concrete, dirt, roofing tear-off) hit a dumpster's weight limit long before it's visually full, so a bigger box wouldn't help. The tool shows an explanatory note whenever that happens. If you ever want the underlying project-type-to-size mapping changed, that's a developer change, not a content edit.
 
 ## Managing FAQs
 
 **Menu: FAQs**
 
-Each FAQ has a Question, an Answer (rich text — you can bold, link, and add lists), a Category (**Dumpster**, **Residential**, or **Commercial**), and a Sort Order number for controlling display order within its category. FAQs entered here can be pulled into any page via the FAQ Section page layout.
+Each FAQ has a Question, an Answer (rich text — you can bold, link, and add lists), a Category (**Dumpster**, **Residential**, or **Commercial**), and a Sort Order number for controlling display order within its category. FAQs appear on the FAQs page, and Dumpster/Residential FAQs also appear on the Home and Residential pages.
 
-## Managing Documents
-
-**Menu: Documents**
-
-Downloadable files (flyers, policy PDFs, etc.) that can be linked from any page.
+> **Important:** the built-in FAQs show until you publish your first FAQ here, then only published FAQs show. Re-enter any built-in questions you want to keep.
 
 ## Managing Service Areas & Schedules (the coverage map)
 
-**Menu: Service Areas** and **Menu: Schedule Items**
+**Menu: Service Areas**
 
 **Service Areas** power the coverage map shown on the Home, About, and Commercial pages. Each entry is a town or county with:
 - County name
 - Service Types (check any combination of **Residential**, **Commercial**, **Temporary roll-off / dumpster rentals**)
 - Map X/Y Position — these are percentage coordinates (0–100) placing the dot on the schematic map. If a new entry looks off-position, nudge these numbers and refresh — ask your developer if you're not sure what to enter.
 
-**Schedule Items** are individual calendar entries — Regular pickup, Holiday, Delayed service, or Special date — with a date and description.
+As with FAQs, the built-in areas show until you publish your first Service Area, then only published ones show — enter every area before publishing.
+
+Holiday and delay dates are communicated with [Service Notices](#posting-alerts--notices) and the community calendar downloads; the **Schedule Items** menu isn't used by the site.
 
 ## Posting Alerts & Notices
 
@@ -182,9 +177,10 @@ Use this for anything time-sensitive: weather delays, holiday closures, service 
 - **Notice Content** — the public title, a short summary, full details (rich text), and Internal Notes (visible only to staff in wp-admin, never shown publicly)
 - **Status and Priority** — turn **Notice Enabled** on, set **Notice Status** (Draft, Scheduled, Active, Resolved, Expired), and **Notice Priority** (Informational, Standard, Important, Urgent, Emergency) — priority affects styling/prominence
 - **Timing** — set Display Start / Display End dates, or turn on **Show Until Manually Resolved** if you don't know the end date yet (you'll turn it off or set Notice Status to Resolved when it's over)
-- **Display Locations** — check every place this notice should appear: Site-wide announcement bar, Modal popup, Home page, Residential page, Commercial page, Dumpster rental page, Special-events page, Community pages, Contact page, Payment page, and/or the Service-notices archive. You can also target specific **Affected Communities**.
-- **Announcement Bar** — the short text shown if you selected the site-wide banner
-- **Popup Settings** — turn on a modal popup and optionally require visitors to acknowledge it before dismissing
+- **Display Locations** — check **Site-wide announcement bar** to show it in the green bar at the top of every page. Every live notice also appears on the **What's New** page. (The other location checkboxes, Affected Communities, and Popup Settings aren't used by the site yet.)
+- **Announcement Bar** — the short text shown in the top bar; if blank, the notice title is used
+
+A notice is live when **Notice Enabled** is on, **Notice Status** is **Active** (or **Scheduled** with a start date that has passed), and it's inside its Display Start/End window.
 
 **To end a notice:** change Notice Status to Resolved (or Expired), or simply turn Notice Enabled off, then Update.
 
@@ -223,8 +219,8 @@ Until step 4, the site keeps working exactly as before — nothing changes just 
 **I published a change but don't see it on the live site.**
 Give it about 5 minutes — content is cached briefly for speed. If it still hasn't appeared after that, try a hard refresh (Cmd+Shift+R / Ctrl+Shift+R), and if it's still missing, contact your developer.
 
-**How do I add a new FAQ to a page?**
-Create the FAQ under the FAQs menu first (with the right Category), then go to the page, add an "FAQ Section" layout in Page Sections, and pick it from the list.
+**How do I add a new FAQ?**
+Create it under the FAQs menu with the right Category and publish. It appears on the FAQs page automatically (see the note in [Managing FAQs](#managing-faqs) about the built-in FAQs).
 
 **How do I post a weather delay or closure notice?**
 See [Posting Alerts & Notices](#posting-alerts--notices) above — that's the Service Notices menu.

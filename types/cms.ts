@@ -137,6 +137,9 @@ export type CommercialContainer = {
   name: string;
   slug: string;
   description: string;
+  dimensions?: string;
+  capacity?: string;
+  image?: string;
   idealFor: string[];
 };
 

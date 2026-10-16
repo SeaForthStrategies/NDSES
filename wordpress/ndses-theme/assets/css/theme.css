@@ -739,6 +739,20 @@ img {
   color: var(--nds-muted);
 }
 
+.faq-answer {
+  padding: 0 20px 18px;
+  color: var(--nds-muted);
+}
+
+.faq-item .faq-answer p {
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.faq-answer > :last-child {
+  margin-bottom: 0;
+}
+
 .cta-band {
   padding: 54px 0;
   background: var(--nds-forest);
@@ -1228,3 +1242,11 @@ fieldset {
   }
 }
 
+
+.feature-card .container-image {
+  aspect-ratio: 4 / 3;
+  height: auto;
+  margin-bottom: 14px;
+  object-fit: contain;
+  width: 100%;
+}

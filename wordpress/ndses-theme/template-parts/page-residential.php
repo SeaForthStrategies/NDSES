@@ -6,7 +6,7 @@
             <h2>Select your community</h2>
         </div>
         <div class="card-grid five">
-            <?php foreach (ndses_data()['communities'] as $slug => $community) : ?>
+            <?php foreach (ndses_get_communities() as $slug => $community) : ?>
                 <article class="feature-card">
                     <p class="kicker"><?php echo esc_html($community['type']); ?></p>
                     <h3><?php echo esc_html($community['name']); ?></h3>

@@ -7,11 +7,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NDSES_THEME_VERSION', '2.1.3');
+define('NDSES_THEME_VERSION', '2.2.0');
 define('NDSES_THEME_DIR', get_template_directory());
 
 require_once NDSES_THEME_DIR . '/inc/data.php';
 require_once NDSES_THEME_DIR . '/inc/helpers.php';
+require_once NDSES_THEME_DIR . '/inc/cms.php';
 require_once NDSES_THEME_DIR . '/inc/template-tags.php';
 require_once NDSES_THEME_DIR . '/inc/geocode.php';
 

@@ -16,8 +16,8 @@
         </div>
         <div>
             <h2>Office Hours</h2>
-            <?php foreach ((array) ndses_setting('hours', []) as $line) : ?>
-                <p><?php echo esc_html(is_array($line) ? ($line['line'] ?? '') : $line); ?></p>
+            <?php foreach (ndses_lines(ndses_setting('hours', [])) as $line) : ?>
+                <p><?php echo esc_html($line); ?></p>
             <?php endforeach; ?>
         </div>
         <div>

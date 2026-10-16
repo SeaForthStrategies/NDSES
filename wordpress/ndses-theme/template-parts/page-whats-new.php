@@ -2,7 +2,7 @@
 <section class="section">
     <div class="container">
         <div class="card-grid notice-grid">
-            <?php foreach (ndses_data()['notices'] as $notice) : ?>
+            <?php foreach (ndses_get_notices() as $notice) : ?>
                 <article class="feature-card notice-card">
                     <p class="kicker"><?php echo esc_html($notice['type']); ?> · <?php echo esc_html($notice['date']); ?></p>
                     <h2><?php echo esc_html($notice['title']); ?></h2>

@@ -10,7 +10,9 @@ if (!defined('ABSPATH')) {
 function ndses_setting(string $key, mixed $fallback = ''): mixed
 {
     if (function_exists('get_field')) {
-        $value = get_field($key, 'option');
+        // The Site Settings screen (ndses-cms plugin) saves with acf_form()
+        // under post_id 'ndses-site-settings', not ACF's default 'option'.
+        $value = get_field($key, 'ndses-site-settings');
         if ($value !== null && $value !== false && $value !== '') {
             return $value;
         }
@@ -29,6 +31,18 @@ function ndses_page_field(string $field, mixed $fallback = ''): mixed
     }
 
     return $fallback;
+}
+
+/**
+ * "Request This Size" target. The Dumpster Rentals page's #quote form is the
+ * only inquiry form with a dumpster-size field, so the size has to land there
+ * (the Contact page's general form would silently drop it).
+ */
+function ndses_dumpster_request_url(string $slug = ''): string
+{
+    $query = $slug !== '' ? '?service=dumpster&size=' . rawurlencode($slug) : '?service=dumpster';
+
+    return home_url('/dumpster-rentals/' . $query . '#quote');
 }
 
 function ndses_asset(string $filename): string
@@ -62,11 +76,15 @@ function ndses_page_hero(?string $slug = null): array
     $acf_hero = ndses_page_field('hero', []);
 
     if (is_array($acf_hero) && !empty($acf_hero)) {
+        // ACF returns '' (not null) for empty sub-fields, so fall back on
+        // emptiness rather than with ??.
+        $pick = static fn (string $key) => !empty($acf_hero[$key]) ? $acf_hero[$key] : ($fallback[$key] ?? '');
+
         return [
-            'eyebrow' => $acf_hero['eyebrow'] ?? $fallback['eyebrow'],
-            'heading' => $acf_hero['heading'] ?? $fallback['heading'],
-            'description' => $acf_hero['description'] ?? $fallback['description'],
-            'image' => $acf_hero['image'] ?? ($fallback['image'] ?? ''),
+            'eyebrow' => $pick('eyebrow'),
+            'heading' => $pick('heading'),
+            'description' => $pick('description'),
+            'image' => $pick('image'),
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 $slug = $args['community_slug'] ?? '';
-$community = ndses_data()['communities'][$slug] ?? null;
+$community = ndses_get_communities()[$slug] ?? null;
 
 if (!$community) {
     ndses_render_hero('residential');

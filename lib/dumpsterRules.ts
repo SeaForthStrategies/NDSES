@@ -24,11 +24,11 @@ type Rule = {
 
 // TODO: ACF - Move calculator rules into editable CMS fields when WordPress ACF is connected.
 export const dumpsterRecommendationRules: Rule[] = [
-  { project: "Home/Garage Cleanout", materials: ["Mixed Household Trash", "Wood"], recommendedSlugs: ["10-12-yard", "15-yard"] },
+  { project: "Home/Garage Cleanout", materials: ["Mixed Household Trash", "Wood"], recommendedSlugs: ["10-yard", "12-yard"] },
   { project: "Home Remodel", materials: ["Construction Debris", "Wood"], recommendedSlugs: ["15-yard", "20-yard"] },
-  { project: "Bathroom/Kitchen Demo", materials: ["Construction Debris"], recommendedSlugs: ["10-12-yard", "15-yard"] },
+  { project: "Bathroom/Kitchen Demo", materials: ["Construction Debris"], recommendedSlugs: ["12-yard", "15-yard"] },
   { project: "Roofing/Siding Teardown", materials: ["Construction Debris"], recommendedSlugs: ["20-yard", "30-yard"] },
-  { project: "Concrete, Dirt, and Rocks", materials: ["Other Heavy Materials"], recommendedSlugs: ["10-12-yard"] },
+  { project: "Concrete, Dirt, and Rocks", materials: ["Other Heavy Materials"], recommendedSlugs: ["10-yard"] },
   { project: "Other", materials: materialTypes, recommendedSlugs: ["15-yard", "20-yard"] }
 ];
 

@@ -1,0 +1,61 @@
+{
+  "key": "group_ndses_commercial_container",
+  "title": "Commercial Container Details",
+  "fields": [
+    {
+      "key": "field_ndses_container_body",
+      "label": "Description",
+      "name": "body",
+      "type": "textarea",
+      "rows": 3
+    },
+    {
+      "key": "field_ndses_container_dimensions",
+      "label": "Dimensions",
+      "name": "dimensions",
+      "type": "text",
+      "instructions": "e.g. 87\" L x 66\" W x 48\" H"
+    },
+    {
+      "key": "field_ndses_container_capacity",
+      "label": "Capacity",
+      "name": "capacity",
+      "type": "text",
+      "instructions": "e.g. 3-4 pickup truck loads"
+    },
+    {
+      "key": "field_ndses_container_image",
+      "label": "Dimension Graphic",
+      "name": "image",
+      "type": "image",
+      "return_format": "array",
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_ndses_container_ideal_for",
+      "label": "Ideal For",
+      "name": "ideal_for",
+      "type": "textarea",
+      "rows": 4,
+      "new_lines": "",
+      "instructions": "One item per line, e.g. \"Restaurants\"."
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "commercial_container"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1792159580
+}

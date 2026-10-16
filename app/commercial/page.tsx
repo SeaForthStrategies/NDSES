@@ -50,15 +50,31 @@ export default async function CommercialPage() {
             <p className="eyebrow">Container Options</p>
             <h2>Find the right size dumpster for your business</h2>
           </div>
-          <figure className="asset-frame stack-top">
-            <Image src="/nds-assets/commercial-02-68026192ad.png" alt="NDS dumpster size guide for commercial and roll-off container options" width={912} height={1178} />
-          </figure>
           <div className="grid five service-grid">
             {containers.map((container) => (
               <article className="card service-card" key={container.slug}>
+                {container.image ? (
+                  <Image src={container.image} alt={`${container.name} dumpster dimension graphic supplied by NDS`} width={280} height={220} className="container-image" />
+                ) : null}
                 <span className="badge">{container.name}</span>
                 <h3>{container.name}</h3>
                 <p>{container.description}</p>
+                {container.dimensions || container.capacity ? (
+                  <dl className="spec-list">
+                    {container.dimensions ? (
+                      <div>
+                        <dt>Dimensions</dt>
+                        <dd>{container.dimensions}</dd>
+                      </div>
+                    ) : null}
+                    {container.capacity ? (
+                      <div>
+                        <dt>Capacity</dt>
+                        <dd>{container.capacity}</dd>
+                      </div>
+                    ) : null}
+                  </dl>
+                ) : null}
                 <ul>{container.idealFor.map((item) => <li key={item}>{item}</li>)}</ul>
               </article>
             ))}

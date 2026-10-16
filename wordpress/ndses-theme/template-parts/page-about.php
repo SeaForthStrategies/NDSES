@@ -3,12 +3,12 @@
     <div class="container split">
         <div>
             <p class="eyebrow">Our History</p>
-            <h2>Built for local service</h2>
-            <p>Our full company story is coming soon. In the meantime, reach out any time &mdash; we're happy to tell you more about NDS over the phone.</p>
+            <h2>Our Story</h2>
+            <?php echo ndses_get_our_story_html(); ?>
         </div>
         <div class="quote-panel">
             <h3>Our Mission</h3>
-            <p><?php echo esc_html(ndses_data()['mission']); ?></p>
+            <p><?php echo esc_html(ndses_get_mission()); ?></p>
         </div>
     </div>
 </section>

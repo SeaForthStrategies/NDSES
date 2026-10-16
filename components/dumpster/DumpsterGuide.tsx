@@ -5,7 +5,7 @@ import type { DumpsterSize } from "@/types/cms";
 import { trackEvent } from "@/lib/analytics";
 import { DUMPSTER_SIZE_SELECTED_EVENT } from "@/lib/dumpster-events";
 
-const projectTypes = ["All", "Cleanout", "Remodel", "Construction", "Commercial"];
+const projectTypes = ["All", "Cleanout", "Remodel", "Construction"];
 
 export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
   const [filter, setFilter] = useState("All");
@@ -31,7 +31,7 @@ export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
           <button aria-selected={filter === type} className="tab" key={type} onClick={() => setFilter(type)} role="tab" type="button">{type}</button>
         ))}
       </div>
-      <div className="grid four">
+      <div className="grid five">
         {filtered.map((size) => (
           <article className={`card ${selected === size.slug ? "tint" : ""}`} key={size.slug}>
             <span className="badge">{size.availability}</span>

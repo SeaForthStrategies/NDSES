@@ -32,7 +32,7 @@ export default async function DumpsterRentalsPage() {
             <h2>Roll-off dumpster sizes</h2>
             <p className="lead">Each rental includes 2 tons of trash, delivery and pickup, disposal, and a 15 day rental period.</p>
           </div>
-          <div className="grid four service-grid">
+          <div className="grid five service-grid">
             {sizes.map((size) => <DumpsterCard dumpster={size} key={size.slug} />)}
           </div>
           <div className="button-row section-actions">
@@ -74,7 +74,7 @@ export default async function DumpsterRentalsPage() {
         </div>
       </section>
       <SectionRenderer sections={page.sections} />
-      <section className="section alt">
+      <section className="section alt" id="quote">
         <div className="container grid two">
           <div>
             <p className="eyebrow">Rental Inquiry</p>
