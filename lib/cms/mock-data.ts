@@ -71,7 +71,7 @@ export const globalSettings: GlobalSettings = {
         { label: "FAQs", href: "/faqs", description: "Dumpster, residential, and commercial questions." },
         { label: "About Us", href: "/about", description: "Mission, history, and team structure." },
         { label: "Contact Us", href: "/contact", description: "Quotes, estimates, and questions." },
-        { label: "Make a Payment", href: "/make-a-payment", description: "Payment and ACH form placeholder." }
+        { label: "Make a Payment", href: "/make-a-payment", description: "Pay your account balance online by card or ACH." }
       ]
     }
   ]
@@ -124,7 +124,7 @@ export const homePage: CMSPage = {
   },
   sections: [
     { id: "home-services", type: "serviceGrid", eyebrow: "Our Services", heading: "Choose the service you need", services: serviceCards },
-    { id: "intro", type: "textImage", eyebrow: "Why NDS", heading: "Waste solutions from a local team that knows the routes", body: "We understand that effective waste management is critical to the quality of life in Wisconsin's towns and cities. Whether you're looking for dependable residential trash pickup or tailored solutions for commercial waste, NDS Environmental Solutions is committed to exceeding your expectations.", imageAlt: "NDS Environmental Solutions truck and operations yard" },
+    { id: "intro", type: "textImage", eyebrow: "Why NDS", heading: "Waste solutions from a local team that knows the routes", body: "We understand that effective waste management is critical to the quality of life in Wisconsin's towns and cities. Whether you're looking for dependable residential trash pickup or tailored solutions for commercial waste, NDS Environmental Solutions is committed to exceeding your expectations.", image: "/nds-assets/branding-03-bffd0f61cb.png", imageAlt: "NDS Environmental Solutions collection truck" },
     { id: "mission", type: "cta", eyebrow: "Our Mission", heading: "Reliable, affordable, and eco-friendly service", body: mission, label: "Learn About NDS", href: "/about" }
   ],
   seo: { title: "NDS Environmental Solutions", description: "Residential trash, recycling, commercial waste, and dumpster rentals in Southern Wisconsin." }

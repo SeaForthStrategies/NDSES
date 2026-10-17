@@ -13,7 +13,11 @@ export function ServiceAreaMap({ areas }: { areas: ServiceArea[] }) {
       <div className="service-map" aria-label="NDS service area map">
         <div className="map-grid" aria-hidden />
         {areas.map((area) => (
-          <div className="map-point" style={{ left: `${area.coordinates?.x ?? 50}%`, top: `${area.coordinates?.y ?? 50}%` }} key={area.name}>
+          <div
+            className={`map-point${(area.coordinates?.x ?? 50) > 66 ? " label-left" : ""}`}
+            key={area.name}
+            style={{ left: `${area.coordinates?.x ?? 50}%`, top: `${area.coordinates?.y ?? 50}%` }}
+          >
             <span className={`point-dot ${area.serviceTypes.includes("residential") ? "residential" : area.serviceTypes.includes("commercial") ? "commercial" : "rollOff"}`} />
             <span className="point-label">{area.name}</span>
           </div>
