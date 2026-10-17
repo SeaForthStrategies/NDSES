@@ -1,4 +1,5 @@
 import { ArrowRight, CreditCard, MapPin, ShieldCheck, Truck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { DumpsterCard } from "@/components/dumpster/DumpsterCard";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
@@ -18,7 +19,17 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema()) }}
       />
-      <section className="hero">
+      <section className="hero hero--photo">
+        <div className="hero-photo-frame" aria-hidden="true">
+          <Image
+            alt=""
+            className="hero-photo"
+            fill
+            priority
+            sizes="(max-width: 860px) 100vw, 75vw"
+            src="/nds-assets/home-hero-truck.jpg"
+          />
+        </div>
         <div className="container hero-shell">
           <div className="hero-copy">
             <p className="eyebrow">{page.hero.eyebrow}</p>
