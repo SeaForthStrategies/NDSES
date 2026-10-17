@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('NDSES_THEME_VERSION', '3.0.0');
+define('NDSES_THEME_VERSION', '3.0.1');
 define('NDSES_THEME_DIR', get_template_directory());
 
 require_once NDSES_THEME_DIR . '/inc/data.php';
@@ -26,6 +26,15 @@ add_action('after_setup_theme', function () {
         'primary' => __('Primary Navigation', 'ndses'),
         'footer' => __('Footer Navigation', 'ndses'),
     ]);
+});
+
+// Browsers request /favicon.ico when a page names no icon, which 404s on
+// every page. Use the NDS icon unless a Site Icon is set in
+// Appearance > Customize > Site Identity (WordPress outputs that one).
+add_action('wp_head', function () {
+    if (!has_site_icon()) {
+        printf('<link rel="icon" href="%s" sizes="96x96" type="image/png">' . "\n", esc_url(ndses_asset('site-icon.png')));
+    }
 });
 
 add_action('wp_enqueue_scripts', function () {
