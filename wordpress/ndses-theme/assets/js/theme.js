@@ -22,13 +22,161 @@
     });
   }
 
-  const header = document.querySelector('.site-header');
-  const toggle = document.querySelector('.menu-toggle');
+  initNavigation();
 
-  if (header && toggle) {
-    toggle.addEventListener('click', function () {
-      const isOpen = header.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
+  /**
+   * Header navigation. Same behavior as the Next.js header
+   * (components/layout/Header.tsx):
+   * - Desktop dropdowns open on mouse hover and close shortly after the
+   *   pointer leaves the trigger + panel region (no flicker crossing the
+   *   gap); touch, pen, and keyboard toggle on click. Escape and clicks
+   *   outside close; arrow keys, Home and End move through the links.
+   * - Mobile sheet with scroll lock, accordion sections, Escape to close.
+   */
+  function initNavigation() {
+    const CLOSE_DELAY_MS = 140;
+    const nav = document.querySelector('[data-desktop-nav]');
+    const items = nav ? [...nav.querySelectorAll('[data-nav-item]')] : [];
+    const triggers = items.map((item) => item.querySelector('[data-nav-trigger]'));
+    let openItem = null;
+    let closeTimer;
+    let lastPointer = '';
+
+    const panelOf = (item) => item.querySelector('[data-nav-panel]');
+    const triggerOf = (item) => item.querySelector('[data-nav-trigger]');
+    const linksOf = (item) => [...panelOf(item).querySelectorAll('a')];
+
+    function setOpen(item) {
+      window.clearTimeout(closeTimer);
+      items.forEach((other) => {
+        const open = other === item;
+        panelOf(other).hidden = !open;
+        triggerOf(other).setAttribute('aria-expanded', String(open));
+      });
+      openItem = item;
+    }
+
+    function closeAll() {
+      setOpen(null);
+    }
+
+    items.forEach((item, index) => {
+      const trigger = triggerOf(item);
+
+      item.addEventListener('pointerenter', (event) => {
+        if (event.pointerType === 'mouse') setOpen(item);
+      });
+      item.addEventListener('pointerleave', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        window.clearTimeout(closeTimer);
+        closeTimer = window.setTimeout(closeAll, CLOSE_DELAY_MS);
+      });
+
+      trigger.addEventListener('pointerdown', (event) => {
+        lastPointer = event.pointerType;
+      });
+      trigger.addEventListener('click', () => {
+        // A mouse already opened the menu on hover, so its click keeps it open.
+        if (lastPointer === 'mouse') setOpen(item);
+        else setOpen(openItem === item ? null : item);
+      });
+
+      trigger.addEventListener('keydown', (event) => {
+        lastPointer = 'keyboard';
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          setOpen(item);
+          const links = linksOf(item);
+          (event.key === 'ArrowDown' ? links[0] : links[links.length - 1]).focus();
+        } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          const next = triggers[(index + (event.key === 'ArrowRight' ? 1 : -1) + triggers.length) % triggers.length];
+          next.focus();
+          if (openItem) setOpen(items[triggers.indexOf(next)]);
+        }
+      });
+
+      panelOf(item).addEventListener('keydown', (event) => {
+        const links = linksOf(item);
+        const current = links.indexOf(document.activeElement);
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          const step = event.key === 'ArrowDown' ? 1 : -1;
+          links[(current + step + links.length) % links.length].focus();
+        } else if (event.key === 'Home' || event.key === 'End') {
+          event.preventDefault();
+          links[event.key === 'Home' ? 0 : links.length - 1].focus();
+        } else if (event.key === 'Tab' && !event.shiftKey && current === links.length - 1) {
+          closeAll();
+        } else if (event.key === 'Tab' && event.shiftKey && current === 0) {
+          event.preventDefault();
+          trigger.focus();
+        }
+      });
+    });
+
+    if (nav) {
+      nav.addEventListener('focusout', (event) => {
+        if (!nav.contains(event.relatedTarget)) closeAll();
+      });
+    }
+
+    document.addEventListener('pointerdown', (event) => {
+      if (openItem && nav && !nav.contains(event.target)) closeAll();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (openItem) {
+        const trigger = triggerOf(openItem);
+        closeAll();
+        trigger.focus();
+      }
+      if (sheet && !sheet.hidden) {
+        setSheet(false);
+        toggle.focus();
+      }
+    });
+
+    // Mobile sheet.
+    const toggle = document.querySelector('[data-menu-toggle]');
+    const sheet = document.querySelector('[data-mobile-nav]');
+    const label = toggle ? toggle.querySelector('[data-menu-label]') : null;
+
+    function setSheet(open) {
+      if (!toggle || !sheet) return;
+      sheet.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.classList.toggle('is-open', open);
+      if (label) label.textContent = open ? 'Close' : 'Menu';
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open) {
+        const first = sheet.querySelector('a, button');
+        if (first) first.focus();
+      }
+    }
+
+    if (toggle && sheet) {
+      toggle.addEventListener('click', () => setSheet(sheet.hidden));
+      sheet.querySelectorAll('[data-mobile-group]').forEach((group) => {
+        group.addEventListener('click', () => {
+          const sub = document.getElementById(group.getAttribute('aria-controls'));
+          const open = group.getAttribute('aria-expanded') !== 'true';
+          group.setAttribute('aria-expanded', String(open));
+          sub.hidden = !open;
+        });
+      });
+      // Choosing a destination closes the sheet (including same-page #anchors).
+      sheet.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setSheet(false)));
+      window.matchMedia('(min-width: 1100px)').addEventListener('change', (event) => {
+        if (event.matches) setSheet(false);
+      });
+    }
+
+    // Leaving via the back/forward cache shouldn't restore an open menu.
+    window.addEventListener('pageshow', () => {
+      closeAll();
+      setSheet(false);
     });
   }
 

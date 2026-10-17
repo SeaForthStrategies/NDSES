@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import { Building2, Recycle } from "lucide-react";
+import { Building2, Recycle, Trash2 } from "lucide-react";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { ServiceAreaMap } from "@/components/sections/ServiceAreaMap";
 import { getCommercialContainers, getCommercialPage, getServiceAreas } from "@/lib/cms";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Commercial Waste Services",
@@ -15,13 +16,7 @@ export default async function CommercialPage() {
   const [page, containers, areas] = await Promise.all([getCommercialPage(), getCommercialContainers(), getServiceAreas()]);
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} />
       <section className="section">
         <div className="container split">
           <div>
@@ -32,9 +27,8 @@ export default async function CommercialPage() {
           </div>
           <div className="visual-stack">
             <figure className="asset-frame">
-              <Image src="/nds-assets/commercial-01-115e487ff9.png" alt="NDS commercial service area map showing Walworth, Rock, Jefferson, Waukesha, and Kenosha counties" width={1300} height={842} />
+              <Image src="/nds-assets/commercial-01-115e487ff9.png" alt="NDS commercial service area map showing Walworth, Rock, Jefferson, Waukesha, and Kenosha counties" width={1300} height={842} sizes="(max-width: 900px) 100vw, 560px" />
             </figure>
-            <p className="asset-caption">Client-supplied service area map from the NDS Website Redesign workbook.</p>
             <div className="card tint">
               <h3>Flexible collection schedules</h3>
               <ul className="check-list compact">
@@ -52,11 +46,15 @@ export default async function CommercialPage() {
           </div>
           <div className="grid five service-grid">
             {containers.map((container) => (
-              <article className="card service-card" key={container.slug}>
-                {container.image ? (
-                  <Image src={container.image} alt={`${container.name} dumpster dimension graphic supplied by NDS`} width={280} height={220} className="container-image" />
-                ) : null}
-                <span className="badge">{container.name}</span>
+              <article className="card container-card" key={container.slug}>
+                <div className="dumpster-visual">
+                  {container.image ? (
+                    <Image src={container.image} alt={`${container.name} dumpster with dimensions`} width={280} height={220} sizes="(max-width: 640px) 90vw, 240px" />
+                  ) : (
+                    <Trash2 size={44} aria-hidden />
+                  )}
+                </div>
+                <div className="dumpster-card-body">
                 <h3>{container.name}</h3>
                 <p>{container.description}</p>
                 {container.dimensions || container.capacity ? (
@@ -75,7 +73,9 @@ export default async function CommercialPage() {
                     ) : null}
                   </dl>
                 ) : null}
+                <p className="ideal-label">Ideal for</p>
                 <ul>{container.idealFor.map((item) => <li key={item}>{item}</li>)}</ul>
+                </div>
               </article>
             ))}
           </div>

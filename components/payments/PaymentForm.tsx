@@ -124,8 +124,15 @@ export function PaymentForm() {
 
   return (
     <>
-      <Script src={`${PAYENGINE_HOST}/js/1.0.0/securefields.min.js?key=${PAYENGINE_PUBLIC_KEY}`} strategy="afterInteractive" onLoad={initializeSecureFields} />
+      {/* The SDK can't start without a public key (it only logs an error),
+          so it loads only once NEXT_PUBLIC_PAYENGINE_PUBLIC_KEY is set. */}
+      {PAYENGINE_PUBLIC_KEY ? (
+        <Script src={`${PAYENGINE_HOST}/js/1.0.0/securefields.min.js?key=${PAYENGINE_PUBLIC_KEY}`} strategy="afterInteractive" onLoad={initializeSecureFields} />
+      ) : null}
       <form className="card form" onSubmit={handleSubmit(onSubmit)} noValidate>
+        {!PAYENGINE_PUBLIC_KEY ? (
+          <p className="form-notice" role="status">Online payments are not available yet. Please contact NDSES for current payment options.</p>
+        ) : null}
         <fieldset className="payment-methods">
           <legend>Payment path</legend>
           <label>
@@ -139,21 +146,21 @@ export function PaymentForm() {
         </fieldset>
         <div className="field">
           <label htmlFor="accountNumber">Account number</label>
-          <input id="accountNumber" {...register("accountNumber", { required: true, minLength: 3 })} />
-          {formState.errors.accountNumber ? <span className="error">Enter your account number.</span> : null}
+          <input aria-describedby={formState.errors.accountNumber ? "accountNumber-error" : undefined} aria-invalid={formState.errors.accountNumber ? true : undefined} id="accountNumber" {...register("accountNumber", { required: true, minLength: 3 })} />
+          {formState.errors.accountNumber ? <span className="error" id="accountNumber-error">Enter your account number.</span> : null}
         </div>
         <div className="field">
           <label htmlFor="amount">Payment amount</label>
-          <input id="amount" inputMode="decimal" {...register("amount", { required: true, pattern: /^\d+(\.\d{1,2})?$/ })} />
-          {formState.errors.amount ? <span className="error">Enter a valid payment amount.</span> : null}
+          <input aria-describedby={formState.errors.amount ? "amount-error" : undefined} aria-invalid={formState.errors.amount ? true : undefined} id="amount" inputMode="decimal" {...register("amount", { required: true, pattern: /^\d+(\.\d{1,2})?$/ })} />
+          {formState.errors.amount ? <span className="error" id="amount-error">Enter a valid payment amount.</span> : null}
         </div>
         <div className="field">
           <label htmlFor="email">Receipt email</label>
-          <input id="email" type="email" {...register("email", { required: true })} />
-          {formState.errors.email ? <span className="error">Enter a valid receipt email.</span> : null}
+          <input aria-describedby={formState.errors.email ? "email-error" : undefined} aria-invalid={formState.errors.email ? true : undefined} id="email" type="email" {...register("email", { required: true })} />
+          {formState.errors.email ? <span className="error" id="email-error">Enter a valid receipt email.</span> : null}
         </div>
 
-        <div hidden={paymentMethod !== "card"}>
+        <div className="field-group" hidden={paymentMethod !== "card"}>
           <div className="field">
             <label htmlFor="card-name">Name on card</label>
             <div id="card-name" className="secure-field" />
@@ -178,7 +185,7 @@ export function PaymentForm() {
           </div>
         </div>
 
-        <div hidden={paymentMethod !== "ach"}>
+        <div className="field-group" hidden={paymentMethod !== "ach"}>
           <div className="split-fields">
             <div className="field">
               <label htmlFor="ach-first-name">First name</label>
@@ -200,7 +207,7 @@ export function PaymentForm() {
         </div>
 
         <button className="btn primary" disabled={status === "loading" || !sdkReady} type="submit">
-          {status === "loading" ? "Processing..." : sdkReady ? "Submit payment" : "Loading secure payment form..."}
+          {status === "loading" ? "Processing..." : sdkReady ? "Submit payment" : PAYENGINE_PUBLIC_KEY ? "Loading secure payment form..." : "Online payments unavailable"}
         </button>
         {message ? <p role={status === "error" ? "alert" : "status"} className={status === "error" ? "error" : ""}>{message}</p> : null}
       </form>

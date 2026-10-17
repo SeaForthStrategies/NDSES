@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DumpsterCalculator } from "@/components/dumpster/DumpsterCalculator";
 import { DumpsterCard } from "@/components/dumpster/DumpsterCard";
 import { getCalculatorPage, getDumpsterSizes } from "@/lib/cms";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Dumpster Calculator",
@@ -12,13 +13,7 @@ export default async function DumpsterCalculatorPage() {
   const [page, dumpsters] = await Promise.all([getCalculatorPage(), getDumpsterSizes()]);
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} />
       <section className="section">
         <div className="container">
           <DumpsterCalculator dumpsters={dumpsters} />
@@ -30,7 +25,7 @@ export default async function DumpsterCalculatorPage() {
             <p className="eyebrow">All Sizes</p>
             <h2>Compare other dumpster sizes</h2>
           </div>
-          <div className="grid four service-grid">
+          <div className="grid five service-grid">
             {dumpsters.map((dumpster) => <DumpsterCard dumpster={dumpster} key={dumpster.slug} />)}
           </div>
         </div>

@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Building2, Home, Truck } from "lucide-react";
 import type { PageSection } from "@/types/cms";
 import { FAQSection } from "./FAQSection";
 
@@ -15,7 +17,11 @@ export function SectionRenderer({ sections }: { sections: PageSection[] }) {
                   <h2>{section.heading}</h2>
                   <p className="lead">{section.body}</p>
                 </div>
-                <div className="image-placeholder" aria-label={section.imageAlt || "NDS Environmental Solutions operations image"} />
+                {section.image ? (
+                  <figure className="feature-image">
+                    <Image src={section.image} alt={section.imageAlt ?? ""} width={1200} height={900} sizes="(max-width: 900px) 100vw, 560px" />
+                  </figure>
+                ) : null}
               </div>
             </section>
           );
@@ -29,12 +35,12 @@ export function SectionRenderer({ sections }: { sections: PageSection[] }) {
                   <h2>{section.heading}</h2>
                 </div>
                 <div className="grid three service-grid">
-                  {section.services.map((service, serviceIndex) => (
-                    <Link className="card service-card" data-service-index={serviceIndex} href={service.href} key={service.href}>
-                      <span className="service-number">0{serviceIndex + 1}</span>
+                  {section.services.map((service) => (
+                    <Link className="card service-card" href={service.href} key={service.href}>
+                      <ServiceIcon href={service.href} />
                       <h3>{service.title}</h3>
                       <p>{service.description}</p>
-                      <strong>{service.ctaLabel} <span aria-hidden>→</span></strong>
+                      <strong>{service.ctaLabel} <ArrowRight size={16} aria-hidden /></strong>
                     </Link>
                   ))}
                 </div>
@@ -44,14 +50,14 @@ export function SectionRenderer({ sections }: { sections: PageSection[] }) {
         }
         if (section.type === "cta") {
           return (
-            <section className="section alt" key={section.id}>
-              <div className="container split">
-                <div>
+            <section className="section statement-band" key={section.id}>
+              <div className="container">
+                <div className="statement">
                   <p className="eyebrow">{section.eyebrow}</p>
                   <h2>{section.heading}</h2>
-                  <p>{section.body}</p>
+                  <p className="lead">{section.body}</p>
+                  <Link className="btn btn-gold" href={section.href}>{section.label} <ArrowRight size={18} aria-hidden /></Link>
                 </div>
-                <Link className="btn primary" href={section.href}>{section.label}</Link>
               </div>
             </section>
           );
@@ -80,5 +86,14 @@ export function SectionRenderer({ sections }: { sections: PageSection[] }) {
         return null;
       })}
     </>
+  );
+}
+
+function ServiceIcon({ href }: { href: string }) {
+  const Icon = href.startsWith("/commercial") ? Building2 : href.startsWith("/dumpster") ? Truck : Home;
+  return (
+    <span className="service-icon" aria-hidden>
+      <Icon size={24} />
+    </span>
   );
 }

@@ -8,3 +8,5 @@ dist
 *.swp
 .DS_Store
 tsconfig.tsbuildinfo
+test-results
+playwright-report

@@ -1,9 +1,9 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { getContactPage, getGlobalSettings, getServiceNotices } from "@/lib/cms";
 import { activeNoticesForLocation } from "@/lib/notices";
 import { ServiceNoticeList } from "@/components/notices/ServiceNoticeList";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -14,20 +14,11 @@ export default async function ContactPage() {
   const [page, settings, notices] = await Promise.all([getContactPage(), getGlobalSettings(), getServiceNotices()]);
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} />
       <section className="section">
         <div className="container grid two">
           <InquiryForm formType="general" />
           <aside className="card tint">
-            <figure className="asset-frame contain">
-              <Image src="/nds-assets/contact-us-01-ea0d03de5d.png" alt="NDS Environmental Solutions logo and phone number" width={797} height={527} />
-            </figure>
             <h2>Contact Card</h2>
             <p><strong>{settings.companyName}</strong></p>
             <p>{settings.address}</p>
