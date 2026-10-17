@@ -141,6 +141,8 @@ Each page's **Hero** — the big banner at the top — is editable: eyebrow text
 3. To change the picture, click **Add Image** (or the current image), choose or upload one, then click **Select**.
 4. Click **Save** at the top right.
 
+> **Home page:** the truck-by-the-lake background photo is built into the design (the green fade is lined up with where the truck sits), so the Home page's Hero **Image** box has no effect. Its eyebrow, heading, and description still work. To change the home photo, contact your developer.
+
 The rest of each page's layout (section order, service cards, the "Why NDS" block, accepted/prohibited materials lists) is built into the site's design. Text that changes often is pulled from the menus below — Site Settings, Dumpster Sizes, Commercial Containers, FAQs, Service Notices, Service Areas, and Communities. For a layout or wording change outside those, contact your developer.
 
 > **Note:** You may see a **Page Sections** box on page edit screens. It requires the paid ACF PRO plugin, which this site doesn't use, so it has no effect — ignore it.

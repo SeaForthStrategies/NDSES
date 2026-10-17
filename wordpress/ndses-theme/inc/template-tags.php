@@ -20,11 +20,13 @@ function ndses_render_hero(?string $slug = null): void
     $width = is_array($image) ? ($image['width'] ?? null) : null;
     $height = is_array($image) ? ($image['height'] ?? null) : null;
 
-    // Home: the truck photo is a full-bleed background behind the copy
-    // (an image chosen in the page's ACF Hero field replaces it).
+    // Home: the Delavan lakefront truck photo is always the full-bleed
+    // background behind the copy. The layout's green fade is tuned to where
+    // the truck sits in this photo, so the Home page's ACF Hero image is
+    // intentionally not used here (other pages still use theirs).
     $photo_url = '';
     if ($slug === 'home') {
-        $photo_url = is_array($image) && !empty($image['url']) ? $image['url'] : ndses_asset('home-hero-truck.jpg');
+        $photo_url = ndses_asset('home-hero-truck.jpg');
         $image_url = '';
     }
     ?>
