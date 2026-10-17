@@ -1932,136 +1932,155 @@ p.error[role="alert"] {
 .service-map-wrap {
   display: grid;
   gap: clamp(20px, 3vw, 32px);
-  align-items: stretch;
+  align-items: start;
 }
 
 @media (min-width: 900px) {
   .service-map-wrap {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   }
 }
 
 .service-map {
   position: relative;
-  min-height: 360px;
+  margin: 0;
   overflow: hidden;
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 55% 52%, rgb(47 132 82 / 18%), transparent 55%),
-    var(--forest-900);
+  background: var(--paper);
 }
 
-.map-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgb(255 255 255 / 7%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 7%) 1px, transparent 1px);
-  background-size: 48px 48px;
+.service-map img {
+  width: 100%;
+  height: auto;
 }
 
-.map-point {
+.service-maps {
+  display: grid;
+  gap: 16px;
+}
+
+.service-map-detail {
+  container-type: inline-size;
+}
+
+.map-canvas {
+  position: relative;
+}
+
+.service-map figcaption {
+  padding: 8px 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* Numbered pin; the same number appears beside the name in the list. The
+   pin's center sits on the place; its name shows beside it once the map is
+   wide enough that names can't collide (below that, the list carries them). */
+.map-pin {
   position: absolute;
   z-index: 1;
   display: flex;
   gap: 6px;
   align-items: center;
-  transform: translate(-7px, -50%);
+  transform: translate(-13px, -50%);
 }
 
-/* Points on the right third put their label on the left, so labels never
-   run past the map's edge. */
-.map-point.label-left {
-  flex-direction: row-reverse;
-  transform: translate(calc(-100% + 7px), -50%);
-}
-
-.point-dot {
+.map-pin b {
+  display: grid;
   flex: none;
-  width: 14px;
-  height: 14px;
+  place-items: center;
+  width: 26px;
+  height: 26px;
   border: 2px solid var(--paper);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgb(255 255 255 / 15%);
+  background: var(--forest-800);
+  color: var(--gold-400);
+  font: 800 0.8rem / 1 var(--font-display);
+  box-shadow: 0 2px 6px rgb(11 46 28 / 35%);
 }
 
-.point-dot.residential {
-  background: var(--gold-500);
-}
-
-.point-dot.commercial {
-  background: var(--green-500);
-}
-
-.point-dot.rollOff {
-  background: #7fb7d9;
-}
-
-.point-label {
-  padding: 2px 8px;
+.map-pin-label {
+  display: none;
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
-  background: rgb(7 34 23 / 72%);
-  color: var(--paper);
-  font-size: 0.76rem;
-  font-weight: 600;
+  background: var(--paper);
+  color: var(--forest-900);
+  font-size: 0.8rem;
+  font-weight: 700;
   white-space: nowrap;
+  box-shadow: 0 1px 4px rgb(11 46 28 / 20%);
 }
 
-@media (max-width: 639px) {
-  .point-label {
-    display: none;
+@container (min-width: 560px) {
+  .map-pin-label {
+    display: inline-block;
   }
 }
 
-.map-emblem {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
-  color: rgb(255 255 255 / 22%);
+.map-pin.static {
+  position: static;
+  transform: none;
+}
+
+.map-pin.static b {
+  box-shadow: none;
 }
 
 .map-list h2 {
   font-size: var(--text-xl);
 }
 
-.map-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  margin: 16px 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
+.map-list-heading {
+  margin: 20px 0 10px;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.map-legend span {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.area-list {
+.area-list,
+.county-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
-  gap: 8px 16px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.area-list li {
+.area-list li,
+.county-list li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
   margin: 0;
-  padding: 8px 0;
-  border-top: 1px solid var(--line);
 }
 
 .area-list strong,
-.area-list span {
+.area-list small,
+.county-list strong,
+.county-list small {
   display: block;
 }
 
-.area-list span {
+.area-list small,
+.county-list small {
   color: var(--muted);
-  font-size: var(--text-sm);
+}
+
+.county-list {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+}
+
+.county-list li {
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+  padding-left: 12px;
+  border-left: 4px solid #cfe1cb;
 }
 
 /* ---------- Text + image sections ---------- */
