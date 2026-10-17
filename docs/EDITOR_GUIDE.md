@@ -40,6 +40,10 @@ A few things that are true everywhere:
 - **Changes appear on the live site within a few minutes**, not instantly. If you don't see your change right away, wait 5 minutes and refresh. (See [Common Questions](#common-questions) if it still hasn't shown up.)
 - **Required fields are marked** and the Publish button will tell you if something's missing.
 
+**Where the edit boxes are.** On most screens (Dumpster Sizes, FAQs, Communities, Pages, and so on) WordPress shows its page editor first, and the editable boxes sit in the **Meta Boxes** panel at the bottom of the screen. Drag the small grey bar at the top of that panel upward to give it more room, or scroll inside it. The **Save** button (or **Publish**, for a brand-new entry) is the blue button at the top right. Site Settings is a plain form with a **Save Settings** button at the bottom.
+
+**After every change:** wait about 5 minutes, then open the page on the live site and hard-refresh (Cmd+Shift+R on Mac, Ctrl+Shift+R on Windows) to see it.
+
 ## Self-Check Checklist
 
 Use this to confirm the site is set up correctly and everything is working, without needing to ask your developer. It's organized to match the sections below — if a step doesn't make sense, click through to that section for details. Nothing here requires technical knowledge; it's all things you can see and click yourself.
@@ -91,6 +95,22 @@ Once every box is checked, the content side of the site is in your hands — you
 
 This is the one screen that controls information shown across the *entire* site — footer, contact page, schema data search engines read, etc. Update it here once and it updates everywhere.
 
+![Site Settings: company name, phone, email, and address](images/acf-site-settings-company.jpg)
+
+**How to update your phone, email, address, or hours**
+1. In the left menu, click **Site Settings**.
+2. Change the box you need. For **Office Hours**, put each line on its own row (press Enter between lines).
+3. Scroll to the bottom and click **Save Settings**.
+
+![Office Hours: one line per row](images/acf-site-settings-hours.jpg)
+
+**How to update the Mission Statement or the About page story**
+1. On the same **Site Settings** screen, scroll to **Mission Statement** and **About Page: Our Story**.
+2. Type or paste the new text. Our Story is a rich-text box, so you can use bold, italics, and links, and press Enter to start a new paragraph.
+3. Click **Save Settings**. Leaving either box empty keeps the text the site shows today.
+
+![Mission Statement and About Page: Our Story](images/acf-site-settings-mission-story.jpg)
+
 | Field | What it controls |
 | --- | --- |
 | Company Name / Legal Name | Displayed name vs. official registered name |
@@ -113,6 +133,14 @@ At the bottom of this screen you'll also see a few **Integration Status** fields
 
 Each page's **Hero** — the big banner at the top — is editable: eyebrow text, heading, description, and an optional image. Leave a box blank to keep the site's current text for it.
 
+![A page's Hero fields](images/acf-page-hero.jpg)
+
+**How to update a page banner**
+1. In the left menu, click **Pages**, then click the page's name (for example **About**).
+2. In the **Meta Boxes** panel at the bottom, find **Hero** and change the **Eyebrow** (small line above the heading), **Heading**, or **Description**.
+3. To change the picture, click **Add Image** (or the current image), choose or upload one, then click **Select**.
+4. Click **Save** at the top right.
+
 The rest of each page's layout (section order, service cards, the "Why NDS" block, accepted/prohibited materials lists) is built into the site's design. Text that changes often is pulled from the menus below — Site Settings, Dumpster Sizes, Commercial Containers, FAQs, Service Notices, Service Areas, and Communities. For a layout or wording change outside those, contact your developer.
 
 > **Note:** You may see a **Page Sections** box on page edit screens. It requires the paid ACF PRO plugin, which this site doesn't use, so it has no effect — ignore it.
@@ -127,6 +155,13 @@ One entry per town/city you service (e.g. Town of Walworth, City of Delavan). Ea
 
 - **Service Day, Trash Schedule, Recycling Schedule** — these update the community's page and the Residential page.
 
+![Community: Service Day, Trash Schedule, Recycling Schedule](images/acf-community.jpg)
+
+**How to change a pickup day or schedule**
+1. In the left menu, click **Communities**, then click the town (for example **Town of Walworth**).
+2. Change **Service Day**, **Trash Schedule**, or **Recycling Schedule**.
+3. Click **Save**. Ignore the other boxes on this screen (Content Items, Material Lists, Capacity, and so on); communities don't use them.
+
 The entry's **slug** (the part of its URL, e.g. `town-of-walworth`) must match the community's existing page address for its schedule to show. The five current communities are Town of Walworth, Town of Delavan, City of Delavan, Town of Darien, and Town of Sharon. Adding a brand-new community, or changing its recycling and bulk-item lists, is a developer change.
 
 ## Managing Dumpster Sizes
@@ -135,7 +170,19 @@ The entry's **slug** (the part of its URL, e.g. `town-of-walworth`) must match t
 
 One entry per roll-off size you offer (10 Yard, 12 Yard, 15 Yard, 20 Yard, 30 Yard): Capacity (or Truck Loads), Dimensions, an Image (the dimension graphic), plus **Ideal For** and **Included** lists — type one item per line. Use the **Order** box (right-hand sidebar) to control the order sizes appear in: 1, 2, 3…
 
-> **Important:** until at least one Dumpster Size is published, the site shows its built-in sizes. As soon as you publish one, the site shows *only* published entries — so enter all five sizes before publishing any, or publish them together.
+![Dumpster Size: capacity, truck loads, and dimensions](images/acf-dumpster-size-specs.jpg)
+
+![Dumpster Size: Ideal For and Included lists, one item per line](images/acf-dumpster-size-lists.jpg)
+
+**How to update a dumpster size**
+1. In the left menu, click **Dumpster Sizes**, then click the size (for example **15 Yard Dumpster**).
+2. In the **Meta Boxes** panel, update **Truck Loads** (shown on the card; Capacity is used if it's blank), **Dimensions**, and **Image** (the dimension graphic).
+3. Scroll to **Dumpster Size Lists**. Type the **Ideal For** projects and the **Included** items, one per line.
+4. Click **Save**.
+
+**To add a size,** click **Dumpster Sizes → Add New**, type the title (for example "12 Yard Dumpster"), fill in the same boxes, set its **Order** number, and click **Publish**.
+
+> **Important:** the site shows exactly the sizes published here. If no sizes are published, it falls back to its built-in list. Today wp-admin still has the older **10/12 Yard Dumpster** entry. To show the separate 10 and 12 yard sizes, edit that entry into the 10 Yard (title, Truck Loads "8-10 pickup truck loads", Dimensions "11' L x 8' W x 3.5' H", 10 yard graphic), then add a new **12 Yard Dumpster** entry ("11-14 pickup truck loads", "11' L x 8' W x 4' H", 12 yard graphic).
 
 ## Managing Commercial Containers
 
@@ -143,7 +190,16 @@ One entry per roll-off size you offer (10 Yard, 12 Yard, 15 Yard, 20 Yard, 30 Ya
 
 The permanent dumpster options on the Commercial page (96 Gallon, 2 Yard, 4 Yard, 6 Yard, 8 Yard). Each entry has a title (e.g. "4 Yard"), Description, Dimensions, Capacity, a Dimension Graphic image, and an **Ideal For** list (one item per line). Use the **Order** box to set display order.
 
-Same rule as dumpster sizes: the built-in list shows until you publish your first entry, then only published entries show — enter all of them before publishing.
+![Commercial Container: Description, Dimensions, Capacity, Dimension Graphic, Ideal For](images/acf-commercial-container.jpg)
+
+**How to add or update a container**
+1. In the left menu, click **Commercial Containers**. Click **Add New** for a new one, or click an existing container to edit it.
+2. Type the title, for example "4 Yard".
+3. Fill in **Description**, **Dimensions** (e.g. 87" L x 66" W x 48" H), **Capacity** (e.g. 3-4 pickup truck loads), and **Ideal For** (one item per line).
+4. Under **Dimension Graphic**, click **Add Image**, upload or choose the graphic, then click **Select**.
+5. Set the **Order** number in the right-hand sidebar (1 shows first), then click **Publish** (or **Save** when editing).
+
+> **Important:** no containers are entered here yet, so the Commercial page shows its built-in list (96 Gallon, 2, 4, 6, and 8 Yard). As soon as you publish one, only published containers show — enter all five before publishing, or publish them together.
 
 **Note on the Dumpster Calculator tool** (the "recommend a size" quiz on the Dumpster Calculator page): its sizing logic is fixed in the site's code, not editable here in wp-admin. By design, checking **Other Heavy Materials** always caps the recommendation at 10 Yard regardless of project type — heavy materials (concrete, dirt, roofing tear-off) hit a dumpster's weight limit long before it's visually full, so a bigger box wouldn't help. The tool shows an explanatory note whenever that happens. If you ever want the underlying project-type-to-size mapping changed, that's a developer change, not a content edit.
 
@@ -153,7 +209,17 @@ Same rule as dumpster sizes: the built-in list shows until you publish your firs
 
 Each FAQ has a Question, an Answer (rich text — you can bold, link, and add lists), a Category (**Dumpster**, **Residential**, or **Commercial**), and a Sort Order number for controlling display order within its category. FAQs appear on the FAQs page, and Dumpster/Residential FAQs also appear on the Home and Residential pages.
 
-> **Important:** the built-in FAQs show until you publish your first FAQ here, then only published FAQs show. Re-enter any built-in questions you want to keep.
+![FAQ: Question and Answer](images/acf-faq.jpg)
+
+**How to add or change an FAQ**
+1. In the left menu, click **FAQs**. Click **Add New**, or click a question to edit it.
+2. Type the **Question** and the **Answer**.
+3. Choose the **Category** (Dumpster, Residential, or Commercial) and a **Sort Order** number. Lower numbers show first within the category.
+4. Click **Publish** (or **Save**).
+
+**To remove an FAQ,** hover over it in the FAQs list and click **Trash**.
+
+The FAQs page shows exactly the FAQs published here (21 today).
 
 ## Managing Service Areas & Schedules (the coverage map)
 
@@ -164,7 +230,16 @@ Each FAQ has a Question, an Answer (rich text — you can bold, link, and add li
 - Service Types (check any combination of **Residential**, **Commercial**, **Temporary roll-off / dumpster rentals**)
 - Map X/Y Position — these are percentage coordinates (0–100) placing the dot on the schematic map. If a new entry looks off-position, nudge these numbers and refresh — ask your developer if you're not sure what to enter.
 
-As with FAQs, the built-in areas show until you publish your first Service Area, then only published ones show — enter every area before publishing.
+![Service Area: County, Service Types, Map X/Y Position](images/acf-service-area.jpg)
+
+**How to add or change a service area**
+1. In the left menu, click **Service Areas**. Click **Add New**, or click an area to edit it.
+2. Type the title (the town or county name) and the **County**.
+3. Check every **Service Type** you offer there.
+4. Set **Map X Position** (0 = left edge, 100 = right edge) and **Map Y Position** (0 = top, 100 = bottom).
+5. Click **Publish** (or **Save**), then check the dot on the Home page map and adjust the numbers if needed.
+
+The map shows exactly the areas published here (9 today). Ignore the Schedule boxes on this screen.
 
 Holiday and delay dates are communicated with [Service Notices](#posting-alerts--notices) and the community calendar downloads; the **Schedule Items** menu isn't used by the site.
 
@@ -179,6 +254,18 @@ Use this for anything time-sensitive: weather delays, holiday closures, service 
 - **Timing** — set Display Start / Display End dates, or turn on **Show Until Manually Resolved** if you don't know the end date yet (you'll turn it off or set Notice Status to Resolved when it's over)
 - **Display Locations** — check **Site-wide announcement bar** to show it in the green bar at the top of every page. Every live notice also appears on the **What's New** page. (The other location checkboxes, Affected Communities, and Popup Settings aren't used by the site yet.)
 - **Announcement Bar** — the short text shown in the top bar; if blank, the notice title is used
+
+![Service Notice: Status and Priority tab](images/acf-service-notice-status.jpg)
+
+![Service Notice: Display Locations tab](images/acf-service-notice-locations.jpg)
+
+**How to post a weather delay or closure**
+1. In the left menu, click **Service Notices → Add New**.
+2. Type a title. On the **Notice Content** tab, add a **Short Summary** (shown on What's New).
+3. On the **Status and Priority** tab, check **Notice Enabled**, set **Notice Status** to **Active**, and pick a **Notice Priority**.
+4. On the **Display Locations** tab, check **Site-wide announcement bar** to show it at the top of every page.
+5. Optional: on the **Announcement Bar** tab, type a shorter message for the top bar.
+6. Click **Publish**.
 
 A notice is live when **Notice Enabled** is on, **Notice Status** is **Active** (or **Scheduled** with a start date that has passed), and it's inside its Display Start/End window.
 
