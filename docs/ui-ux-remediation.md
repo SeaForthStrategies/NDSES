@@ -73,7 +73,7 @@ Baseline audit (`AUDIT_PHASE=before`): no horizontal overflow or clipped text at
 | C | Residential, community, commercial, dumpster rentals, calculator, special events | Done |
 | D | About, contact, request service, payment, FAQs, notices, legal | Done |
 | E | Regression: all routes × widths, nav tests, typecheck/lint/unit/build | Done (Next.js) |
-| WP | Port design to `wordpress/ndses-theme` | Done (theme 3.0.0, not deployed) |
+| WP | Port design to `wordpress/ndses-theme` | Done — live on Flywheel (theme 3.0.1) |
 
 ## 5. Verification results (Next.js, production build)
 
@@ -118,5 +118,13 @@ Same design system as the Next.js app, mapped onto the theme's own class names s
 | `E2E_TARGET=wp` navigation tests | 13/13 passed |
 | PHP syntax (php-parser) | Pass |
 
-Not verified: the live Flywheel site (different content, ACF entries, and any assigned Primary Navigation menu). Deploying needs approval: upload `wordpress/ndses-theme` (3.0.0) through wp-admin or SFTP and check the live pages.
+**Live on Flywheel** (theme 3.0.0 uploaded through wp-admin, then 3.0.1 adding a fallback site icon; no Primary Navigation menu is assigned, so the built-in nav is used):
+
+| Check | Result |
+| --- | --- |
+| 15 live pages: HTTP 200, no PHP errors, new header (4 dropdowns) and footer, fonts load | Pass |
+| Navigation tests against the live site | 13/13 passed |
+| Layout audit against the live site — 13 routes × 9 widths | No layout findings on any route. Some routes still logged a `/favicon.ico` 404 because Flywheel's edge cache was serving pre-3.0.1 HTML (`x-cache: HIT`, `theme.css?ver=3.0.0`); fresh responses include the icon link. Clears when the cache expires or via Clear Cache in the Flywheel dashboard. |
+
+Rollback: re-upload the 2.3.1 theme (`git archive 88a62fc:wordpress/ndses-theme`) through Appearance → Themes → Add New → Upload.
 
