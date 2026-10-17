@@ -19,9 +19,22 @@ function ndses_render_hero(?string $slug = null): void
     // loads eagerly with high priority rather than lazily.
     $width = is_array($image) ? ($image['width'] ?? null) : null;
     $height = is_array($image) ? ($image['height'] ?? null) : null;
+
+    // Home: the truck photo is a full-bleed background behind the copy
+    // (an image chosen in the page's ACF Hero field replaces it).
+    $photo_url = '';
+    if ($slug === 'home') {
+        $photo_url = is_array($image) && !empty($image['url']) ? $image['url'] : ndses_asset('home-hero-truck.jpg');
+        $image_url = '';
+    }
     ?>
-    <section class="hero-section">
-        <div class="container hero-grid<?php echo $image_url ? '' : ' hero-grid--no-media'; ?>">
+    <section class="hero-section<?php echo $photo_url ? ' hero-section--photo' : ''; ?>">
+        <?php if ($photo_url) : ?>
+            <div class="hero-photo-frame" aria-hidden="true">
+                <img class="hero-photo" src="<?php echo esc_url($photo_url); ?>" alt="" width="1672" height="941" fetchpriority="high" decoding="async">
+            </div>
+        <?php endif; ?>
+        <div class="container hero-grid<?php echo $image_url ? '' : ' hero-grid--no-media'; ?><?php echo $photo_url ? ' hero-grid--photo' : ''; ?>">
             <div class="hero-copy">
                 <p class="eyebrow"><?php echo esc_html($hero['eyebrow'] ?? 'NDS Environmental Solutions'); ?></p>
                 <h1><?php echo esc_html($hero['heading'] ?? get_the_title()); ?></h1>
