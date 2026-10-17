@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -7,19 +8,17 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <section className="section page-hero">
-      <div className="container grid two">
-        <div>
-          <p className="eyebrow">Legal</p>
-          <h1>Privacy Policy</h1>
-          <p className="lead">Formal privacy policy content should be reviewed by NDS Environmental Solutions before launch.</p>
-        </div>
+    <>
+      <PageHero eyebrow="Legal" heading="Privacy Policy" description="Formal privacy policy content should be reviewed by NDS Environmental Solutions before launch." />
+      <section className="section">
+        <div className="container legal-body">
         <div className="card">
           <h2 className="compact-heading">Launch review required</h2>
           <p>This page is reserved for the final privacy policy covering contact forms, analytics, payment links, CMS integrations, and any future third-party services.</p>
           <p>Do not launch public form routing, analytics, PayEngine, or social integrations until the final policy has been reviewed and approved.</p>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

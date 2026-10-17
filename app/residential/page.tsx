@@ -5,6 +5,7 @@ import { CheckCircle2, XCircle } from "lucide-react";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { ScheduleCalendar } from "@/components/sections/ScheduleCalendar";
 import { getCommunities, getResidentialPage, getScheduleItems } from "@/lib/cms";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Residential Waste Collection",
@@ -17,18 +18,12 @@ export default async function ResidentialPage() {
 
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} image={{ src: "/nds-assets/branding-03-bffd0f61cb.png", alt: "NDS Environmental Solutions collection truck", width: 1795, height: 877 }} />
       <section className="section">
         <div className="container">
           <p className="eyebrow">Community Schedules</p>
           <h2>Select your community</h2>
-          <div className="grid three stack-top">
+          <div className="grid five stack-top">
             {communities.map((community) => (
               <Link className="card" href={`/residential/${community.slug}`} key={community.slug}>
                 <span className="badge">{community.municipalityType}</span>
@@ -54,9 +49,8 @@ export default async function ResidentialPage() {
           <div>
             <ScheduleCalendar items={schedule} />
             <figure className="asset-frame stack-top">
-              <Image src="/nds-assets/residential-02-8ad01488fb.png" alt="Town of Walworth residential service calendar and recycling route reference from the NDS redesign workbook" width={906} height={670} />
+              <Image src="/nds-assets/residential-02-8ad01488fb.png" alt="Town of Walworth residential service calendar and recycling route reference from the NDS redesign workbook" width={906} height={670} sizes="(max-width: 900px) 100vw, 560px" />
             </figure>
-            <p className="asset-caption">Client-supplied calendar/map visual from the NDS Website Redesign workbook.</p>
           </div>
         </div>
       </section>

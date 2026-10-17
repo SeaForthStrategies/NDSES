@@ -24,7 +24,7 @@ export function Footer({ settings }: { settings: GlobalSettings }) {
 
       <div className="container footer-grid">
         <div className="footer-brand">
-          <Image className="footer-logo" src="/nds-assets/nds-logo-primary.png" alt="NDS Environmental Solutions" width={600} height={373} />
+          <Image className="footer-logo" src="/nds-assets/nds-logo-primary.png" alt="NDS Environmental Solutions" width={600} height={373} sizes="150px" />
           <p>{settings.footerDescription}</p>
         </div>
 

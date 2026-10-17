@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Users } from "lucide-react";
 import { ServiceAreaMap } from "@/components/sections/ServiceAreaMap";
 import { getAboutContent, getAboutPage, getServiceAreas } from "@/lib/cms";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -13,13 +13,7 @@ export default async function AboutPage() {
   const [page, content, areas] = await Promise.all([getAboutPage(), getAboutContent(), getServiceAreas()]);
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} image={{ src: "/nds-assets/home-hero-truck.jpg", alt: "NDS collection truck parked by Delavan Lake", width: 1672, height: 941 }} />
       <section className="section">
         <div className="container grid two">
           <div>
@@ -29,11 +23,10 @@ export default async function AboutPage() {
               <p key={paragraph}>{paragraph}</p>
             ))}
             <figure className="asset-frame stack-top">
-              <Image src="/nds-assets/branding-03-bffd0f61cb.png" alt="NDS Environmental Solutions branded collection truck" width={1795} height={877} />
+              <Image src="/nds-assets/branding-03-bffd0f61cb.png" alt="NDS Environmental Solutions branded collection truck" width={1795} height={877} sizes="(max-width: 900px) 100vw, 560px" />
             </figure>
-            <p className="asset-caption">Client-supplied brand/vehicle image from the NDS Website Redesign workbook.</p>
           </div>
-          <div className="card tint">
+          <div className="card tint sticky-card">
             <p className="eyebrow">Our Mission</p>
             <h2>Reliable, affordable, eco-friendly service</h2>
             <p>{content.mission}</p>
@@ -43,20 +36,6 @@ export default async function AboutPage() {
       <section className="section alt">
         <div className="container">
           <ServiceAreaMap areas={areas} />
-        </div>
-      </section>
-      <section className="section">
-        <div className="container grid two">
-          <div>
-            <p className="eyebrow">Meet The Team</p>
-            <h2>The people behind NDS</h2>
-            <p>{content.teamPlaceholder}</p>
-          </div>
-          <div className="card team-placeholder">
-            <Users size={42} aria-hidden />
-            <h3>Team profiles coming soon</h3>
-            <p>Names, roles, and photos can be inserted later without rebuilding this section.</p>
-          </div>
         </div>
       </section>
     </>

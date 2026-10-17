@@ -44,19 +44,23 @@ Severity: **Critical** (broken interaction or unreadable content), **High** (cle
 
 | ID | Area | Defect | Severity | Status | Verified |
 | --- | --- | --- | --- | --- | --- |
-| G1 | Header nav | Dropdowns open only on click, never close on pointer-leave, outside click, or Escape; stay open after navigating (R4). | Critical | Open | — |
-| G2 | Mobile nav | Native `<details>` sheet: no scroll lock, stays open after navigation, nested `<details>` per section, no `aria-expanded`. | Critical | Open | — |
-| G3 | Global CSS | Conflicting duplicate rules across breakpoints (R5). | High | Open | — |
-| G4 | Typography | No defined type scale or brand typefaces; system font stack; headline sizes vary by page. | High | Open | — |
-| G5 | Footer | Plain three-column text list; no hours, no clear contact CTA, nav labels repeated without grouping. | Medium | Open | — |
-| G6 | Public copy | Developer notes shown to visitors: "Client-supplied … from the NDS Website Redesign workbook" captions (Home/About/Residential/Commercial), "no Facebook integration" (What's New), "Payment and ACH form placeholder" (nav). | Medium | Open | — |
-| G7 | Forms | Error messages aren't linked to fields (`aria-describedby`/`aria-invalid` missing); focus styles inconsistent. | Medium | Open | — |
-| G8 | Console | PayEngine SDK logs "You must pass your Public API…" on `/make-a-payment` when no public key is configured; a 404 resource on most routes (to be traced). | Low | Open | — |
-| H1 | Home | "Why NDS" text-image section renders an empty grey `image-placeholder` box. | High | Open | — |
-| H2 | Home | Five dumpster cards squeezed into five columns at 1024–1280px. | Medium | Open | — |
-| H3 | Home | Decorative "01 / 02 / 03" numbering on service cards that aren't a sequence. | Low | Open | — |
-| C1 | Service pages | Every inner page uses the same pale text-only page hero; no imagery or hierarchy. | High | Open | — |
-| C2 | Cards | Card padding, radius, and shadow differ between card types; lists inside cards unstyled. | Medium | Open | — |
+| G1 | Header nav | Dropdowns open only on click, never close on pointer-leave, outside click, or Escape; stay open after navigating (R4). | Critical | Done — `components/layout/Header.tsx` rebuilt as a client component (hover with grace period, click/tap toggle, Escape, outside click, arrow/Home/End keys, closes on route change, `aria-expanded`/`aria-controls`). | `e2e/navigation.spec.ts` (9 desktop tests) |
+| G2 | Mobile nav | Native `<details>` sheet: no scroll lock, stays open after navigation, nested `<details>` per section, no `aria-expanded`. | Critical | Done — full-height sheet, body scroll lock, accordion buttons with `aria-expanded`, closes on navigate/Escape/resize to desktop. | `e2e/navigation.spec.ts` (4 mobile tests) |
+| G3 | Global CSS | Conflicting duplicate rules across breakpoints (R5). | High | Done — `app/globals.css` rewritten as one cascade (tokens → base → layout → components), one rule per selector. | Layout audit |
+| G4 | Typography | No defined type scale or brand typefaces; system font stack; headline sizes vary by page. | High | Done — Archivo (headings) + Public Sans (body) via `next/font`; fluid type scale tokens. | Screenshots |
+| G5 | Footer | Plain three-column text list; no hours, no clear contact CTA, nav labels repeated without grouping. | Medium | Done — `components/layout/Footer.tsx`: call/quote band, contact with hours, Services / Customers groups, legal row. | Screenshots |
+| G6 | Public copy | Developer notes shown to visitors: "Client-supplied … workbook" captions, "no Facebook integration", "Payment and ACH form placeholder", About "Team profiles coming soon". | Medium | Done — captions removed; What's New uses the existing notice copy; nav description reworded; placeholder team section removed from About (text kept in data). Legal pages still hold launch-review placeholder text (needs NDSES legal copy). | Screenshots |
+| G7 | Forms | Error messages aren't linked to fields (`aria-describedby`/`aria-invalid` missing); focus styles inconsistent. | Medium | Done — Inquiry and Payment forms link errors to fields; consistent focus ring. | Code review |
+| G8 | Console | PayEngine SDK logs "You must pass your Public API…" on `/make-a-payment` when no public key is configured; `/favicon.ico` 404 on every route. | Low | Favicon: Done (`app/icon.png`). PayEngine message: expected until a public key is set in env. | Layout audit |
+| H1 | Home | "Why NDS" text-image section renders an empty grey `image-placeholder` box. | High | Done — `SectionRenderer` renders a real image (`image` field added to the textImage section type). | Screenshots |
+| H2 | Home | Five dumpster cards squeezed into five columns at 1024–1280px. | Medium | Done — auto-fill grid + rebuilt `DumpsterCard` (no word-by-word wrapping). | Screenshots + audit |
+| H3 | Home | Decorative "01 / 02 / 03" numbering on service cards that aren't a sequence. | Low | Done — replaced with service icons. | Screenshots |
+| C1 | Service pages | Every inner page uses the same pale text-only page hero; no imagery or hierarchy; approved hero action buttons never rendered. | High | Done — shared `components/layout/PageHero.tsx` on all 17 routes, renders hero actions; photos on Residential and About. | Screenshots |
+| C2 | Cards | Card padding, radius, and shadow differ between card types; lists inside cards unstyled. | Medium | Done — one card system; commercial container cards rebuilt; dumpster size guide rebuilt as a comparison table. | Screenshots |
+
+| C3 | Dumpster Rentals | The same five sizes appeared twice (cards, then a "size guide" of tall narrow cards); filter used `role="tablist"` without tab panels. | Medium | Done — `DumpsterGuide` is now a comparison table with `aria-pressed` filter buttons; still hands the chosen size to the form. | Screenshots |
+| C4 | Images | Content images had no `sizes`, so the browser requested 3840px variants (slow optimization, Commercial page never reached network idle in dev). | Medium | Done — `sizes` on every content image. | Audit timing |
+| C5 | Map | Labels clipped at the right edge and collided for nearby communities. | Medium | Done — labels flip left near the edge or when a neighbor is close. | Layout audit |
 
 Baseline audit (`AUDIT_PHASE=before`): no horizontal overflow or clipped text at any width; the overlap check's hits were inside closed menus (not visible) and have been excluded from the measurement; console/network issues per G8.
 
@@ -64,9 +68,34 @@ Baseline audit (`AUDIT_PHASE=before`): no horizontal overflow or clipped text at
 
 | Phase | Scope | Status |
 | --- | --- | --- |
-| A | Tokens, typography, layout, header, navigation, footer, shared interactions | In progress |
-| B | Homepage | Not started |
-| C | Residential, community, commercial, dumpster rentals, calculator, special events | Not started |
-| D | About, contact, request service, payment, FAQs, notices, legal | Not started |
-| E | Regression: all routes × widths, nav tests, typecheck/lint/unit/build | Not started |
+| A | Tokens, typography, layout, header, navigation, footer, shared interactions | Done |
+| B | Homepage | Done |
+| C | Residential, community, commercial, dumpster rentals, calculator, special events | Done |
+| D | About, contact, request service, payment, FAQs, notices, legal | Done |
+| E | Regression: all routes × widths, nav tests, typecheck/lint/unit/build | Done (Next.js) |
 | WP | Port design to `wordpress/ndses-theme` | Not started |
+
+## 5. Verification results (Next.js, production build)
+
+Run against `next build && next start` on installed Google Chrome:
+
+| Check | Result |
+| --- | --- |
+| `e2e/layout-audit.spec.ts` — 17 routes × 9 widths (320–1920px): horizontal overflow, overlapping text, clipped text, console errors, failed requests | 17/17 passed, 0 findings |
+| `e2e/navigation.spec.ts` — 9 desktop + 4 mobile interaction tests | 13/13 passed |
+| `npm run typecheck` / `npm run lint` | Pass |
+| `npm test` (Vitest) | 23/23 passed |
+| `npm run build` | Pass |
+
+Earlier runs of the same audit did flag real problems (map labels colliding at 768px, the favicon 404, the PayEngine console error), so a clean result is not a vacuous pass.
+
+Screenshots: `test-results/screens/before/` (baseline) and `test-results/screens/final/` at 390px and 1440px for every route. These are generated locally and not committed.
+
+### Not verified / still open
+
+- **Real-device testing:** iOS Safari and Android Chrome were not tested; mobile checks used Chrome with touch emulation at phone widths.
+- **WordPress-fed content:** with no `WORDPRESS_*` env vars set, the Next.js app renders its local seed content. Layouts were not checked against live CMS content.
+- **Payments:** not tested end to end, since no PayEngine public key is configured locally; the form shows "Online payments are not available yet" and loads no SDK.
+- **Legal copy:** Privacy Policy and Terms still contain launch-review placeholder text from NDSES.
+- **Social links:** footer Facebook and Instagram links still point to the generic facebook.com and instagram.com (needs the real NDS page URLs).
+

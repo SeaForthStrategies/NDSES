@@ -60,7 +60,7 @@ async function measure(page: Page) {
     }
 
     for (const el of document.querySelectorAll<HTMLElement>("h1,h2,h3,h4,p,a,button,li,label,dt,dd,span,strong,summary")) {
-      if (!visible(el) || !el.textContent?.trim()) continue;
+      if (!visible(el) || !el.textContent?.trim() || el.closest(".sr-only")) continue;
       const cs = getComputedStyle(el);
       const clips = cs.overflow === "hidden" || cs.overflowX === "hidden" || cs.textOverflow === "ellipsis";
       if (clips && (el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2)) {
@@ -79,19 +79,40 @@ test.describe.configure({ mode: "parallel" });
 
 for (const route of routes) {
   test(`layout ${route}`, async ({ page }) => {
+    // Nine page loads plus measurements per route.
+    test.setTimeout(240_000);
     const errors: string[] = [];
     page.on("console", (msg) => { if (msg.type() === "error") errors.push(`${msg.text().slice(0, 120)} @ ${msg.location().url}`); });
     page.on("pageerror", (err) => errors.push(err.message.slice(0, 160)));
-    page.on("requestfailed", (req) => errors.push(`request failed: ${req.url()}`));
+    // Prefetches cancelled by the next navigation (net::ERR_ABORTED) are expected.
+    page.on("requestfailed", (req) => {
+      if (req.failure()?.errorText.includes("ERR_ABORTED")) return;
+      errors.push(`request failed: ${req.url()} ${req.failure()?.errorText ?? ""}`);
+    });
     page.on("response", (res) => { if (res.status() >= 400 && !res.url().includes("/_next/webpack-hmr")) errors.push(`HTTP ${res.status()}: ${res.url()}`); });
 
     for (const width of widths) {
       await page.setViewportSize({ width, height: 900 });
       // Reduced motion before load, so scroll-reveal never hides content.
       await page.emulateMedia({ reducedMotion: "reduce" });
-      await page.goto(route, { waitUntil: "networkidle" });
+      const started = Date.now();
+      // Not "networkidle": Next.js link prefetches can stay open in Chrome
+      // across navigations. Wait for what affects layout instead.
+      await page.goto(route, { waitUntil: "load" });
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        for (let y = 0; y < document.body.scrollHeight; y += 500) window.scrollTo(0, y);
+        window.scrollTo(0, 0);
+        // Eager images must finish; lazy ones load when scrolled into view, and
+        // reserve their box via width/height, so they don't change layout.
+        const pending = [...document.images].filter((img) => !img.complete && img.loading !== "lazy");
+        await Promise.all(pending.map((img) => new Promise((r) => { img.onload = img.onerror = r; setTimeout(r, 5000); })));
+      });
+      if (process.env.AUDIT_DEBUG) console.log(route, width, "loaded in", Date.now() - started, "ms");
       await page.waitForTimeout(150);
+      const measured = Date.now();
       for (const f of await measure(page)) findings.push({ route, width, ...f });
+      if (process.env.AUDIT_DEBUG) console.log(route, width, "measured in", Date.now() - measured, "ms");
       if (shotWidths.has(width)) {
         const dir = `test-results/screens/${phase}`;
         mkdirSync(dir, { recursive: true });

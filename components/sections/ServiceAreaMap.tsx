@@ -7,14 +7,36 @@ const serviceMeta = {
   rollOff: { label: "Roll-off", icon: Truck }
 };
 
+/**
+ * Labels normally sit to the right of their dot. A label flips to the left
+ * when its dot is near the right edge, or when another dot sits close by on
+ * the right at about the same height (their labels would collide).
+ */
+function labelsOnLeft(areas: ServiceArea[]) {
+  const left = new Set<string>();
+  const pos = (area: ServiceArea) => ({ x: area.coordinates?.x ?? 50, y: area.coordinates?.y ?? 50 });
+  for (const area of areas) {
+    const a = pos(area);
+    if (a.x > 80) left.add(area.name);
+    const crowded = areas.some((other) => {
+      if (other === area) return false;
+      const b = pos(other);
+      return b.x > a.x && b.x - a.x < 26 && Math.abs(b.y - a.y) < 7;
+    });
+    if (crowded && a.x > 18) left.add(area.name);
+  }
+  return left;
+}
+
 export function ServiceAreaMap({ areas }: { areas: ServiceArea[] }) {
+  const flipped = labelsOnLeft(areas);
   return (
     <div className="service-map-wrap">
       <div className="service-map" aria-label="NDS service area map">
         <div className="map-grid" aria-hidden />
         {areas.map((area) => (
           <div
-            className={`map-point${(area.coordinates?.x ?? 50) > 66 ? " label-left" : ""}`}
+            className={`map-point${flipped.has(area.name) ? " label-left" : ""}`}
             key={area.name}
             style={{ left: `${area.coordinates?.x ?? 50}%`, top: `${area.coordinates?.y ?? 50}%` }}
           >

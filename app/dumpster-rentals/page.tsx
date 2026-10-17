@@ -7,6 +7,7 @@ import { InquiryForm } from "@/components/forms/InquiryForm";
 import { RentalProcess } from "@/components/sections/RentalProcess";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { getDumpsterPage, getDumpsterSizes } from "@/lib/cms";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Dumpster Rentals",
@@ -18,13 +19,7 @@ export default async function DumpsterRentalsPage() {
 
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} />
       <section className="section">
         <div className="container">
           <div className="section-intro">

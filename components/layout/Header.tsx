@@ -62,7 +62,7 @@ export function Header({ settings }: { settings: GlobalSettings }) {
       <div className="header-main">
         <div className="container header-inner">
           <Link className="brand" href="/" aria-label="NDS Environmental Solutions home">
-            <Image className="brand-logo" src="/nds-assets/nds-logo-primary.png" alt="" width={600} height={373} priority />
+            <Image className="brand-logo" src="/nds-assets/nds-logo-primary.png" alt="" width={600} height={373} priority sizes="84px" />
           </Link>
 
           <DesktopNav items={settings.navigation} pathname={pathname} />
