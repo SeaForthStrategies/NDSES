@@ -260,6 +260,20 @@ function ndses_render_service_area_map(array $filter_types = []): void
     }
 
     $legend = ['Residential' => 'residential', 'Commercial' => 'commercial', 'Roll-off' => 'rollOff'];
+
+    // Same rule as the Next.js map: a label flips to the left of its dot
+    // near the right edge, or when another dot sits close by on its right
+    // at about the same height (their labels would collide).
+    $flipped = [];
+    foreach ($areas as $area) {
+        $crowded = false;
+        foreach ($areas as $other) {
+            if ($other !== $area && $other['x'] > $area['x'] && $other['x'] - $area['x'] < 26 && abs($other['y'] - $area['y']) < 7) {
+                $crowded = true;
+            }
+        }
+        $flipped[$area['name']] = $area['x'] > 80 || ($crowded && $area['x'] > 18);
+    }
     ?>
     <div class="service-map-wrap">
         <div class="service-map" aria-label="NDS service area map">
@@ -267,7 +281,7 @@ function ndses_render_service_area_map(array $filter_types = []): void
             <?php foreach ($areas as $area) :
                 $primary = in_array('Residential', $area['types'], true) ? 'residential' : (in_array('Commercial', $area['types'], true) ? 'commercial' : 'rollOff');
                 ?>
-                <div class="map-point" style="left: <?php echo esc_attr((string) $area['x']); ?>%; top: <?php echo esc_attr((string) $area['y']); ?>%;">
+                <div class="map-point<?php echo $flipped[$area['name']] ? ' label-left' : ''; ?>" style="left: <?php echo esc_attr((string) $area['x']); ?>%; top: <?php echo esc_attr((string) $area['y']); ?>%;">
                     <span class="point-dot <?php echo esc_attr($primary); ?>"></span>
                     <span class="point-label"><?php echo esc_html($area['name']); ?></span>
                 </div>

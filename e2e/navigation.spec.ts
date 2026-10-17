@@ -7,7 +7,7 @@ test.describe("desktop navigation", () => {
   test.use({ viewport: desktop });
 
   test.beforeEach(async ({ page }) => {
-    await page.goto("/about");
+    await page.goto(process.env.E2E_TARGET === "wp" ? "/about/" : "/about");
   });
 
   const trigger = (page: import("@playwright/test").Page, name: string) => page.getByRole("navigation", { name: "Primary" }).getByRole("button", { name });
@@ -86,7 +86,7 @@ test.describe("desktop navigation", () => {
   test("choosing a destination navigates and closes the menu", async ({ page }) => {
     await trigger(page, "Dumpster Rentals").hover();
     await panel(page, 2).getByRole("link", { name: /Dumpster Calculator/ }).click();
-    await expect(page).toHaveURL(/\/dumpster-calculator$/);
+    await expect(page).toHaveURL(/\/dumpster-calculator\/?$/);
     await expect(panel(page, 2)).toBeHidden();
     await expect(trigger(page, "Dumpster Rentals")).toHaveAttribute("aria-expanded", "false");
     await expect(trigger(page, "Dumpster Rentals")).toHaveClass(/is-active/);
@@ -104,7 +104,7 @@ test.describe("mobile navigation", () => {
   test.use({ viewport: mobile, hasTouch: true, isMobile: true });
 
   test.beforeEach(async ({ page }) => {
-    await page.goto("/about");
+    await page.goto(process.env.E2E_TARGET === "wp" ? "/about/" : "/about");
   });
 
   test("menu button opens and closes the sheet, locking page scroll", async ({ page }) => {
@@ -137,7 +137,7 @@ test.describe("mobile navigation", () => {
 
     await group.tap();
     await link.tap();
-    await expect(page).toHaveURL(/\/commercial#containers$/);
+    await expect(page).toHaveURL(/\/commercial\/?#containers$/);
     await expect(page.getByRole("navigation", { name: "Mobile" })).toBeHidden();
     expect(await page.evaluate(() => document.body.style.overflow)).toBe("");
   });

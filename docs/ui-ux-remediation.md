@@ -73,7 +73,7 @@ Baseline audit (`AUDIT_PHASE=before`): no horizontal overflow or clipped text at
 | C | Residential, community, commercial, dumpster rentals, calculator, special events | Done |
 | D | About, contact, request service, payment, FAQs, notices, legal | Done |
 | E | Regression: all routes × widths, nav tests, typecheck/lint/unit/build | Done (Next.js) |
-| WP | Port design to `wordpress/ndses-theme` | Not started |
+| WP | Port design to `wordpress/ndses-theme` | Done (theme 3.0.0, not deployed) |
 
 ## 5. Verification results (Next.js, production build)
 
@@ -98,4 +98,25 @@ Screenshots: `test-results/screens/before/` (baseline) and `test-results/screens
 - **Payments:** not tested end to end, since no PayEngine public key is configured locally; the form shows "Online payments are not available yet" and loads no SDK.
 - **Legal copy:** Privacy Policy and Terms still contain launch-review placeholder text from NDSES.
 - **Social links:** footer Facebook and Instagram links still point to the generic facebook.com and instagram.com (needs the real NDS page URLs).
+
+## 6. WordPress theme port (theme 3.0.0)
+
+Same design system as the Next.js app, mapped onto the theme's own class names so templates and ACF wiring are unchanged:
+
+- `assets/css/theme.css` rewritten on the shared tokens; Archivo and Public Sans self-hosted in `assets/fonts/` (no third-party font requests).
+- `header.php` rebuilt with the Next.js header structure: utility bar with office hours, dropdown navigation, phone / Get a Quote / Pay Bill, and the mobile sheet. Menu items come from the menu assigned to **Primary Navigation** in Appearance → Menus when there is one (top-level items become dropdowns, sub-items their links); otherwise from the built-in nav in `inc/data.php`, which now mirrors the Next.js menu.
+- `assets/js/theme.js` `initNavigation()`: the same behavior as the Next.js header (hover with grace period, click/tap toggle, Escape, outside click, arrow/Home/End keys, scroll-locked mobile sheet).
+- `footer.php` rebuilt to match the Next.js footer; the home page's duplicate CTA band removed.
+- Map labels use the same flip rule as the Next.js map.
+
+**Verified locally on WordPress Playground** (`@wp-playground/cli` 3.1.56: PHP 8.2 + SQLite, free ACF from wordpress.org, theme and plugin mounted from this repo):
+
+| Check | Result |
+| --- | --- |
+| All pages render with no PHP errors, warnings, or notices | Pass |
+| `E2E_TARGET=wp` layout audit — 13 routes × 9 widths | 13/13 passed, 0 findings |
+| `E2E_TARGET=wp` navigation tests | 13/13 passed |
+| PHP syntax (php-parser) | Pass |
+
+Not verified: the live Flywheel site (different content, ACF entries, and any assigned Primary Navigation menu). Deploying needs approval: upload `wordpress/ndses-theme` (3.0.0) through wp-admin or SFTP and check the live pages.
 

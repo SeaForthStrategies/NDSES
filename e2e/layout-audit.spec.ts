@@ -116,12 +116,12 @@ for (const route of routes) {
       if (shotWidths.has(width)) {
         const dir = `test-results/screens/${phase}`;
         mkdirSync(dir, { recursive: true });
-        await page.screenshot({ path: `${dir}/${route === "/" ? "home" : route.slice(1).replace(/\//g, "_")}-${width}.png`, fullPage: true });
+        await page.screenshot({ path: `${dir}/${route === "/" ? "home" : route.replace(/^\/|\/$/g, "").replace(/\//g, "_")}-${width}.png`, fullPage: true });
       }
     }
     for (const e of [...new Set(errors)]) findings.push({ route, width: 0, kind: "console-or-network", detail: e });
     mkdirSync("test-results/audit", { recursive: true });
-    writeFileSync(`test-results/audit/${phase}-${route === "/" ? "home" : route.slice(1).replace(/\//g, "_")}.json`, JSON.stringify(findings.filter((f) => f.route === route), null, 2));
+    writeFileSync(`test-results/audit/${phase}-${route === "/" ? "home" : route.replace(/^\/|\/$/g, "").replace(/\//g, "_")}.json`, JSON.stringify(findings.filter((f) => f.route === route), null, 2));
     expect.soft(findings.filter((f) => f.route === route), `layout findings on ${route}`).toEqual([]);
   });
 }

@@ -105,3 +105,54 @@ function ndses_list(array $items, string $class = 'check-list'): void
     echo '</ul>';
 }
 
+/**
+ * Navigation tree: [['label', 'url', 'description', 'children' => [...]], ...].
+ * Uses the menu assigned to "Primary Navigation" (Appearance > Menus) when
+ * there is one -- top-level items become dropdown triggers and their
+ * sub-items the dropdown links -- otherwise the built-in nav in data.php.
+ */
+function ndses_nav_items(): array
+{
+    $locations = get_nav_menu_locations();
+    if (!empty($locations['primary'])) {
+        $items = wp_get_nav_menu_items($locations['primary']) ?: [];
+        $tree = [];
+        foreach ($items as $item) {
+            if ((int) $item->menu_item_parent === 0) {
+                $tree[$item->ID] = ['label' => $item->title, 'url' => $item->url, 'description' => $item->description, 'children' => []];
+            }
+        }
+        foreach ($items as $item) {
+            $parent = (int) $item->menu_item_parent;
+            if ($parent && isset($tree[$parent])) {
+                $tree[$parent]['children'][] = ['label' => $item->title, 'url' => $item->url, 'description' => $item->description];
+            }
+        }
+        if ($tree) {
+            return array_values($tree);
+        }
+    }
+
+    return array_map(static function (array $item): array {
+        $item['url'] = home_url($item['url']);
+        $item['children'] = array_map(static fn (array $child) => array_merge($child, ['url' => home_url($child['url'])]), $item['children'] ?? []);
+
+        return $item;
+    }, ndses_data()['nav']);
+}
+
+/** True when the current request is the item's page or one of its children's pages. */
+function ndses_nav_is_active(array $item): bool
+{
+    $current = untrailingslashit((string) wp_parse_url(add_query_arg([]), PHP_URL_PATH));
+    $paths = array_merge([$item['url']], array_column($item['children'] ?? [], 'url'));
+    foreach ($paths as $url) {
+        $path = untrailingslashit((string) wp_parse_url(strtok($url, '#'), PHP_URL_PATH));
+        if ($path === '' ? $current === '' : ($current === $path || str_starts_with($current . '/', $path . '/'))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+

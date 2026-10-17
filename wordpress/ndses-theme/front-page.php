@@ -41,14 +41,5 @@ ndses_render_service_cards();
         <?php ndses_render_faqs('Dumpster Rentals'); ?>
     </div>
 </section>
-<section class="cta-band">
-    <div class="container cta-inner">
-        <div>
-            <h2>Ready to request service or a quote?</h2>
-            <p>Tell NDS what you need and the team will help route the request.</p>
-        </div>
-        <?php ndses_button('Contact NDS', home_url('/contact')); ?>
-    </div>
-</section>
 <?php get_footer(); ?>
 

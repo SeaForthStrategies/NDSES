@@ -47,15 +47,35 @@ function ndses_data(): array
             'In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.',
             'Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home.',
         ],
+        // Mirrors the Next.js navigation (lib/cms/mock-data.ts). Used when no
+        // Primary Navigation menu is assigned in Appearance > Menus.
         'nav' => [
-            ['label' => 'Residential', 'url' => '/residential'],
-            ['label' => 'Commercial', 'url' => '/commercial'],
-            ['label' => 'Dumpster Rentals', 'url' => '/dumpster-rentals'],
-            ['label' => 'Calculator', 'url' => '/dumpster-calculator'],
-            ['label' => 'Special Events', 'url' => '/special-events'],
-            ['label' => 'FAQs', 'url' => '/faqs'],
-            ['label' => 'What\'s New', 'url' => '/whats-new'],
-            ['label' => 'Contact', 'url' => '/contact'],
+            ['label' => 'Residential', 'url' => '/residential', 'description' => 'Residential trash, recycling, schedules, and community pages.', 'children' => [
+                ['label' => 'Residential Overview', 'url' => '/residential', 'description' => 'Trash, recycling, bulk-item guidance, and FAQs.'],
+                ['label' => 'Town of Walworth', 'url' => '/residential/town-of-walworth', 'description' => 'Thursday collection and local notices.'],
+                ['label' => 'Town of Delavan', 'url' => '/residential/town-of-delavan', 'description' => 'Monday collection and local notices.'],
+                ['label' => 'City of Delavan', 'url' => '/residential/city-of-delavan', 'description' => 'Wednesday collection and local notices.'],
+                ['label' => 'Town of Darien', 'url' => '/residential/town-of-darien', 'description' => 'Tuesday collection.'],
+                ['label' => 'Town of Sharon', 'url' => '/residential/town-of-sharon', 'description' => 'Tuesday collection.'],
+            ]],
+            ['label' => 'Commercial', 'url' => '/commercial', 'description' => 'Commercial trash, recycling, containers, and quote requests.', 'children' => [
+                ['label' => 'Commercial Overview', 'url' => '/commercial', 'description' => 'Permanent containers and business service plans.'],
+                ['label' => 'Container Options', 'url' => '/commercial#containers', 'description' => '96-gallon, 2-yard, 4-yard, 6-yard, and 8-yard options.'],
+                ['label' => 'Commercial Recycling', 'url' => '/commercial#recycling', 'description' => 'Cardboard, paper, plastic, aluminum, and mixed recycling.'],
+            ]],
+            ['label' => 'Dumpster Rentals', 'url' => '/dumpster-rentals', 'description' => 'Temporary roll-off dumpsters and size guidance.', 'children' => [
+                ['label' => 'Rental Overview', 'url' => '/dumpster-rentals', 'description' => 'Temporary dumpsters for projects and cleanouts.'],
+                ['label' => 'Dumpster Calculator', 'url' => '/dumpster-calculator', 'description' => 'Choose the right roll-off size.'],
+                ['label' => 'Accepted Materials', 'url' => '/dumpster-rentals#materials', 'description' => 'What can and cannot go in a rental dumpster.'],
+                ['label' => 'Special Events', 'url' => '/special-events', 'description' => 'Containers and cleanup for community and private events.'],
+            ]],
+            ['label' => 'Resources', 'url' => '/whats-new', 'description' => 'Updates, FAQs, contact, payment, and company information.', 'children' => [
+                ['label' => "What's New", 'url' => '/whats-new', 'description' => 'Alerts and service updates.'],
+                ['label' => 'FAQs', 'url' => '/faqs', 'description' => 'Dumpster, residential, and commercial questions.'],
+                ['label' => 'About Us', 'url' => '/about', 'description' => 'Our story and mission.'],
+                ['label' => 'Contact Us', 'url' => '/contact', 'description' => 'Quotes, estimates, and questions.'],
+                ['label' => 'Make a Payment', 'url' => '/make-a-payment', 'description' => 'Pay your account balance online by card or ACH.'],
+            ]],
         ],
         'pages' => [
             'home' => [
