@@ -42,10 +42,11 @@ function ndses_data(): array
         ],
         'mission' => $mission,
         'our_story' => [
-            'Founded in the fall of 2024 by Dustin Nieuwenhuis, NDS Environmental Solutions, LLC was built on a simple belief: our community deserves reliable, honest waste collection from a company that puts its customers first.',
-            'For Dustin, waste management has always been a family business. Growing up in the industry gave him firsthand experience and a deep understanding of what it takes to provide dependable service.',
-            'In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.',
-            'Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home.',
+            'NDS Environmental Solutions has built its reputation on dependable service, strong relationships, and a commitment to the communities it serves.',
+            'Founded in 2025 by Dustin Nieuwenhuis, NDS Environmental Solutions was built on a foundation of family legacy, industry experience, and hard work. Dustin has a deep family history in the waste management industry within Walworth County and had been active in the former family business until its sale in 2023. After a year and a half of reflection, Dustin felt the community was missing the local/neighborly waste collection service. What began as Nieuwenhuis Disposal Service has grown into NDS Environmental Solutions, a business dedicated to providing waste and disposal solutions for residential, commercial, and temporary and permanent construction dumpsters. Our team consists of long-time waste management professionals and family members who drive these values.',
+            'Over the last two years, NDS/ES has continued to grow and evolve, expanding its services and capabilities to meet the changing needs of its customers. Through hard work, dedication, and a focus on doing the job right, the company has continued to build lasting relationships with the customers and communities it serves.',
+            'As a family-owned/local business, NDS/ES takes pride in offering personal service and treating customers like neighbors rather than just account numbers. These values that helped establish the company continue to guide our approach to service, its relationships with customers, and its commitment to doing business the right way.',
+            'Today, NDS Environmental Solutions continues to build on its history while looking toward the future. With a focus on reliable service, continued improvement, and strong community relationships, NDS/ES remains committed to finding practical disposal solutions and serving its customers for years to come.',
         ],
         // Mirrors the Next.js navigation (lib/cms/mock-data.ts). Used when no
         // Primary Navigation menu is assigned in Appearance > Menus.
