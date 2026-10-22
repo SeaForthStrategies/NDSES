@@ -27,6 +27,7 @@ Make sure an NDSES owner (not only the developer) can sign in to each of these. 
 3. **Open content questions:** confirm the 2 Yard dimensions (spreadsheet and graphic disagree), send the correct 8 Yard "Ideal For" text, and send a 96 Gallon graphic if you have one.
 4. **Spam protection:** add the reCAPTCHA site key and secret key in Site Settings.
 5. **Payments:** keep PayEngine in test mode until the PayEngine account review is complete. Then follow "Accepting Payments" in the Website Guide to switch to live keys.
+   - **Certification checklist status (Oct 22, 2026):** every row is filled in, and all 8 sandbox test payments passed on the live page: $100 and $0.20 by card and by bank, a declined card, and a failed bank payment. One item is still open: before switching to live keys, confirm in the PayEngine dashboard that the live public key only works on the NDS website's domain.
 6. **Legal pages:** replace the placeholder Privacy Policy and Terms text with your reviewed versions.
 7. **Test it:** submit the Contact form yourself, confirm the email arrives, and confirm it's listed under **Form Submissions**.
 

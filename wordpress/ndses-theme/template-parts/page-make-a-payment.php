@@ -2,7 +2,7 @@
 <section class="section">
     <div class="container payment-grid">
         <form class="site-form" data-payengine-form novalidate>
-            <h2>Payment Form</h2>
+            <h2><?php echo esc_html(ndses_sec('form', 'heading', 'make-a-payment')); ?></h2>
             <fieldset class="payment-methods">
                 <legend>Payment method</legend>
                 <label class="check-row"><input type="radio" name="paymentMethod" value="card" checked> Card payment</label>
@@ -35,9 +35,9 @@
             <button class="button button-primary" type="submit">Submit Payment</button>
         </form>
         <aside class="quote-panel">
-            <h2>ACH Bank Payment</h2>
-            <p>Pay directly from a checking or savings account using PayEngine's secure bank-transfer flow.</p>
-            <p class="small-note">Card payments may include a 3% fee where applicable.</p>
+            <h2><?php echo esc_html(ndses_sec('sidebar', 'heading', 'make-a-payment')); ?></h2>
+            <p><?php echo esc_html(ndses_sec('sidebar', 'body', 'make-a-payment')); ?></p>
+            <p class="small-note"><?php echo esc_html(ndses_sec('sidebar', 'note', 'make-a-payment')); ?></p>
         </aside>
     </div>
 </section>

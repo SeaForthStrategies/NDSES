@@ -1,4 +1,5 @@
 import { ArrowRight, CreditCard, MapPin, ShieldCheck, Truck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { DumpsterCard } from "@/components/dumpster/DumpsterCard";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
@@ -18,7 +19,17 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema()) }}
       />
-      <section className="hero">
+      <section className="hero hero--photo">
+        <div className="hero-photo-frame" aria-hidden="true">
+          <Image
+            alt=""
+            className="hero-photo"
+            fill
+            priority
+            sizes="(max-width: 860px) 100vw, 75vw"
+            src="/nds-assets/home-hero-truck.jpg"
+          />
+        </div>
         <div className="container hero-shell">
           <div className="hero-copy">
             <p className="eyebrow">{page.hero.eyebrow}</p>
@@ -26,7 +37,7 @@ export default async function HomePage() {
             <p className="lead">{page.hero.description}</p>
             <div className="button-row">
               {page.hero.actions.map((action, index) => (
-                <Link className={`btn ${index === 0 ? "primary" : "secondary"}`} href={action.href} key={action.href}>
+                <Link className={`btn ${index === 0 ? "btn-gold" : "btn-on-dark"}`} href={action.href} key={action.href}>
                   {action.label} <ArrowRight size={18} aria-hidden />
                 </Link>
               ))}
@@ -109,19 +120,6 @@ export default async function HomePage() {
             <Link className="btn secondary" href="/faqs">View All FAQs</Link>
           </div>
           <FAQAccordion faqs={faqs.slice(0, 4)} />
-        </div>
-      </section>
-      <section className="section cta-band">
-        <div className="container split">
-          <div>
-            <p className="eyebrow">Get Started</p>
-            <h2>Need trash service, recycling, or a dumpster?</h2>
-            <p>NDS can help confirm service availability, recommend the right dumpster size, and provide a customized quote.</p>
-          </div>
-          <div className="button-row">
-            <Link className="btn primary" href="/contact">Get a Quote</Link>
-            <Link className="btn secondary" href="tel:262-233-6131">Call 262-233-6131</Link>
-          </div>
         </div>
       </section>
     </>

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: NDSES CMS Structure
  * Description: Registers NDSES custom post types, ACF options pages, and local field groups.
- * Version: 0.2.0
+ * Version: 0.2.3
  */
 
 if (!defined('ABSPATH')) {
@@ -227,6 +227,32 @@ add_action('admin_menu', function () {
             add_action("load-{$hook}", 'acf_form_head');
         }
     }
+});
+
+/**
+ * Office Hours used to be a repeater (ACF PRO only) and some installs saved it
+ * as an array of lines. It's now a one-line-per-row textarea, and ACF's
+ * textarea renderer fatals on an array value -- which took down the whole
+ * Site Settings screen. Normalize any legacy array to newline-joined text on
+ * load; the next save stores it as a plain string.
+ */
+add_filter('acf/load_value/key=field_ndses_hours', function ($value) {
+    if (!is_array($value)) {
+        return $value;
+    }
+
+    $lines = [];
+    foreach ($value as $row) {
+        if (is_array($row)) {
+            $row = $row['line'] ?? reset($row);
+        }
+        $row = trim((string) $row);
+        if ($row !== '') {
+            $lines[] = $row;
+        }
+    }
+
+    return implode("\n", $lines);
 });
 
 add_filter('acf/settings/save_json', function () {
@@ -563,7 +589,9 @@ function ndses_handle_payment_charge(WP_REST_Request $request)
     if ($status < 200 || $status >= 300 || !is_array($json) || !empty($json['error'])) {
         error_log('PayEngine charge failed: HTTP ' . $status . ' ' . wp_remote_retrieve_body($response));
 
-        return rest_ensure_response(['mode' => 'error', 'message' => 'We could not process the payment. Please try again shortly.']);
+        // PayEngine answers declines (insufficient funds, invalid bank
+        // account) with an error status too, so word this for both cases.
+        return rest_ensure_response(['mode' => 'error', 'message' => 'This payment could not be completed. Please check your payment details and try again, use a different payment method, or call NDSES.']);
     }
 
     $sale_response = $json['data']['SaleResponse'] ?? $json['data']['AchResponse'] ?? null;

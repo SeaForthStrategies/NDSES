@@ -2,15 +2,15 @@
 <section class="section">
     <div class="container split">
         <div>
-            <p class="eyebrow">Areas We Service</p>
-            <h2>Commercial service across select Southern Wisconsin counties</h2>
-            <?php ndses_list(['Walworth County', 'Rock County', 'Jefferson County', 'Waukesha County', 'Kenosha County']); ?>
-            <p class="small-note">We service select areas of each county. Please call <?php echo esc_html(ndses_setting('phone')); ?> to see if we service your area.</p>
-            <img class="zone-map-image" src="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/commercial-county-map.png" alt="Map of Walworth, Rock, Jefferson, Waukesha, and Kenosha counties served by NDS Environmental Solutions" width="1300" height="842" loading="lazy">
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('areas', 'eyebrow', 'commercial')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('areas', 'heading', 'commercial')); ?></h2>
+            <?php ndses_list(ndses_sec_lines('areas', 'list', 'commercial')); ?>
+            <p class="small-note"><?php echo esc_html(ndses_sec('areas', 'note', 'commercial')); ?></p>
+            <?php ndses_sec_img('areas', 'image', 'zone-map-image', 'Map of the counties served by NDS Environmental Solutions', 'commercial'); ?>
         </div>
         <div class="quote-panel">
-            <h3>Flexible collection schedules</h3>
-            <?php ndses_list(['Monthly', 'Every other week', '2 times per week', '3 times per week', '4 times per week', '5 times per week'], 'compact-list'); ?>
+            <h3><?php echo esc_html(ndses_sec('schedules', 'heading', 'commercial')); ?></h3>
+            <?php ndses_list(ndses_sec_lines('schedules', 'list', 'commercial'), 'compact-list'); ?>
         </div>
     </div>
 </section>
@@ -22,8 +22,8 @@
 <section class="section soft-section" id="containers">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">Container Options</p>
-            <h2>Find the right size dumpster for your business</h2>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('containers', 'eyebrow', 'commercial')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('containers', 'heading', 'commercial')); ?></h2>
         </div>
         <div class="card-grid five">
             <?php foreach (ndses_get_commercial_containers() as $container) : ?>
@@ -44,22 +44,22 @@
 <section class="section" id="recycling">
     <div class="container split">
         <div>
-            <h2>Commercial recycling</h2>
-            <p>Recycling services can be paired with your trash services.</p>
-            <?php ndses_list(['Cardboard', 'Paper', 'Plastic', 'Aluminum', 'Mixed recycling']); ?>
+            <h2><?php echo esc_html(ndses_sec('recycling', 'heading', 'commercial')); ?></h2>
+            <p><?php echo esc_html(ndses_sec('recycling', 'body', 'commercial')); ?></p>
+            <?php ndses_list(ndses_sec_lines('recycling', 'list', 'commercial')); ?>
         </div>
         <div>
-            <h2>Industries we serve</h2>
-            <?php ndses_list(['Restaurants', 'Offices', 'Retail Stores', 'Apartment Complexes', 'Schools', 'Manufacturing', 'Churches']); ?>
+            <h2><?php echo esc_html(ndses_sec('industries', 'heading', 'commercial')); ?></h2>
+            <?php ndses_list(ndses_sec_lines('industries', 'list', 'commercial')); ?>
         </div>
     </div>
 </section>
 <section class="section soft-section" id="quote">
     <div class="container split">
         <div>
-            <p class="eyebrow">Commercial Inquiry</p>
-            <h2>Need commercial service priced?</h2>
-            <p>Tell NDS about your business and the team will help choose the right container and schedule.</p>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('quote', 'eyebrow', 'commercial')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('quote', 'heading', 'commercial')); ?></h2>
+            <p><?php echo esc_html(ndses_sec('quote', 'body', 'commercial')); ?></p>
         </div>
         <?php ndses_render_inquiry_form('commercial'); ?>
     </div>

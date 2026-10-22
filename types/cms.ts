@@ -53,6 +53,7 @@ export type PageSection =
       eyebrow: string;
       heading: string;
       body: string;
+      image?: string;
       imageAlt?: string;
     }
   | {

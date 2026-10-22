@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { getSpecialEventsPage } from "@/lib/cms";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Special Event Waste Services",
@@ -12,13 +13,7 @@ export default async function SpecialEventsPage() {
   const page = await getSpecialEventsPage();
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} />
       <SectionRenderer sections={page.sections} />
       <section className="section">
         <div className="container grid two">

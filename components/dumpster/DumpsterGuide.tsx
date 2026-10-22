@@ -6,14 +6,20 @@ import { trackEvent } from "@/lib/analytics";
 import { DUMPSTER_SIZE_SELECTED_EVENT } from "@/lib/dumpster-events";
 
 const projectTypes = ["All", "Cleanout", "Remodel", "Construction"];
+const DIMENSIONS_NOTE = /\s*Dumpster dimensions may vary[^.]*\.?/i;
 
+/**
+ * Side-by-side size comparison. "Choose" hands the size to the inquiry form
+ * on the same page (via DUMPSTER_SIZE_SELECTED_EVENT) and scrolls to it.
+ */
 export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
   const [filter, setFilter] = useState("All");
-  const [selected, setSelected] = useState(sizes[0]?.slug || "");
+  const [selected, setSelected] = useState("");
   const filtered = useMemo(
     () => sizes.filter((size) => filter === "All" || size.exampleProjects.some((project) => project.includes(filter))),
     [filter, sizes]
   );
+  const note = sizes.map((size) => size.dimensions.match(DIMENSIONS_NOTE)?.[0]?.trim()).find(Boolean);
 
   function selectSize(size: DumpsterSize) {
     setSelected(size.slug);
@@ -23,29 +29,42 @@ export function DumpsterGuide({ sizes }: { sizes: DumpsterSize[] }) {
   }
 
   return (
-    <div>
-      <p className="eyebrow">Dumpster Size Guide</p>
-      <h2>Choose a size for your project</h2>
-      <div className="tabs" role="tablist" aria-label="Project type filter">
-        {projectTypes.map((type) => (
-          <button aria-selected={filter === type} className="tab" key={type} onClick={() => setFilter(type)} role="tab" type="button">{type}</button>
-        ))}
+    <div className="size-guide">
+      <div className="size-guide-head">
+        <div>
+          <p className="eyebrow">Dumpster Size Guide</p>
+          <h2>Compare sizes for your project</h2>
+        </div>
+        <div className="filter-group" role="group" aria-label="Filter sizes by project type">
+          {projectTypes.map((type) => (
+            <button aria-pressed={filter === type} className="tab" key={type} onClick={() => setFilter(type)} type="button">{type}</button>
+          ))}
+        </div>
       </div>
-      <div className="grid five">
+
+      <div className="size-table" role="table" aria-label="Roll-off dumpster size comparison">
+        <div className="size-row size-row-head" role="row">
+          <span role="columnheader">Size</span>
+          <span role="columnheader">Capacity</span>
+          <span role="columnheader">Dimensions</span>
+          <span role="columnheader">Good for</span>
+          <span role="columnheader"><span className="sr-only">Choose</span></span>
+        </div>
         {filtered.map((size) => (
-          <article className={`card ${selected === size.slug ? "tint" : ""}`} key={size.slug}>
-            <span className="badge">{size.availability}</span>
-            <h3 className="stack-top-sm">{size.name}</h3>
-            <p><strong>Capacity:</strong> {size.capacity}</p>
-            <p><strong>Dimensions:</strong> {size.dimensions}</p>
-            <p>{size.recommendedUses}</p>
-            <ul>
-              {size.exampleProjects.map((project) => <li key={project}>{project}</li>)}
-            </ul>
-            <button className="btn primary" onClick={() => selectSize(size)} type="button">Request This Size</button>
-          </article>
+          <div className={`size-row${selected === size.slug ? " is-selected" : ""}`} key={size.slug} role="row">
+            <strong className="size-name" role="cell">{size.name}</strong>
+            <span role="cell"><span className="size-label">Capacity</span>{size.capacity}</span>
+            <span role="cell"><span className="size-label">Dimensions</span>{size.dimensions.replace(DIMENSIONS_NOTE, "")}</span>
+            <span role="cell"><span className="size-label">Good for</span>{size.exampleProjects.join(", ")}</span>
+            <span role="cell">
+              <button className="btn btn-outline btn-sm" onClick={() => selectSize(size)} type="button">
+                {selected === size.slug ? "Selected" : "Choose this size"}
+              </button>
+            </span>
+          </div>
         ))}
       </div>
+      {note ? <p className="fine-print stack-top-sm">{note}</p> : null}
     </div>
   );
 }

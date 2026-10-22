@@ -42,20 +42,41 @@ function ndses_data(): array
         ],
         'mission' => $mission,
         'our_story' => [
-            'Founded in the fall of 2024 by Dustin Nieuwenhuis, NDS Environmental Solutions, LLC was built on a simple belief: our community deserves reliable, honest waste collection from a company that puts its customers first.',
-            'For Dustin, waste management has always been a family business. Growing up in the industry gave him firsthand experience and a deep understanding of what it takes to provide dependable service.',
-            'In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.',
-            'Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home.',
+            'NDS Environmental Solutions has built its reputation on dependable service, strong relationships, and a commitment to the communities it serves.',
+            'Founded in 2025 by Dustin Nieuwenhuis, NDS Environmental Solutions was built on a foundation of family legacy, industry experience, and hard work. Dustin has a deep family history in the waste management industry within Walworth County and had been active in the former family business until its sale in 2023. After a year and a half of reflection, Dustin felt the community was missing the local/neighborly waste collection service. What began as Nieuwenhuis Disposal Service has grown into NDS Environmental Solutions, a business dedicated to providing waste and disposal solutions for residential, commercial, and temporary and permanent construction dumpsters. Our team consists of long-time waste management professionals and family members who drive these values.',
+            'Over the last two years, NDS/ES has continued to grow and evolve, expanding its services and capabilities to meet the changing needs of its customers. Through hard work, dedication, and a focus on doing the job right, the company has continued to build lasting relationships with the customers and communities it serves.',
+            'As a family-owned/local business, NDS/ES takes pride in offering personal service and treating customers like neighbors rather than just account numbers. These values that helped establish the company continue to guide our approach to service, its relationships with customers, and its commitment to doing business the right way.',
+            'Today, NDS Environmental Solutions continues to build on its history while looking toward the future. With a focus on reliable service, continued improvement, and strong community relationships, NDS/ES remains committed to finding practical disposal solutions and serving its customers for years to come.',
         ],
+        // Mirrors the Next.js navigation (lib/cms/mock-data.ts). Used when no
+        // Primary Navigation menu is assigned in Appearance > Menus.
         'nav' => [
-            ['label' => 'Residential', 'url' => '/residential'],
-            ['label' => 'Commercial', 'url' => '/commercial'],
-            ['label' => 'Dumpster Rentals', 'url' => '/dumpster-rentals'],
-            ['label' => 'Calculator', 'url' => '/dumpster-calculator'],
-            ['label' => 'Special Events', 'url' => '/special-events'],
-            ['label' => 'FAQs', 'url' => '/faqs'],
-            ['label' => 'What\'s New', 'url' => '/whats-new'],
-            ['label' => 'Contact', 'url' => '/contact'],
+            ['label' => 'Residential', 'url' => '/residential', 'description' => 'Residential trash, recycling, schedules, and community pages.', 'children' => [
+                ['label' => 'Residential Overview', 'url' => '/residential', 'description' => 'Trash, recycling, bulk-item guidance, and FAQs.'],
+                ['label' => 'Town of Walworth', 'url' => '/residential/town-of-walworth', 'description' => 'Thursday collection and local notices.'],
+                ['label' => 'Town of Delavan', 'url' => '/residential/town-of-delavan', 'description' => 'Monday collection and local notices.'],
+                ['label' => 'City of Delavan', 'url' => '/residential/city-of-delavan', 'description' => 'Wednesday collection and local notices.'],
+                ['label' => 'Town of Darien', 'url' => '/residential/town-of-darien', 'description' => 'Tuesday collection.'],
+                ['label' => 'Town of Sharon', 'url' => '/residential/town-of-sharon', 'description' => 'Tuesday collection.'],
+            ]],
+            ['label' => 'Commercial', 'url' => '/commercial', 'description' => 'Commercial trash, recycling, containers, and quote requests.', 'children' => [
+                ['label' => 'Commercial Overview', 'url' => '/commercial', 'description' => 'Permanent containers and business service plans.'],
+                ['label' => 'Container Options', 'url' => '/commercial#containers', 'description' => '96-gallon, 2-yard, 4-yard, 6-yard, and 8-yard options.'],
+                ['label' => 'Commercial Recycling', 'url' => '/commercial#recycling', 'description' => 'Cardboard, paper, plastic, aluminum, and mixed recycling.'],
+            ]],
+            ['label' => 'Dumpster Rentals', 'url' => '/dumpster-rentals', 'description' => 'Temporary roll-off dumpsters and size guidance.', 'children' => [
+                ['label' => 'Rental Overview', 'url' => '/dumpster-rentals', 'description' => 'Temporary dumpsters for projects and cleanouts.'],
+                ['label' => 'Dumpster Calculator', 'url' => '/dumpster-calculator', 'description' => 'Choose the right roll-off size.'],
+                ['label' => 'Accepted Materials', 'url' => '/dumpster-rentals#materials', 'description' => 'What can and cannot go in a rental dumpster.'],
+                ['label' => 'Special Events', 'url' => '/special-events', 'description' => 'Containers and cleanup for community and private events.'],
+            ]],
+            ['label' => 'Resources', 'url' => '/whats-new', 'description' => 'Updates, FAQs, contact, payment, and company information.', 'children' => [
+                ['label' => "What's New", 'url' => '/whats-new', 'description' => 'Alerts and service updates.'],
+                ['label' => 'FAQs', 'url' => '/faqs', 'description' => 'Dumpster, residential, and commercial questions.'],
+                ['label' => 'About Us', 'url' => '/about', 'description' => 'Our story and mission.'],
+                ['label' => 'Contact Us', 'url' => '/contact', 'description' => 'Quotes, estimates, and questions.'],
+                ['label' => 'Make a Payment', 'url' => '/make-a-payment', 'description' => 'Pay your account balance online by card or ACH.'],
+            ]],
         ],
         'pages' => [
             'home' => [

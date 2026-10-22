@@ -6,6 +6,7 @@ import { FAQSection } from "@/components/sections/FAQSection";
 import { ServiceNoticeList } from "@/components/notices/ServiceNoticeList";
 import { getCommunities, getCommunityBySlug, getServiceNotices } from "@/lib/cms";
 import { activeNoticesForLocation } from "@/lib/notices";
+import { PageHero } from "@/components/layout/PageHero";
 
 export async function generateStaticParams() {
   const communities = await getCommunities();
@@ -31,25 +32,30 @@ export default async function CommunityPage({ params }: { params: Promise<{ comm
 
   return (
     <>
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{community.municipalityType}</p>
-          <h1>{community.name} Collection Information</h1>
-          <p className="lead">{community.heroDescription}</p>
-        </div>
-      </section>
-      <section className="section">
-        <div className="container grid two">
-          <div className="card tint">
-            <h2>Normal Collection</h2>
-            <p><strong>Service day:</strong> {community.serviceDay}</p>
-            <p><strong>Trash:</strong> {community.trashSchedule}</p>
-            <p><strong>Recycling:</strong> {community.recyclingSchedule}</p>
+      <PageHero eyebrow={community.municipalityType} heading={`${community.name} Collection Information`} description={community.heroDescription}>
+        <dl className="schedule-strip">
+          <div>
+            <dt>Service day</dt>
+            <dd>{community.serviceDay}</dd>
           </div>
           <div>
-            <h2>Current Notices</h2>
-            <ServiceNoticeList notices={communityNotices} emptyMessage="No active notices for this community." />
+            <dt>Trash</dt>
+            <dd>{community.trashSchedule}</dd>
           </div>
+          <div>
+            <dt>Recycling</dt>
+            <dd>{community.recyclingSchedule}</dd>
+          </div>
+        </dl>
+      </PageHero>
+      <section className="section">
+        <div className="container split">
+          <div>
+            <p className="eyebrow">Current Notices</p>
+            <h2>Delays and changes for {community.name}</h2>
+            <p className="lead">Weather delays, holiday changes, and route updates for this community appear here.</p>
+          </div>
+          <ServiceNoticeList notices={communityNotices} emptyMessage="No active notices for this community." />
         </div>
       </section>
       {community.slug === "town-of-walworth" ? (
@@ -61,6 +67,7 @@ export default async function CommunityPage({ params }: { params: Promise<{ comm
               alt="Town of Walworth recycling service map showing North and South collection zones"
               width={482}
               height={512}
+              sizes="(max-width: 640px) 90vw, 482px"
             />
           </div>
         </section>

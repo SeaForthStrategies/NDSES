@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FAQAccordion } from "@/components/sections/FAQAccordion";
 import { getFAQs, getFaqsPage } from "@/lib/cms";
 import { faqPageSchema } from "@/lib/schema";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "FAQs",
@@ -19,13 +20,7 @@ export default async function FAQPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema(faqs)) }} />
-      <section className="section page-hero">
-        <div className="container">
-          <p className="eyebrow">{page.hero.eyebrow}</p>
-          <h1>{page.hero.heading}</h1>
-          <p className="lead">{page.hero.description}</p>
-        </div>
-      </section>
+      <PageHero {...page.hero} />
       {categories.map((category, index) => (
         <section className={`section ${index % 2 ? "alt" : ""}`} id={category.id} key={category.id}>
           <div className="container">

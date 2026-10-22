@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { getServiceNotices } from "@/lib/cms";
 import { sortNotices } from "@/lib/notices";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Service Notices",
@@ -11,17 +12,17 @@ export const metadata: Metadata = {
 export default async function ServiceNoticesPage() {
   const notices = sortNotices(await getServiceNotices());
   return (
-    <section className="section page-hero">
+    <>
+      <PageHero eyebrow="Operational Updates" heading="Service notices" description="Weather delays, route changes, holiday updates, and closures from NDS." />
+      <section className="section">
       <div className="container">
-        <p className="eyebrow">Operational Updates</p>
-        <h1>Service notices</h1>
         {notices.length === 0 ? (
-          <div className="card stack-top">
+          <div className="card">
             <h2 className="compact-heading">No active service notices</h2>
             <p>Weather delays, route changes, holiday updates, and closures will appear here when they are posted.</p>
           </div>
         ) : (
-          <div className="grid two stack-top">
+          <div className="grid two">
             {notices.map((notice) => (
               <Link className="card notice-card" href={`/service-notices/${notice.slug}`} key={notice.id}>
                 <span className="badge">{notice.priority}</span>
@@ -33,6 +34,7 @@ export default async function ServiceNoticesPage() {
           </div>
         )}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

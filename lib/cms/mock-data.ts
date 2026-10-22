@@ -71,7 +71,7 @@ export const globalSettings: GlobalSettings = {
         { label: "FAQs", href: "/faqs", description: "Dumpster, residential, and commercial questions." },
         { label: "About Us", href: "/about", description: "Mission, history, and team structure." },
         { label: "Contact Us", href: "/contact", description: "Quotes, estimates, and questions." },
-        { label: "Make a Payment", href: "/make-a-payment", description: "Payment and ACH form placeholder." }
+        { label: "Make a Payment", href: "/make-a-payment", description: "Pay your account balance online by card or ACH." }
       ]
     }
   ]
@@ -124,7 +124,7 @@ export const homePage: CMSPage = {
   },
   sections: [
     { id: "home-services", type: "serviceGrid", eyebrow: "Our Services", heading: "Choose the service you need", services: serviceCards },
-    { id: "intro", type: "textImage", eyebrow: "Why NDS", heading: "Waste solutions from a local team that knows the routes", body: "We understand that effective waste management is critical to the quality of life in Wisconsin's towns and cities. Whether you're looking for dependable residential trash pickup or tailored solutions for commercial waste, NDS Environmental Solutions is committed to exceeding your expectations.", imageAlt: "NDS Environmental Solutions truck and operations yard" },
+    { id: "intro", type: "textImage", eyebrow: "Why NDS", heading: "Waste solutions from a local team that knows the routes", body: "We understand that effective waste management is critical to the quality of life in Wisconsin's towns and cities. Whether you're looking for dependable residential trash pickup or tailored solutions for commercial waste, NDS Environmental Solutions is committed to exceeding your expectations.", image: "/nds-assets/branding-03-bffd0f61cb.png", imageAlt: "NDS Environmental Solutions collection truck" },
     { id: "mission", type: "cta", eyebrow: "Our Mission", heading: "Reliable, affordable, and eco-friendly service", body: mission, label: "Learn About NDS", href: "/about" }
   ],
   seo: { title: "NDS Environmental Solutions", description: "Residential trash, recycling, commercial waste, and dumpster rentals in Southern Wisconsin." }
@@ -463,10 +463,11 @@ export const aboutContent = {
     description: "Learn about the mission, history, and team behind NDS Environmental Solutions."
   },
   history: [
-    "Founded in the fall of 2024 by Dustin Nieuwenhuis, NDS Environmental Solutions, LLC was built on a simple belief: our community deserves reliable, honest waste collection from a company that puts its customers first.",
-    "For Dustin, waste management has always been a family business. Growing up in the industry gave him firsthand experience and a deep understanding of what it takes to provide dependable service.",
-    "In January 2025, NDS officially began serving the Delavan, Wisconsin area, offering residential and commercial waste collection along with temporary and permanent roll-off dumpster services.",
-    "Today, our team brings together experienced waste management professionals and family members who share the same commitment to quality service, strong relationships, and taking care of the communities we call home."
+    "NDS Environmental Solutions has built its reputation on dependable service, strong relationships, and a commitment to the communities it serves.",
+    "Founded in 2025 by Dustin Nieuwenhuis, NDS Environmental Solutions was built on a foundation of family legacy, industry experience, and hard work. Dustin has a deep family history in the waste management industry within Walworth County and had been active in the former family business until its sale in 2023. After a year and a half of reflection, Dustin felt the community was missing the local/neighborly waste collection service. What began as Nieuwenhuis Disposal Service has grown into NDS Environmental Solutions, a business dedicated to providing waste and disposal solutions for residential, commercial, and temporary and permanent construction dumpsters. Our team consists of long-time waste management professionals and family members who drive these values.",
+    "Over the last two years, NDS/ES has continued to grow and evolve, expanding its services and capabilities to meet the changing needs of its customers. Through hard work, dedication, and a focus on doing the job right, the company has continued to build lasting relationships with the customers and communities it serves.",
+    "As a family-owned/local business, NDS/ES takes pride in offering personal service and treating customers like neighbors rather than just account numbers. These values that helped establish the company continue to guide our approach to service, its relationships with customers, and its commitment to doing business the right way.",
+    "Today, NDS Environmental Solutions continues to build on its history while looking toward the future. With a focus on reliable service, continued improvement, and strong community relationships, NDS/ES remains committed to finding practical disposal solutions and serving its customers for years to come."
   ],
   mission,
   teamPlaceholder: "Team member names, roles, and photos can be added through the future CMS."

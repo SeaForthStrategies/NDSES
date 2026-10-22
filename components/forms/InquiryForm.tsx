@@ -110,13 +110,13 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
       {formState.errors.root ? <p className="error">{formState.errors.root.message}</p> : null}
       <div className="field">
         <label htmlFor={`${formType}-name`}>Name</label>
-        <input id={`${formType}-name`} {...register("name")} autoComplete="name" />
-        {formState.errors.name ? <span className="error">{formState.errors.name.message}</span> : null}
+        <input aria-describedby={formState.errors.name ? `${formType}-name-error` : undefined} aria-invalid={formState.errors.name ? true : undefined} id={`${formType}-name`} {...register("name")} autoComplete="name" />
+        {formState.errors.name ? <span className="error" id={`${formType}-name-error`}>{formState.errors.name.message}</span> : null}
       </div>
       <div className="field">
         <label htmlFor={`${formType}-email`}>Email</label>
-        <input id={`${formType}-email`} {...register("email")} autoComplete="email" type="email" />
-        {formState.errors.email ? <span className="error">{formState.errors.email.message}</span> : null}
+        <input aria-describedby={formState.errors.email ? `${formType}-email-error` : undefined} aria-invalid={formState.errors.email ? true : undefined} id={`${formType}-email`} {...register("email")} autoComplete="email" type="email" />
+        {formState.errors.email ? <span className="error" id={`${formType}-email-error`}>{formState.errors.email.message}</span> : null}
       </div>
       <div className="field">
         <label htmlFor={`${formType}-phone`}>Phone</label>
@@ -150,8 +150,8 @@ export function InquiryForm({ formType }: { formType: InquiryInput["formType"] }
       ) : null}
       <div className="field">
         <label htmlFor={`${formType}-message`}>How can NDSES help?</label>
-        <textarea id={`${formType}-message`} {...register("message")} />
-        {formState.errors.message ? <span className="error">{formState.errors.message.message}</span> : null}
+        <textarea aria-describedby={formState.errors.message ? `${formType}-message-error` : undefined} aria-invalid={formState.errors.message ? true : undefined} id={`${formType}-message`} {...register("message")} />
+        {formState.errors.message ? <span className="error" id={`${formType}-message-error`}>{formState.errors.message.message}</span> : null}
       </div>
       <button className="btn primary" disabled={status === "loading"} type="submit">{status === "loading" ? "Sending..." : "Submit"}</button>
       {status === "success" ? <p role="status">Thank you. Your request has been sent to the NDS team — we&apos;ll be in touch soon.</p> : null}
