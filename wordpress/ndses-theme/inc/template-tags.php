@@ -35,7 +35,6 @@ function ndses_render_hero(?string $slug = null): void
     <section class="hero-section<?php echo $is_home ? ' hero-section--home' : ''; ?>">
         <div class="container hero-grid<?php echo $image_url ? '' : ' hero-grid--no-media'; ?>">
             <div class="hero-copy">
-                <p class="eyebrow"><?php echo esc_html($hero['eyebrow'] ?? 'NDS Environmental Solutions'); ?></p>
                 <h1><?php echo esc_html($hero['heading'] ?? get_the_title()); ?></h1>
                 <p class="hero-text"><?php echo esc_html($hero['description'] ?? ''); ?></p>
                 <div class="hero-actions">
@@ -79,7 +78,6 @@ function ndses_render_service_cards(): void
     <section class="section">
         <div class="container">
             <div class="section-heading">
-                <p class="eyebrow"><?php echo esc_html(ndses_sec('services', 'eyebrow', 'home')); ?></p>
                 <h2><?php echo esc_html(ndses_sec('services', 'heading', 'home')); ?></h2>
             </div>
             <div class="card-grid three">
@@ -301,7 +299,6 @@ function ndses_render_service_area_map(array $filter_types = []): void
             <?php endif; ?>
         </div>
         <div class="map-list">
-            <p class="eyebrow">Service Area</p>
             <h2>Southern Wisconsin coverage</h2>
             <p>Residential service is concentrated in listed communities. Commercial and temporary roll-off service is available in select areas of nearby counties.</p>
             <?php if ($towns) : ?>

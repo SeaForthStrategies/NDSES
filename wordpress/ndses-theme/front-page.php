@@ -6,7 +6,6 @@ ndses_render_service_cards();
 <section class="section soft-section">
     <div class="container split">
         <div>
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('why', 'eyebrow', 'home')); ?></p>
             <h2><?php echo esc_html(ndses_sec('why', 'heading', 'home')); ?></h2>
             <p><?php echo esc_html(ndses_sec('why', 'body', 'home')); ?></p>
         </div>
@@ -20,7 +19,6 @@ ndses_render_service_cards();
     <div class="container">
         <div class="section-heading row-heading">
             <div>
-                <p class="eyebrow"><?php echo esc_html(ndses_sec('sizes', 'eyebrow', 'home')); ?></p>
                 <h2><?php echo esc_html(ndses_sec('sizes', 'heading', 'home')); ?></h2>
             </div>
             <?php ndses_button(ndses_sec('sizes', 'button', 'home'), home_url('/dumpster-calculator'), 'button button-secondary'); ?>
@@ -36,7 +34,7 @@ ndses_render_service_cards();
 <section class="section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('faq', 'eyebrow', 'home')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('faq', 'heading', 'home')); ?></h2>
         </div>
         <?php ndses_render_faqs('Dumpster Rentals'); ?>
     </div>

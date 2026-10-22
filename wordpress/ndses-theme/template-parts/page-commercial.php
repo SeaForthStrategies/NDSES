@@ -2,7 +2,6 @@
 <section class="section">
     <div class="container split">
         <div>
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('areas', 'eyebrow', 'commercial')); ?></p>
             <h2><?php echo esc_html(ndses_sec('areas', 'heading', 'commercial')); ?></h2>
             <?php ndses_list(ndses_sec_lines('areas', 'list', 'commercial')); ?>
             <p class="small-note"><?php echo esc_html(ndses_sec('areas', 'note', 'commercial')); ?></p>
@@ -22,7 +21,6 @@
 <section class="section soft-section" id="containers">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('containers', 'eyebrow', 'commercial')); ?></p>
             <h2><?php echo esc_html(ndses_sec('containers', 'heading', 'commercial')); ?></h2>
         </div>
         <div class="card-grid five">
@@ -67,7 +65,6 @@
 <section class="section soft-section" id="quote">
     <div class="container split">
         <div>
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('quote', 'eyebrow', 'commercial')); ?></p>
             <h2><?php echo esc_html(ndses_sec('quote', 'heading', 'commercial')); ?></h2>
             <p><?php echo esc_html(ndses_sec('quote', 'body', 'commercial')); ?></p>
         </div>

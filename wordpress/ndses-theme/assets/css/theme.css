@@ -354,33 +354,12 @@ li + li {
 }
 
 /* ---------- Type helpers ---------- */
-/* Section label: a small pill chip with a gold dot. */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin: 0 0 var(--space-4);
-  padding: 6px var(--space-3) 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: var(--paper);
+/* Small plain label above the calculator's recommendation. */
+.result-label {
+  margin: 0;
   color: var(--green-600);
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 650;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-  box-shadow: var(--shadow-xs);
-}
-
-.eyebrow::before {
-  content: "";
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--gold-500);
-  box-shadow: 0 0 0 3px var(--gold-100);
 }
 
 .kicker {
@@ -866,9 +845,7 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
   overflow: hidden;
   padding: clamp(var(--space-8), 5vw, var(--space-12)) clamp(var(--space-6), 5vw, var(--space-12));
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(600px 300px at 100% 0%, rgb(217 165 32 / 22%), transparent 60%),
-    linear-gradient(135deg, var(--forest-700), var(--forest-900));
+  background: var(--forest-800);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1040,10 +1017,7 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
   overflow: hidden;
   padding-block: clamp(48px, 7vw, 96px) clamp(56px, 7vw, 96px);
   border-bottom: 1px solid var(--line);
-  background:
-    radial-gradient(900px 420px at 92% -20%, rgb(217 165 32 / 10%), transparent 70%),
-    radial-gradient(1100px 520px at 10% 0%, var(--green-50), transparent 65%),
-    linear-gradient(180deg, var(--sage-50) 0%, var(--paper) 100%);
+  background: var(--sage-50);
   color: var(--ink-soft);
 }
 
@@ -1195,8 +1169,7 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
 }
 
 .quote-panel h2,
-.feature-card h2,
-.split > div > h2:first-child {
+.feature-card h2 {
   font-size: var(--text-xl);
 }
 
@@ -1533,16 +1506,14 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 1;
-  transition: background-color 200ms var(--ease), color 200ms var(--ease);
+  transition: transform 300ms var(--ease), background-color 200ms var(--ease), color 200ms var(--ease);
 }
 
+/* The plus turns into a close mark when the answer is open. */
 .faq-item[open] summary::after {
   background: var(--forest-800);
   color: var(--paper);
-}
-
-.faq-item[open] summary::after {
-  content: "–";
+  transform: rotate(45deg);
 }
 
 .faq-answer {
@@ -1598,7 +1569,7 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
   background: var(--green-100);
 }
 
-.calculator-result .eyebrow,
+.calculator-result .result-label,
 .calculator-result h2 {
   margin: 0;
 }
@@ -2172,12 +2143,56 @@ legend {
   border-left: 4px solid var(--green-100);
 }
 
-/* ---------- Scroll reveal (progressive enhancement) ---------- */
+/* ---------- Motion ----------
+ * Everything here is progressive enhancement: theme.js only adds the
+ * reveal attributes when the visitor hasn't asked for reduced motion, and
+ * every rule below is also gated on prefers-reduced-motion. */
+.site-header {
+  transition: box-shadow 300ms var(--ease), background-color 300ms var(--ease);
+}
+
+.site-header.is-scrolled {
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 1px 0 rgb(16 32 24 / 7%), 0 12px 32px -16px rgb(16 40 28 / 22%);
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+    interpolate-size: allow-keywords;
+  }
+
+  /* Hero: copy rises in line by line; the photo settles into its frame. */
+  .hero-copy > * {
+    animation: nds-rise 800ms var(--ease) both;
+  }
+
+  .hero-copy > :nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  .hero-copy > :nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  .hero-copy > :nth-child(4) {
+    animation-delay: 270ms;
+  }
+
+  .hero-media {
+    animation: nds-media-in 1100ms var(--ease) 120ms both;
+  }
+
+  .hero-media img {
+    animation: nds-settle 1800ms var(--ease) 120ms both;
+  }
+
+  /* Scroll reveal for blocks. */
   [data-reveal] {
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 500ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(24px);
+    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+    transition-delay: var(--reveal-delay, 0ms);
   }
 
   [data-reveal].is-visible {
@@ -2185,32 +2200,63 @@ legend {
     transform: none;
   }
 
-  .hero-copy > * {
-    animation: nds-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* Grids: cards come in one after another. An animation (not a transition)
+     so that, once finished, hover effects on the cards still apply. */
+  [data-reveal-stagger] > * {
+    opacity: 0;
   }
 
-  .hero-copy > :nth-child(2) {
-    animation-delay: 80ms;
+  [data-reveal-stagger].is-visible > * {
+    opacity: 1;
+    animation: nds-rise 650ms var(--ease) backwards;
+    animation-delay: calc(var(--i, 0) * 80ms);
   }
 
-  .hero-copy > :nth-child(3) {
-    animation-delay: 160ms;
+  /* FAQ answers open and close smoothly where the browser supports it. */
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 350ms var(--ease), content-visibility 350ms allow-discrete;
   }
 
-  .hero-copy > :nth-child(4) {
-    animation-delay: 240ms;
+  .faq-item[open]::details-content {
+    block-size: auto;
   }
 }
 
 @keyframes nds-rise {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(20px);
   }
 
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes nds-media-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    clip-path: inset(6% 6% 6% 6% round var(--radius-lg));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 round var(--radius-lg));
+  }
+}
+
+@keyframes nds-settle {
+  from {
+    transform: scale(1.08);
+  }
+
+  to {
+    transform: scale(1);
   }
 }
 

@@ -4,7 +4,6 @@
   // when IntersectionObserver isn't available — content just stays visible.
   const prefersMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
   if (prefersMotion && 'IntersectionObserver' in window) {
-    const revealTargets = document.querySelectorAll('.section > .container');
     const observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -16,10 +15,36 @@
       },
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
-    revealTargets.forEach(function (target) {
-      target.setAttribute('data-reveal', '');
-      observer.observe(target);
+
+    // Grids: each card comes in a beat after the one before it.
+    document.querySelectorAll('main .card-grid, main .process-grid').forEach(function (grid) {
+      Array.prototype.forEach.call(grid.children, function (child, index) {
+        child.style.setProperty('--i', String(Math.min(index, 8)));
+      });
+      grid.setAttribute('data-reveal-stagger', '');
+      observer.observe(grid);
     });
+
+    // Other blocks fade up; side-by-side blocks follow each other slightly.
+    const blocks = 'main .section-heading, main .split > *, main .payment-grid > *, main .contact-grid > *, '
+      + 'main .calculator-shell > *, main .service-map-wrap > *, main .faq-group, main .content-body, .footer-cta-inner';
+    document.querySelectorAll(blocks).forEach(function (block) {
+      if (block.closest('[data-reveal-stagger]')) return;
+      const siblingIndex = Array.prototype.indexOf.call(block.parentElement.children, block);
+      block.style.setProperty('--reveal-delay', Math.min(siblingIndex, 3) * 100 + 'ms');
+      block.setAttribute('data-reveal', '');
+      observer.observe(block);
+    });
+  }
+
+  // Header gains a soft shadow once the page is scrolled.
+  const siteHeader = document.querySelector('.site-header');
+  if (siteHeader) {
+    const syncHeader = function () {
+      siteHeader.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    syncHeader();
+    window.addEventListener('scroll', syncHeader, { passive: true });
   }
 
   initNavigation();
@@ -199,7 +224,7 @@
       const el = result.querySelector(selector);
       return el ? el.innerHTML : fallback;
     };
-    const resultEyebrow = resultText('.eyebrow', 'Recommendation');
+    const resultEyebrow = resultText('.result-label', 'Recommendation');
     const resultNote = resultText('.small-note', '');
     const resultButton = resultText('.button', 'Request Quote');
 
@@ -222,7 +247,7 @@
         materialsNote = ' Heavy materials (concrete, dirt, roofing tear-off, etc.) hit a dumpster’s weight limit well before it fills up, so we cap the recommended size for heavy loads regardless of project type.';
       }
 
-      result.innerHTML = '<p class="eyebrow">' + resultEyebrow + '</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p>' + (resultNote ? '<p class="small-note">' + resultNote + '</p>' : '') + '<a class="button button-primary" href="' + window.location.origin + '/dumpster-rentals/?service=dumpster&size=' + encodeURIComponent(recommendation.split(' ')[0] + '-yard') + '#quote">' + resultButton + '</a>';
+      result.innerHTML = '<p class="result-label">' + resultEyebrow + '</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p>' + (resultNote ? '<p class="small-note">' + resultNote + '</p>' : '') + '<a class="button button-primary" href="' + window.location.origin + '/dumpster-rentals/?service=dumpster&size=' + encodeURIComponent(recommendation.split(' ')[0] + '-yard') + '#quote">' + resultButton + '</a>';
     });
 
     ndsesInitAddressLookup(form.querySelector('input[name="address"]'));

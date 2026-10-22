@@ -11,7 +11,6 @@ if (!$community) {
 <section class="hero-section">
     <div class="container hero-grid">
         <div class="hero-copy">
-            <p class="eyebrow"><?php echo esc_html($community['type']); ?> Residential Service</p>
             <h1><?php echo esc_html($community['name']); ?></h1>
             <p class="hero-text"><?php echo esc_html($community['description']); ?></p>
             <div class="hero-actions">
@@ -38,7 +37,6 @@ if (!$community) {
 <section class="section soft-section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">Downloads</p>
             <h2>Printable schedules & guides</h2>
         </div>
         <div class="card-grid three">
@@ -77,7 +75,6 @@ if (!$community) {
 <section class="section soft-section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">Recycling</p>
             <h2>What belongs in recycling</h2>
         </div>
         <div class="card-grid three">

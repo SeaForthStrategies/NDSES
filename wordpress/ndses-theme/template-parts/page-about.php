@@ -2,7 +2,6 @@
 <section class="section">
     <div class="container split">
         <div>
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('story', 'eyebrow', 'about')); ?></p>
             <h2><?php echo esc_html(ndses_sec('story', 'heading', 'about')); ?></h2>
             <?php echo ndses_get_our_story_html(); ?>
         </div>
@@ -20,7 +19,6 @@
 <section class="section soft-section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow"><?php echo esc_html(ndses_sec('team', 'eyebrow', 'about')); ?></p>
             <h2><?php echo esc_html(ndses_sec('team', 'heading', 'about')); ?></h2>
         </div>
         <div class="card-grid three">
