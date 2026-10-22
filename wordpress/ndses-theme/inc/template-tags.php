@@ -20,23 +20,20 @@ function ndses_render_hero(?string $slug = null): void
     $width = is_array($image) ? ($image['width'] ?? null) : null;
     $height = is_array($image) ? ($image['height'] ?? null) : null;
 
-    // Home: the Delavan lakefront truck photo is always the full-bleed
-    // background behind the copy. The layout's green fade is tuned to where
-    // the truck sits in this photo, so the Home page's ACF Hero image is
-    // intentionally not used here (other pages still use theirs).
-    $photo_url = '';
-    if ($slug === 'home') {
-        $photo_url = ndses_asset('home-hero-truck.jpg');
-        $image_url = '';
+    $is_home = $slug === 'home';
+    $image_alt = ($hero['heading'] ?? 'NDS Environmental Solutions') . ' visual';
+
+    // Home: always the Delavan lakefront truck photo. The Home page's Hero
+    // image (and its built-in fallback, a sign proof) is intentionally not used.
+    if ($is_home) {
+        $image_url = ndses_asset('home-hero-truck.jpg');
+        $width = 1672;
+        $height = 941;
+        $image_alt = 'NDS Environmental Solutions garbage truck on a street in Delavan';
     }
     ?>
-    <section class="hero-section<?php echo $photo_url ? ' hero-section--photo' : ''; ?>">
-        <?php if ($photo_url) : ?>
-            <div class="hero-photo-frame" aria-hidden="true">
-                <img class="hero-photo" src="<?php echo esc_url($photo_url); ?>" alt="" width="1672" height="941" fetchpriority="high" decoding="async">
-            </div>
-        <?php endif; ?>
-        <div class="container hero-grid<?php echo $image_url ? '' : ' hero-grid--no-media'; ?><?php echo $photo_url ? ' hero-grid--photo' : ''; ?>">
+    <section class="hero-section<?php echo $is_home ? ' hero-section--home' : ''; ?>">
+        <div class="container hero-grid<?php echo $image_url ? '' : ' hero-grid--no-media'; ?>">
             <div class="hero-copy">
                 <p class="eyebrow"><?php echo esc_html($hero['eyebrow'] ?? 'NDS Environmental Solutions'); ?></p>
                 <h1><?php echo esc_html($hero['heading'] ?? get_the_title()); ?></h1>
@@ -44,14 +41,14 @@ function ndses_render_hero(?string $slug = null): void
                 <div class="hero-actions">
                     <?php ndses_button('Get a Quote', home_url('/contact')); ?>
                     <?php ndses_button('Call NDS', ndses_phone_href(), 'button button-secondary'); ?>
-                    <?php if ($slug === 'home' || $slug === 'dumpster-rentals') : ?>
-                        <?php ndses_button('Rent a Dumpster', home_url('/dumpster-rentals'), 'button button-ghost'); ?>
+                    <?php if ($is_home || $slug === 'dumpster-rentals') : ?>
+                        <a class="text-link hero-link" href="<?php echo esc_url(home_url('/dumpster-rentals')); ?>">Rent a Dumpster</a>
                     <?php endif; ?>
                 </div>
             </div>
             <?php if ($image_url) : ?>
             <div class="hero-media">
-                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(($hero['heading'] ?? 'NDS Environmental Solutions') . ' visual'); ?>" <?php echo $width ? 'width="' . esc_attr((string) $width) . '"' : ''; ?> <?php echo $height ? 'height="' . esc_attr((string) $height) . '"' : ''; ?> fetchpriority="high" decoding="async">
+                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_alt); ?>" <?php echo $width ? 'width="' . esc_attr((string) $width) . '"' : ''; ?> <?php echo $height ? 'height="' . esc_attr((string) $height) . '"' : ''; ?> fetchpriority="high" decoding="async">
             </div>
             <?php endif; ?>
         </div>
@@ -226,10 +223,14 @@ function ndses_render_inquiry_form(string $form_type): void
             <label for="<?php echo esc_attr($form_type); ?>-website">Leave this field blank</label>
             <input id="<?php echo esc_attr($form_type); ?>-website" type="text" name="website" tabindex="-1" autocomplete="off">
         </div>
-        <label>Name <input required type="text" name="name"></label>
-        <label>Email <input required type="email" name="email"></label>
-        <label>Phone <input required type="tel" name="phone"></label>
+        <label>Name <input required type="text" name="name" autocomplete="name"></label>
+        <div class="field-row">
+            <label>Email <input required type="email" name="email" autocomplete="email"></label>
+            <label>Phone <input required type="tel" name="phone" autocomplete="tel"></label>
+        </div>
         <label>Service address <input type="text" name="serviceAddress"></label>
+        <?php $has_pair = in_array($form_type, ['dumpster', 'event'], true); ?>
+        <?php if ($has_pair) : ?><div class="field-row"><?php endif; ?>
         <label>Service type
             <select required name="serviceType">
                 <?php foreach ($service_options as $value => $label) : ?>
@@ -243,6 +244,7 @@ function ndses_render_inquiry_form(string $form_type): void
         <?php if ($form_type === 'event') : ?>
             <label>Event date <input type="date" name="eventDate"></label>
         <?php endif; ?>
+        <?php if ($has_pair) : ?></div><?php endif; ?>
         <label>Message <textarea required minlength="10" name="message" rows="5"></textarea></label>
         <p class="form-status" role="status"></p>
         <button class="button button-primary" type="submit">Send Request</button>

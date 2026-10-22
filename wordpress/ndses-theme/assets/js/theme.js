@@ -341,7 +341,12 @@
 
     function initSecureFields() {
       if (!window.PayEngine || (cardForm && achForm)) return;
-      const css = { fontFamily: 'inherit', fontSize: '16px', width: '100%', height: '46px', padding: '10px 12px', color: '#14211a' };
+      // Sized to match the theme's regular inputs: the .secure-field box is
+      // 48px tall with a 1px border, so the iframe content is 46px tall and
+      // text starts 14px in, the same as other inputs' padding.
+      // The iframes can't load the theme's Public Sans, so they use the
+      // closest system sans-serif ('inherit' fell back to a serif font).
+      const css = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '16px', width: '100%', height: '46px', lineHeight: '46px', padding: '0 14px', boxSizing: 'border-box', color: '#15211a', '&::placeholder': { color: '#56655b' } };
 
       Promise.all([
         window.PayEngine.SecureFields.create(),

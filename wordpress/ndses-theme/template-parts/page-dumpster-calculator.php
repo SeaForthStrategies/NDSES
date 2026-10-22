@@ -32,6 +32,10 @@
 </section>
 <section class="section soft-section">
     <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('compare', 'eyebrow', 'dumpster-calculator')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('compare', 'heading', 'dumpster-calculator')); ?></h2>
+        </div>
         <?php ndses_render_dumpster_cards(); ?>
     </div>
 </section>

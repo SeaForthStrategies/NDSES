@@ -165,6 +165,10 @@ function ndses_page_sections(): array
                     'note' => ['textarea', 'Small print', 'This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dumpster dimensions may vary based on different manufacturers.', 'Stays the same after a recommendation is shown.'],
                     'button' => ['text', 'Button text', 'Request Quote'],
                 ]],
+                'compare' => ['label' => 'Compare Sizes', 'fields' => [
+                    'eyebrow' => ['text', 'Eyebrow', 'All Sizes'],
+                    'heading' => ['text', 'Heading', 'Compare every dumpster size', 'The size cards come from Dumpster Sizes in the left menu.'],
+                ]],
             ],
         ],
         'special-events' => [
@@ -472,7 +476,7 @@ function ndses_prefill_hero_field(array $field): array
     $hero = ndses_data()['pages'][$slug] ?? null;
 
     if ($field['name'] === 'image' && $slug === 'home') {
-        $field['instructions'] = 'Not used on the Home page: the Home banner always shows the NDS truck photo behind the text.';
+        $field['instructions'] = 'Not used on the Home page: the Home banner always shows the NDS truck photo.';
     } elseif ($hero && isset($hero[$field['name']]) && is_string($hero[$field['name']])) {
         $field['default_value'] = $hero[$field['name']];
     }

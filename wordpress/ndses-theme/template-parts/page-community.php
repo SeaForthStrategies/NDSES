@@ -54,11 +54,11 @@ if (!$community) {
 <?php endif; ?>
 <section class="section">
     <div class="container split">
-        <div>
+        <article class="feature-card">
             <h2>Service Guidelines</h2>
             <?php ndses_list($community['guidelines']); ?>
-        </div>
-        <div>
+        </article>
+        <article class="feature-card">
             <h2>Bulk Item Guidance</h2>
             <p><?php echo esc_html($community['bulk_policy']); ?></p>
             <div class="two-column-list">
@@ -71,7 +71,7 @@ if (!$community) {
                     <?php ndses_list($community['bulk_not_accepted'], 'compact-list danger-list'); ?>
                 </div>
             </div>
-        </div>
+        </article>
     </div>
 </section>
 <section class="section soft-section">
