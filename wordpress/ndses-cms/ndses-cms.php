@@ -2,7 +2,7 @@
 /**
  * Plugin Name: NDSES CMS Structure
  * Description: Registers NDSES custom post types, ACF options pages, and local field groups.
- * Version: 0.2.1
+ * Version: 0.2.2
  */
 
 if (!defined('ABSPATH')) {
@@ -589,7 +589,9 @@ function ndses_handle_payment_charge(WP_REST_Request $request)
     if ($status < 200 || $status >= 300 || !is_array($json) || !empty($json['error'])) {
         error_log('PayEngine charge failed: HTTP ' . $status . ' ' . wp_remote_retrieve_body($response));
 
-        return rest_ensure_response(['mode' => 'error', 'message' => 'We could not process the payment. Please try again shortly.']);
+        // PayEngine answers declines (insufficient funds, invalid bank
+        // account) with an error status too, so word this for both cases.
+        return rest_ensure_response(['mode' => 'error', 'message' => 'This payment could not be completed. Please check your payment details and try again, use a different payment method, or call NDSES.']);
     }
 
     $sale_response = $json['data']['SaleResponse'] ?? $json['data']['AchResponse'] ?? null;

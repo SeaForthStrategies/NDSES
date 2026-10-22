@@ -319,12 +319,14 @@
     let cardForm = null;
     let achForm = null;
 
+    function syncPaymentFields() {
+      const method = (payEngineForm.querySelector('input[name="paymentMethod"]:checked') || {}).value || 'card';
+      cardFields.hidden = method !== 'card';
+      achFields.hidden = method !== 'ach';
+    }
+
     payEngineForm.querySelectorAll('input[name="paymentMethod"]').forEach(function (radio) {
-      radio.addEventListener('change', function () {
-        if (!radio.checked) return;
-        cardFields.hidden = radio.value !== 'card';
-        achFields.hidden = radio.value !== 'ach';
-      });
+      radio.addEventListener('change', syncPaymentFields);
     });
 
     function initSecureFields() {
@@ -414,7 +416,14 @@
         .then(function (result) {
           const mode = result.body && result.body.mode;
           if (result.ok && mode === 'success') {
+            // form.reset() puts the method back to Card without firing
+            // 'change', and doesn't reach the SecureFields iframes, so
+            // re-sync the visible fields and clear the card/bank details.
             payEngineForm.reset();
+            syncPaymentFields();
+            [cardForm, achForm].forEach(function (form) {
+              try { form.reset(); } catch (error) { /* older SDKs lack reset() */ }
+            });
             if (statusEl) {
               statusEl.textContent = result.body.message || 'Thank you! Your payment has been received.';
               statusEl.className = 'form-status is-success';
