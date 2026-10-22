@@ -193,6 +193,16 @@
       Other: '20 Yard Dumpster',
     };
 
+    // The eyebrow, small print, and button text are editable in wp-admin
+    // (Dumpster Calculator Page Sections), so reuse what the page rendered.
+    const resultText = function (selector, fallback) {
+      const el = result.querySelector(selector);
+      return el ? el.innerHTML : fallback;
+    };
+    const resultEyebrow = resultText('.eyebrow', 'Recommendation');
+    const resultNote = resultText('.small-note', '');
+    const resultButton = resultText('.button', 'Request Quote');
+
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       const data = new FormData(form);
@@ -212,7 +222,7 @@
         materialsNote = ' Heavy materials (concrete, dirt, roofing tear-off, etc.) hit a dumpster’s weight limit well before it fills up, so we cap the recommended size for heavy loads regardless of project type.';
       }
 
-      result.innerHTML = '<p class="eyebrow">Recommendation</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p><p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dumpster dimensions may vary based on different manufacturers.</p><a class="button button-primary" href="' + window.location.origin + '/dumpster-rentals/?service=dumpster&size=' + encodeURIComponent(recommendation.split(' ')[0] + '-yard') + '#quote">Request Quote</a>';
+      result.innerHTML = '<p class="eyebrow">' + resultEyebrow + '</p><h2>' + recommendation + '</h2><p>This size is a good starting point for your selected project.' + materialsNote + ' NDS can confirm final sizing, material restrictions, and availability when you request a quote.</p>' + (resultNote ? '<p class="small-note">' + resultNote + '</p>' : '') + '<a class="button button-primary" href="' + window.location.origin + '/dumpster-rentals/?service=dumpster&size=' + encodeURIComponent(recommendation.split(' ')[0] + '-yard') + '#quote">' + resultButton + '</a>';
     });
 
     ndsesInitAddressLookup(form.querySelector('input[name="address"]'));

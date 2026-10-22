@@ -82,11 +82,14 @@ function ndses_render_service_cards(): void
     <section class="section">
         <div class="container">
             <div class="section-heading">
-                <p class="eyebrow">Our Services</p>
-                <h2>Choose the service you need</h2>
+                <p class="eyebrow"><?php echo esc_html(ndses_sec('services', 'eyebrow', 'home')); ?></p>
+                <h2><?php echo esc_html(ndses_sec('services', 'heading', 'home')); ?></h2>
             </div>
             <div class="card-grid three">
-                <?php foreach (ndses_data()['services'] as $service) : ?>
+                <?php foreach (ndses_data()['services'] as $index => $service) :
+                    $service['title'] = ndses_sec('services', 'card' . ($index + 1) . '_title', 'home');
+                    $service['body'] = ndses_sec('services', 'card' . ($index + 1) . '_body', 'home');
+                    ?>
                     <article class="feature-card icon-card">
                         <div class="icon-card-media" aria-hidden="true">
                             <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><?php echo ndses_service_icon($service['icon']); ?></svg>
@@ -94,7 +97,7 @@ function ndses_render_service_cards(): void
                         <div>
                             <h3><?php echo esc_html($service['title']); ?></h3>
                             <p><?php echo esc_html($service['body']); ?></p>
-                            <a href="<?php echo esc_url(home_url($service['url'])); ?>" class="text-link">Explore service</a>
+                            <a href="<?php echo esc_url(home_url($service['url'])); ?>" class="text-link"><?php echo esc_html(ndses_sec('services', 'link_label', 'home')); ?></a>
                         </div>
                     </article>
                 <?php endforeach; ?>

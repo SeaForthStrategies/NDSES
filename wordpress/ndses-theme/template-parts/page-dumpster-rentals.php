@@ -3,10 +3,10 @@
     <div class="container">
         <div class="section-heading row-heading">
             <div>
-                <p class="eyebrow">Size Guide</p>
-                <h2>Find the right size dumpster for you</h2>
+                <p class="eyebrow"><?php echo esc_html(ndses_sec('sizes', 'eyebrow', 'dumpster-rentals')); ?></p>
+                <h2><?php echo esc_html(ndses_sec('sizes', 'heading', 'dumpster-rentals')); ?></h2>
             </div>
-            <?php ndses_button('Use Calculator', home_url('/dumpster-calculator'), 'button button-secondary'); ?>
+            <?php ndses_button(ndses_sec('sizes', 'button', 'dumpster-rentals'), home_url('/dumpster-calculator'), 'button button-secondary'); ?>
         </div>
         <?php ndses_render_dumpster_cards(); ?>
     </div>
@@ -14,23 +14,25 @@
 <section class="section soft-section" id="materials">
     <div class="container split">
         <article class="feature-card">
-            <h2>Accepted Materials</h2>
-            <?php ndses_list(ndses_data()['accepted_materials']); ?>
+            <h2><?php echo esc_html(ndses_sec('materials', 'accepted_heading', 'dumpster-rentals')); ?></h2>
+            <?php ndses_list(ndses_sec_lines('materials', 'accepted_list', 'dumpster-rentals')); ?>
         </article>
         <article class="feature-card">
-            <h2>Not Accepted Materials</h2>
-            <?php ndses_list(ndses_data()['prohibited_materials'], 'danger-list'); ?>
+            <h2><?php echo esc_html(ndses_sec('materials', 'not_heading', 'dumpster-rentals')); ?></h2>
+            <?php ndses_list(ndses_sec_lines('materials', 'not_list', 'dumpster-rentals'), 'danger-list'); ?>
         </article>
     </div>
 </section>
 <section class="section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">Rental Process</p>
-            <h2>Four simple steps</h2>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('process', 'eyebrow', 'dumpster-rentals')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('process', 'heading', 'dumpster-rentals')); ?></h2>
         </div>
         <div class="process-grid">
-            <?php foreach ([['Request A Quote', 'Tell us about your project so we can help you find the dumpster that fits your needs.'], ['Schedule Delivery', 'Call NDS to schedule delivery at the right location.'], ['Fill It Up', 'Fill the dumpster during your 15 day rental period.'], ['We Pick It Up', 'Call when you are done and NDS will haul everything away.']] as $index => $step) : ?>
+            <?php foreach ([1, 2, 3, 4] as $index => $n) :
+                $step = [ndses_sec('process', "step{$n}_title", 'dumpster-rentals'), ndses_sec('process', "step{$n}_body", 'dumpster-rentals')];
+                ?>
                 <article class="process-step">
                     <span><?php echo esc_html((string) ($index + 1)); ?></span>
                     <h3><?php echo esc_html($step[0]); ?></h3>
@@ -43,9 +45,9 @@
 <section class="section soft-section" id="quote">
     <div class="container split">
         <div>
-            <p class="eyebrow">Rental Inquiry</p>
-            <h2>Request a dumpster</h2>
-            <p>Arriving from "Request This Size"? The size you picked carries over automatically.</p>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('quote', 'eyebrow', 'dumpster-rentals')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('quote', 'heading', 'dumpster-rentals')); ?></h2>
+            <p><?php echo esc_html(ndses_sec('quote', 'body', 'dumpster-rentals')); ?></p>
         </div>
         <?php ndses_render_inquiry_form('dumpster'); ?>
     </div>

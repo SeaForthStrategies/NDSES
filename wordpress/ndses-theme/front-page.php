@@ -6,12 +6,12 @@ ndses_render_service_cards();
 <section class="section soft-section">
     <div class="container split">
         <div>
-            <p class="eyebrow">Why NDS</p>
-            <h2>Waste solutions from a local team that knows the routes</h2>
-            <p>We understand that effective waste management is critical to the quality of life in Wisconsin's towns and cities. Whether you're looking for dependable residential trash pickup or tailored commercial waste solutions, NDS is committed to responsive service.</p>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('why', 'eyebrow', 'home')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('why', 'heading', 'home')); ?></h2>
+            <p><?php echo esc_html(ndses_sec('why', 'body', 'home')); ?></p>
         </div>
         <div class="quote-panel">
-            <h3>Our Mission</h3>
+            <h3><?php echo esc_html(ndses_sec('why', 'mission_heading', 'home')); ?></h3>
             <p><?php echo esc_html(ndses_get_mission()); ?></p>
         </div>
     </div>
@@ -20,10 +20,10 @@ ndses_render_service_cards();
     <div class="container">
         <div class="section-heading row-heading">
             <div>
-                <p class="eyebrow">Dumpster Sizing</p>
-                <h2>Primary roll-off sizes at a glance</h2>
+                <p class="eyebrow"><?php echo esc_html(ndses_sec('sizes', 'eyebrow', 'home')); ?></p>
+                <h2><?php echo esc_html(ndses_sec('sizes', 'heading', 'home')); ?></h2>
             </div>
-            <?php ndses_button('Open Calculator', home_url('/dumpster-calculator'), 'button button-secondary'); ?>
+            <?php ndses_button(ndses_sec('sizes', 'button', 'home'), home_url('/dumpster-calculator'), 'button button-secondary'); ?>
         </div>
         <?php ndses_render_dumpster_cards(); ?>
     </div>
@@ -36,10 +36,9 @@ ndses_render_service_cards();
 <section class="section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">Frequently Asked</p>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('faq', 'eyebrow', 'home')); ?></p>
         </div>
         <?php ndses_render_faqs('Dumpster Rentals'); ?>
     </div>
 </section>
 <?php get_footer(); ?>
-

@@ -22,11 +22,11 @@
             <button class="button button-primary" type="submit">Recommend a Size</button>
         </form>
         <aside class="calculator-result" aria-live="polite">
-            <p class="eyebrow">Recommendation</p>
-            <h2>Start with the 15 Yard Dumpster</h2>
-            <p>Choose project details to update the recommendation. You can still compare all sizes below.</p>
-            <p class="small-note">This is a 15 day rental. If you use a credit card for payment, there will be a 3% fee. Dumpster dimensions may vary based on different manufacturers.</p>
-            <?php ndses_button('Request Quote', ndses_dumpster_request_url()); ?>
+            <p class="eyebrow"><?php echo esc_html(ndses_sec('result', 'eyebrow', 'dumpster-calculator')); ?></p>
+            <h2><?php echo esc_html(ndses_sec('result', 'heading', 'dumpster-calculator')); ?></h2>
+            <p><?php echo esc_html(ndses_sec('result', 'body', 'dumpster-calculator')); ?></p>
+            <p class="small-note"><?php echo esc_html(ndses_sec('result', 'note', 'dumpster-calculator')); ?></p>
+            <?php ndses_button(ndses_sec('result', 'button', 'dumpster-calculator'), ndses_dumpster_request_url()); ?>
         </aside>
     </div>
 </section>

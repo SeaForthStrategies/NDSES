@@ -40,7 +40,7 @@ A few things that are true everywhere:
 - **Changes appear on the live site within a few minutes**, not instantly. If you don't see your change right away, wait 5 minutes and refresh. (See [Common Questions](#common-questions) if it still hasn't shown up.)
 - **Required fields are marked** and the Publish button will tell you if something's missing.
 
-**Where the edit boxes are.** On most screens (Dumpster Sizes, FAQs, Communities, Pages, and so on) WordPress shows its page editor first, and the editable boxes sit in the **Meta Boxes** panel at the bottom of the screen. Drag the small grey bar at the top of that panel upward to give it more room, or scroll inside it. The **Save** button (or **Publish**, for a brand-new entry) is the blue button at the top right. Site Settings is a plain form with a **Save Settings** button at the bottom.
+**Where the edit boxes are.** The main site pages (Home, Residential, Commercial, Dumpster Rentals, Dumpster Calculator, Special Events, About, Make a Payment, Contact) open as a simple form: **Page Hero & SEO** at the top, then **[Page name] Page Sections** with one tab per section. On other screens (Dumpster Sizes, FAQs, Communities, Privacy Policy, Terms, and so on) WordPress shows its page editor first, and the editable boxes sit in the **Meta Boxes** panel at the bottom of the screen. Drag the small grey bar at the top of that panel upward to give it more room, or scroll inside it. The **Update** or **Save** button (or **Publish**, for a brand-new entry) is the blue button at the top right. Site Settings is a plain form with a **Save Settings** button at the bottom.
 
 **After every change:** wait about 5 minutes, then open the page on the live site and hard-refresh (Cmd+Shift+R on Mac, Ctrl+Shift+R on Windows) to see it.
 
@@ -131,21 +131,45 @@ At the bottom of this screen you'll also see a few **Integration Status** fields
 
 **Menu: Pages → pick a page (Home, About, Contact, etc.)**
 
-Each page's **Hero** — the big banner at the top — is editable: eyebrow text, heading, description, and an optional image. Leave a box blank to keep the site's current text for it.
+Each main page has two boxes, top to bottom, in the same order you see them on the website:
+
+1. **Page Hero & SEO** — the big banner at the top (eyebrow, heading, description, optional image) plus the text search engines show (SEO Title, SEO Description).
+2. **[Page name] Page Sections** — one **tab per section** of the page, left to right in the order the sections appear going down the page. Each tab holds that section's eyebrow (small line above the heading), heading, text, lists, button text, and images.
+
+Every box starts filled in with what the website shows today, so you only change what you want to change.
 
 ![A page's Hero fields](images/acf-page-hero.jpg)
 
 **How to update a page banner**
 1. In the left menu, click **Pages**, then click the page's name (for example **About**).
-2. In the **Meta Boxes** panel at the bottom, find **Hero** and change the **Eyebrow** (small line above the heading), **Heading**, or **Description**.
+2. In **Page Hero & SEO**, change the **Eyebrow**, **Heading**, or **Description**.
 3. To change the picture, click **Add Image** (or the current image), choose or upload one, then click **Select**.
-4. Click **Save** at the top right.
+4. Click **Update** at the top right.
 
 > **Home page:** the truck-by-the-lake background photo is built into the design (the green fade is lined up with where the truck sits), so the Home page's Hero **Image** box has no effect. Its eyebrow, heading, and description still work. To change the home photo, contact your developer.
 
-The rest of each page's layout (section order, service cards, the "Why NDS" block, accepted/prohibited materials lists) is built into the site's design. Text that changes often is pulled from the menus below — Site Settings, Dumpster Sizes, Commercial Containers, FAQs, Service Notices, Service Areas, and Communities. For a layout or wording change outside those, contact your developer.
+**How to update a section of a page**
+1. In the left menu, click **Pages**, then click the page's name.
+2. In the **Page Sections** box, click the tab for the section (for example **Areas We Service** on Commercial, or **Meet The Team** on About).
+3. Change the text. For lists, put **one item per line**; delete a line to remove an item, add a line to add one.
+4. To change or add a picture, click **Add Image** (or the current image), choose or upload one, then click **Select**. On the About page, adding a photo to a team card shows it on that card.
+5. Click **Update** at the top right.
 
-> **Note:** You may see a **Page Sections** box on page edit screens. It requires the paid ACF PRO plugin, which this site doesn't use, so it has no effect — ignore it.
+What's in each page's tabs:
+
+| Page | Tabs (top of page to bottom) |
+|---|---|
+| Home | Our Services · Why NDS · Dumpster Sizes · FAQs |
+| Residential | Communities · Pickup Expectations · Accepted Recycling |
+| Commercial | Areas We Service (including the county map image) · Collection Schedules · Container Options · Commercial Recycling · Industries We Serve · Quote Form |
+| Dumpster Rentals | Size Guide · Materials · Rental Process · Quote Form |
+| Dumpster Calculator | Recommendation Box |
+| Special Events | Event Options · Quote Form |
+| About | Our Story · Meet The Team (names, text, and photos) |
+| Make a Payment | Payment Form · Side Box |
+| Contact | Contact Box |
+
+A few things live in their own menus instead, and each tab says so where it applies: the dumpster size cards (**Dumpster Sizes**), commercial container cards (**Commercial Containers**), FAQs (**FAQs**), community cards (**Communities**), the service area map (**Service Areas**), and the phone, email, hours, mission statement, and Our Story text (**Site Settings**). In a note, write `{phone}` where the office phone number should appear and the site fills it in from Site Settings.
 
 **Special Events, Privacy Policy, and Terms** are ordinary pages edited the same way as any other page listed above — Special Events also has its own inquiry form (formType "event") like Commercial and Dumpster Rentals do. Privacy Policy and Terms currently hold placeholder legal text pending formal review — replace it with NDSES's actual reviewed policy before relying on it.
 
