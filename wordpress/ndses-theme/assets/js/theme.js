@@ -412,6 +412,17 @@
       });
     }
 
+    // PayEngine's iframes arrive untitled; screen readers announce an
+    // iframe by its title, so name each one after its field label.
+    function titleSecureFrames() {
+      payEngineForm.querySelectorAll('.secure-field iframe:not([title])').forEach(function (frame) {
+        const label = frame.closest('label');
+        const text = label && label.firstChild ? label.firstChild.textContent.trim() : '';
+        frame.setAttribute('title', text ? text + ' (secure field)' : 'Secure payment field');
+      });
+    }
+    new MutationObserver(titleSecureFrames).observe(payEngineForm, { childList: true, subtree: true });
+
     if (submitButton) submitButton.disabled = true;
     if (window.PayEngine) {
       initSecureFields();

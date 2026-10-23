@@ -4,7 +4,7 @@ $community = ndses_get_communities()[$slug] ?? null;
 
 if (!$community) {
     ndses_render_hero('residential');
-    echo '<section class="section"><div class="container"><p>Community details are not available yet.</p></div></section>';
+    echo '<section class="section"><div class="container"><p>We couldn&rsquo;t find that community. See the full list on the Residential page or call NDS.</p></div></section>';
     return;
 }
 ?>

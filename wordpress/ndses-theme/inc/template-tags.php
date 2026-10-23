@@ -220,7 +220,7 @@ function ndses_render_inquiry_form(string $form_type): void
         'event' => 'Special Event Service',
     ][$form_type] ?? '';
     ?>
-    <form class="site-form" id="<?php echo esc_attr($form_type); ?>-inquiry-form" data-inquiry-form novalidate>
+    <form class="site-form" id="<?php echo esc_attr($form_type); ?>-inquiry-form" method="post" data-inquiry-form novalidate>
         <input type="hidden" name="formType" value="<?php echo esc_attr($form_type); ?>">
         <div class="honeypot-field" aria-hidden="true">
             <label for="<?php echo esc_attr($form_type); ?>-website">Leave this field blank</label>

@@ -5,7 +5,7 @@
         // Field ids, input names, data-payment-fields, .form-status, and the
         // submit button are what assets/js/theme.js (PayEngine) hooks into.
         ?>
-        <form class="site-form payment-form" data-payengine-form novalidate>
+        <form class="site-form payment-form" method="post" data-payengine-form novalidate>
             <h2><?php echo esc_html(ndses_sec('form', 'heading', 'make-a-payment')); ?></h2>
 
             <fieldset class="form-group">

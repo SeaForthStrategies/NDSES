@@ -37,8 +37,8 @@ function ndses_data(): array
             'mailing_address' => 'PO Box 464, Delavan, WI 53115',
             'hours' => ['Monday - Thursday: 8:00am - 4:00pm', 'Friday: 8:00am - 2:00pm'],
             'service_area' => 'Southern Wisconsin, including Walworth County and select areas of Rock, Jefferson, Waukesha, and Kenosha counties.',
-            'facebook' => 'https://www.facebook.com/',
-            'instagram' => 'https://www.instagram.com/',
+            'facebook' => '',
+            'instagram' => '',
         ],
         'mission' => $mission,
         'our_story' => [
