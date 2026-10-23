@@ -657,3 +657,67 @@ unset($ndses_unused_notice_field);
 add_filter('acf/prepare_field/type=tab', function ($field) {
     return (is_array($field) && ($field['label'] ?? '') === 'Popup Settings') ? false : $field;
 });
+
+/**
+ * Content types edited entirely through their ACF boxes open on the plain
+ * edit screen (fields front and center) instead of the block editor, where
+ * the same boxes sit in a collapsed panel at the bottom of the screen. The
+ * purely field-driven ones also drop the unused main text editor.
+ */
+add_filter('use_block_editor_for_post_type', function (bool $use, string $post_type): bool {
+    return in_array($post_type, ['community', 'dumpster_size', 'commercial_container', 'faq', 'document', 'service_notice', 'service_area', 'schedule_item'], true) ? false : $use;
+}, 10, 2);
+
+add_action('init', function () {
+    foreach (['dumpster_size', 'commercial_container', 'service_notice', 'service_area'] as $type) {
+        remove_post_type_support($type, 'editor');
+    }
+}, 20);
+
+/**
+ * The shared "Content Library" field group is attached to Communities,
+ * Dumpster Sizes, and Services, but each type only uses some of its fields
+ * (and the repeater fields need ACF PRO, which this site doesn't run). Show
+ * each type only the fields the website actually displays for it.
+ */
+add_filter('acf/prepare_field', function ($field) {
+    if (!is_array($field) || !is_admin()) {
+        return $field;
+    }
+    $library = ['summary', 'hero_description', 'service_day', 'trash_schedule', 'recycling_schedule', 'content_items', 'material_lists', 'capacity', 'truck_loads', 'dimensions', 'rental_period', 'credit_card_note', 'image', 'seo_title', 'seo_description'];
+    if (($field['parent'] ?? '') !== 'group_ndses_content_library' && !in_array($field['key'] ?? '', array_map(static fn ($n) => 'field_ndses_' . $n, $library), true)) {
+        return $field;
+    }
+    global $typenow;
+    $type = $typenow ?: (isset($_GET['post']) ? get_post_type((int) $_GET['post']) : '');
+    $show = [
+        'dumpster_size' => ['truck_loads', 'dimensions', 'image'],
+        'community' => ['summary', 'hero_description', 'service_day', 'trash_schedule', 'recycling_schedule', 'image', 'seo_title', 'seo_description'],
+        'service' => ['summary', 'hero_description', 'image', 'seo_title', 'seo_description'],
+    ];
+    // At this point ACF has swapped 'name' for the input name; '_name' is the field's own name.
+    $name = $field['_name'] ?? $field['name'] ?? '';
+    if (isset($show[$type]) && !in_array($name, $show[$type], true)) {
+        return false;
+    }
+    if ($type === 'dumpster_size' && $name === 'truck_loads') {
+        $field['instructions'] = 'Shown in green under the size name, e.g. "8-10 pickup truck loads".';
+    }
+
+    return $field;
+});
+
+// Developer status notes on Site Settings (not for office staff).
+foreach (['form_backend_status', 'google_maps_status', 'facebook_sync_status', 'calendar_status'] as $ndses_dev_field) {
+    add_filter('acf/prepare_field/name=' . $ndses_dev_field, '__return_false');
+}
+unset($ndses_dev_field);
+
+/** Developer "TODO:" notes never show to editors as field help text. */
+add_filter('acf/load_field', function (array $field): array {
+    if (is_admin() && isset($field['instructions']) && str_starts_with((string) $field['instructions'], 'TODO')) {
+        $field['instructions'] = ($field['name'] ?? '') === 'facebook' ? 'The full address of the NDS Facebook page, e.g. https://www.facebook.com/…' : '';
+    }
+
+    return $field;
+});
