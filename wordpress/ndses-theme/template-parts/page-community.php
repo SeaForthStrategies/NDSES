@@ -26,13 +26,6 @@ if (!$community) {
         </div>
     </div>
 </section>
-<?php if ($slug === 'town-of-walworth') : ?>
-<section class="section">
-    <div class="container">
-        <img class="zone-map-image" src="https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-zone-map.jpg" alt="Town of Walworth recycling service map showing North and South collection zones" width="1100" height="870" loading="lazy">
-    </div>
-</section>
-<?php endif; ?>
 <?php if (!empty($community['documents'])) : ?>
 <section class="section soft-section">
     <div class="container">

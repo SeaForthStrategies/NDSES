@@ -47,6 +47,23 @@
     window.addEventListener('scroll', syncHeader, { passive: true });
   }
 
+  // Alert banner: once dismissed, stays hidden for the rest of the visit
+  // (a new or changed alert has a different key, so it shows again).
+  const announcement = document.querySelector('[data-announcement]');
+  if (announcement) {
+    const key = 'ndses-alert-dismissed';
+    try {
+      if (sessionStorage.getItem(key) === announcement.dataset.announcement) announcement.hidden = true;
+    } catch (error) { /* storage blocked: just show it */ }
+    const close = announcement.querySelector('[data-announcement-close]');
+    if (close) {
+      close.addEventListener('click', function () {
+        announcement.hidden = true;
+        try { sessionStorage.setItem(key, announcement.dataset.announcement); } catch (error) { /* ignore */ }
+      });
+    }
+  }
+
   initNavigation();
 
   /**

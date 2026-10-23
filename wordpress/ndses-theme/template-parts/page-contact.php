@@ -26,7 +26,7 @@
             </dl>
             <h3><?php echo esc_html(ndses_sec('card', 'hours_heading', 'contact')); ?></h3>
             <ul class="hours-list">
-                <?php foreach (ndses_lines(ndses_setting('hours', [])) as $line) : ?>
+                <?php foreach (ndses_hours_lines() as $line) : ?>
                     <li><?php echo esc_html($line); ?></li>
                 <?php endforeach; ?>
             </ul>

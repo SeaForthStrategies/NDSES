@@ -28,6 +28,8 @@
                 <article class="feature-card dumpster-card">
                     <?php if (!empty($container['image'])) : ?>
                         <img class="container-image" src="<?php echo ndses_image_url($container['image']); ?>" alt="<?php echo esc_attr($container['name'] . ' dumpster dimensions'); ?>" loading="lazy" decoding="async">
+                    <?php elseif (preg_match('/\b96\b/', $container['name'])) : ?>
+                        <img class="container-image" src="<?php echo ndses_asset('container-96-gallon.svg'); ?>" alt="96 gallon wheeled cart" loading="lazy" decoding="async">
                     <?php else : ?>
                         <?php // Same-size frame when there's no graphic yet, so every card's heading lines up. ?>
                         <div class="container-image container-image--empty" aria-hidden="true">

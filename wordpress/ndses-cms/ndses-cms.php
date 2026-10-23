@@ -2,7 +2,7 @@
 /**
  * Plugin Name: NDSES CMS Structure
  * Description: Registers NDSES custom post types, ACF options pages, and local field groups.
- * Version: 0.2.3
+ * Version: 0.2.4
  */
 
 if (!defined('ABSPATH')) {
@@ -610,3 +610,50 @@ function ndses_handle_payment_charge(WP_REST_Request $request)
         'message' => 'Payment failed. Please try again or contact NDSES.',
     ]);
 }
+
+/**
+ * Service Notices = the site's alerts. Make the edit screen self-explanatory
+ * for office staff: plain-English instructions on the fields that matter,
+ * defaults so a new notice shows as a banner straight away, and the options
+ * this theme doesn't use (popup, per-page placement, affected communities)
+ * hidden so they can't cause confusion. Saved data is untouched.
+ */
+add_filter('acf/load_field', function (array $field): array {
+    $notes = [
+        'notice_title' => 'Short name for the alert, e.g. "Weather delay". Shown on the Service Alerts page.',
+        'short_summary' => 'One or two sentences shown on the Service Alerts page.',
+        'notice_enabled' => 'On = the alert can show. Turn off to hide it without deleting it. To remove it for good, move the notice to Trash.',
+        'notice_status' => 'Active = showing now. Resolved or Expired = hidden.',
+        'notice_priority' => 'The label shown on the Service Alerts page (e.g. Important).',
+        'display_start' => 'Optional. Leave empty to show right away.',
+        'display_end' => 'Optional. The alert hides itself after this date and time.',
+        'show_until_resolved' => 'On = ignore the end date and keep showing until you set the status to Resolved.',
+        'display_locations' => 'Tick "Site-wide announcement bar" to show the yellow alert banner at the top of every page.',
+        'announcement_text' => 'The one-line message in the banner at the top of every page. Leave empty to use the Notice Title.',
+    ];
+    if (isset($notes[$field['name'] ?? ''])) {
+        $field['instructions'] = $notes[$field['name']];
+    }
+
+    // New alerts default to on, active, and in the site-wide banner.
+    if (($field['name'] ?? '') === 'notice_enabled') {
+        $field['default_value'] = 1;
+    } elseif (($field['name'] ?? '') === 'notice_status') {
+        $field['default_value'] = 'Active';
+    } elseif (($field['name'] ?? '') === 'display_locations') {
+        $field['default_value'] = ['siteWide'];
+        $field['choices'] = array_intersect_key((array) ($field['choices'] ?? []), ['siteWide' => true]);
+    }
+
+    return $field;
+});
+
+foreach (['popup_enabled', 'popup_requires_acknowledgment', 'affected_communities'] as $ndses_unused_notice_field) {
+    add_filter('acf/prepare_field/name=' . $ndses_unused_notice_field, '__return_false');
+}
+unset($ndses_unused_notice_field);
+
+// The "Popup Settings" tab has nothing left in it once its fields are hidden.
+add_filter('acf/prepare_field/type=tab', function ($field) {
+    return (is_array($field) && ($field['label'] ?? '') === 'Popup Settings') ? false : $field;
+});

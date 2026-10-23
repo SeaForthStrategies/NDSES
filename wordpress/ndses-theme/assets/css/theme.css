@@ -639,9 +639,23 @@ li + li {
   color: var(--forest-900);
 }
 
+/* Current section: a small dot under the label, so it never looks like a
+   lingering hover (the tinted pill only shows on hover or while open). */
 .nav-trigger.is-active {
-  background: var(--green-50);
-  color: var(--forest-800);
+  position: relative;
+  color: var(--forest-900);
+}
+
+.nav-trigger.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green-600);
+  transform: translateX(-50%);
 }
 
 .nav-caret {
@@ -800,23 +814,80 @@ li + li {
   margin-top: var(--space-6);
 }
 
+/* Site-wide alert (Service Notices marked "site wide"). Amber, not brand
+   gold, so it reads as a notice whatever the site palette is. */
 .announcement {
-  background: var(--gold-500);
-  color: var(--forest-950);
-  font-size: var(--text-sm);
+  border-bottom: 1px solid #f1d58f;
+  background: #fff6db;
+  color: #4d3a00;
+  font-size: 0.9375rem;
 }
 
-.announcement .container {
+.announcement-inner {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
+  gap: var(--space-3);
+  align-items: center;
   justify-content: center;
-  padding-block: var(--space-2);
+  padding-block: 10px;
 }
 
-.announcement a {
+.announcement-icon {
+  flex: none;
+  color: #b7791f;
+}
+
+.announcement-text {
+  max-width: none;
+  margin: 0;
+  font-weight: 600;
+}
+
+.announcement-link {
+  flex: none;
   color: inherit;
   font-weight: 700;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.announcement-link:hover {
+  color: #2e2300;
+}
+
+.announcement-close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-left: var(--space-2);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.announcement-close:hover {
+  background: rgb(77 58 0 / 10%);
+}
+
+@media (max-width: 639px) {
+  .announcement-inner {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    row-gap: var(--space-1);
+  }
+
+  .announcement-text {
+    flex: 1 1 calc(100% - 80px);
+  }
+
+  .announcement-link {
+    order: 3;
+    margin-left: 32px;
+  }
 }
 
 /* ---------- Footer ---------- */
@@ -1277,6 +1348,54 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
   margin-inline: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
+}
+
+/* ---------- Automatic payments (home) ---------- */
+.section-tight {
+  padding-block: 0 var(--section-y);
+}
+
+.autopay-card {
+  display: grid;
+  gap: var(--space-5) var(--space-8);
+  align-items: center;
+  padding: var(--panel-pad);
+  border: 1px solid var(--green-100);
+  border-radius: var(--radius-lg);
+  background: var(--green-50);
+}
+
+@media (min-width: 900px) {
+  .autopay-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+}
+
+.autopay-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--green-600);
+  box-shadow: var(--shadow-xs);
+}
+
+.autopay-copy h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xl);
+}
+
+.autopay-copy p {
+  color: var(--ink-soft);
+}
+
+.autopay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  align-items: center;
 }
 
 /* ---------- Dumpster & container cards ----------
@@ -1987,7 +2106,7 @@ legend {
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   }
 
-  .service-map-wrap > .map-list {
+  .service-map-wrap > .service-map {
     position: sticky;
     top: calc(var(--header-h) + 40px + var(--space-6));
   }
@@ -2021,11 +2140,27 @@ legend {
 }
 
 .service-map figcaption {
-  padding: var(--space-2) var(--space-3);
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.map-key {
+  flex: none;
+  width: 18px;
+  height: 12px;
+  border: 1.5px dashed rgb(29 107 62 / 60%);
+  border-radius: 50%;
+  background: rgb(29 107 62 / 8%);
+}
+
+.service-map {
+  box-shadow: var(--shadow-sm);
 }
 
 /* Numbered pin; the same number appears beside the name in the list. The
@@ -2035,17 +2170,16 @@ legend {
   position: absolute;
   z-index: 1;
   display: flex;
-  gap: 6px;
   align-items: center;
-  transform: translate(-13px, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .map-pin b {
   display: grid;
   flex: none;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border: 2px solid var(--paper);
   border-radius: 50%;
   background: var(--forest-800);

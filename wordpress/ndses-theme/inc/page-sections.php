@@ -52,6 +52,13 @@ function ndses_page_sections(): array
                     'card3_body' => ['textarea', 'Card 3 text', $services[2]['body']],
                     'link_label' => ['text', 'Card link text', 'Explore service'],
                 ]],
+                'autopay' => ['label' => 'Automatic Payments', 'fields' => [
+                    'heading' => ['text', 'Heading', 'Set up automatic payments'],
+                    'body' => ['textarea', 'Text', 'Pay your NDS bill automatically from your checking or savings account. Download the authorization form, fill it out, attach a voided check, and return it to the NDS office.'],
+                    'button' => ['text', 'Download button text', 'Download ACH form (PDF)'],
+                    'file' => ['file', 'ACH authorization form (PDF)', get_theme_file_uri('/assets/docs/nds-ach-authorization-form.pdf'), 'Upload a new PDF here to replace the form visitors download.'],
+                    'link_label' => ['text', 'Second link text', 'Or pay a bill online'],
+                ]],
                 'why' => ['label' => 'Why NDS', 'fields' => [
                     'heading' => ['text', 'Heading', 'Waste solutions from a local team that knows the routes'],
                     'body' => ['textarea', 'Text', "We understand that effective waste management is critical to the quality of life in Wisconsin's towns and cities. Whether you're looking for dependable residential trash pickup or tailored commercial waste solutions, NDS is committed to responsive service."],
@@ -302,6 +309,20 @@ function ndses_sec_image(string $section, string $field, ?string $slug = null): 
     return is_array($default) && !empty($default['url']) ? $default + ['alt' => '', 'width' => null, 'height' => null] : null;
 }
 
+/** URL for a section file field: the uploaded file, or the default. */
+function ndses_sec_file(string $section, string $field, ?string $slug = null): string
+{
+    $value = ndses_section_value($section, $field, $slug);
+    if (is_array($value) && !empty($value['url'])) {
+        return (string) $value['url'];
+    }
+    if (is_string($value) && filter_var($value, FILTER_VALIDATE_URL)) {
+        return $value;
+    }
+
+    return (string) (ndses_section_spec($section, $field, $slug)[2] ?? '');
+}
+
 /** Prints an <img> for a section image field, if there is one. */
 function ndses_sec_img(string $section, string $field, string $class, string $fallback_alt = '', ?string $slug = null): void
 {
@@ -353,7 +374,15 @@ function ndses_register_page_section_fields(): void
                     'name' => "{$section}_{$name}",
                     'instructions' => $spec[3] ?? '',
                 ];
-                if ($type === 'image') {
+                if ($type === 'file') {
+                    $field += [
+                        'type' => 'file',
+                        'return_format' => 'array',
+                        'library' => 'all',
+                        'mime_types' => 'pdf',
+                    ];
+                    $field['instructions'] = trim($field['instructions'] . ' Leave empty to keep the current file.');
+                } elseif ($type === 'image') {
                     $field += [
                         'type' => 'image',
                         'return_format' => 'array',

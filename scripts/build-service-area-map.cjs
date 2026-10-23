@@ -58,55 +58,29 @@ const countyLabels = service.map((f) => {
   return { name, x: px(lo), y: py(la), id: f.id };
 });
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Map of the NDS service area: Walworth, Rock, Jefferson, Waukesha, and Kenosha counties in southern Wisconsin">
-<rect width="${W}" height="${H}" fill="#d9e8ee"/>
-<g fill="#e7ece4" stroke="#c9d3c6" stroke-width="1">${context.map((f) => `<path d="${pathOf(f.geometry)}"/>`).join("")}</g>
-<g stroke="#ffffff" stroke-width="2" stroke-linejoin="round">${service.map((f) => `<path fill="${f.id === "55127" ? "#cfe1cb" : "#dde9da"}" d="${pathOf(f.geometry)}"/>`).join("")}</g>
-<path d="${lineOf(stateLine)}" fill="none" stroke="#8a9a8d" stroke-width="1.5" stroke-dasharray="6 4"/>
-<g font-family="Archivo, Arial Narrow, Arial, sans-serif" font-weight="700" font-size="17" fill="#0f3d25" fill-opacity="0.55" text-anchor="middle" letter-spacing="0.08em">${countyLabels.map((c) => `<text x="${c.x.toFixed(1)}" y="${(c.id === "55127" ? c.y - 52 : c.y + 6).toFixed(1)}">${c.name.toUpperCase()}</text>`).join("")}</g>
-<g font-family="Public Sans, Arial, sans-serif" font-size="12" font-weight="700" fill="#56655b" letter-spacing="0.12em"><text x="${(W - 16)}" y="${(py(42.4925) - 8).toFixed(1)}" text-anchor="end">WISCONSIN</text><text transform="translate(${W - 12} ${(H * 0.3).toFixed(1)}) rotate(90)" fill="#4f7486" text-anchor="middle" font-size="11">LAKE MICHIGAN</text><text x="${(W - 16)}" y="${(py(42.4925) + 20).toFixed(1)}" text-anchor="end">ILLINOIS</text></g>
-</svg>`;
-
-// Walworth County detail: the residential communities sit within a few
-// miles of each other, so their pins go on a zoomed map of the county.
-const walworth = service.find((f) => f.id === "55127");
-const wc = []; const ww = (c) => (typeof c[0] === "number" ? wc.push(c) : c.forEach(ww)); ww(walworth.geometry.coordinates);
-const dPad = 0.03;
-const dMinLon = Math.min(...wc.map((c) => c[0])) - dPad, dMaxLon = Math.max(...wc.map((c) => c[0])) + dPad;
-// Crop to the southern part of the county, where the communities are.
-const dMinLat = Math.min(...wc.map((c) => c[1])) - dPad, dMaxLat = 42.70;
-const DW = 800;
-
-const DH = Math.round(DW * (dMaxLat - dMinLat) / ((dMaxLon - dMinLon) * k));
-const dx = (lon) => ((lon - dMinLon) / (dMaxLon - dMinLon)) * DW;
-const dy = (lat) => ((dMaxLat - lat) / (dMaxLat - dMinLat)) * DH;
-const miles5 = (5 / (69.17 * k)) / (dMaxLon - dMinLon) * DW;
-const dPath = (geom) => {
-  const rings = geom.type === "Polygon" ? [geom.coordinates] : geom.coordinates;
-  return rings.map((poly) => poly.map((ring) => "M" + ring.map(([lo, la]) => `${dx(lo).toFixed(1)},${dy(la).toFixed(1)}`).join("L") + "Z").join("")).join("");
-};
-const neighbors = [...service, ...context].filter((f) => f.id !== "55127");
-const detailSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${DW} ${DH}" role="img" aria-label="Map of Walworth County, Wisconsin, with the residential communities NDS serves">
-<rect width="${DW}" height="${DH}" fill="#e7ece4"/>
-<g fill="#e7ece4" stroke="#c9d3c6" stroke-width="1.5">${neighbors.map((f) => `<path d="${dPath(f.geometry)}"/>`).join("")}</g>
-<path d="${dPath(walworth.geometry)}" fill="#cfe1cb" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
-<path d="${lineOf(stateLine).replace(/[\d.]+,[\d.]+/g, (pair) => { const [x, y] = pair.split(",").map(Number); const lon = minLon + (x / W) * (maxLon - minLon); const lat = maxLat - (y / H) * (maxLat - minLat); return `${dx(lon).toFixed(1)},${dy(lat).toFixed(1)}`; })}" fill="none" stroke="#8a9a8d" stroke-width="2" stroke-dasharray="8 6"/>
-<g font-family="Archivo, Arial Narrow, Arial, sans-serif" font-weight="700" font-size="22" fill="#0f3d25" fill-opacity="0.5" letter-spacing="0.08em"><text x="${(dx(-88.765)).toFixed(1)}" y="${(dy(42.69) + 34).toFixed(1)}">WALWORTH COUNTY</text></g>
-<g font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#56655b" letter-spacing="0.12em"><text x="${DW - 24}" y="${(dy(42.4925) + 26).toFixed(1)}" text-anchor="end">ILLINOIS</text></g>
-<g transform="translate(${(DW - miles5 - 110).toFixed(1)} 34)" fill="#33433a" font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700">
-<rect x="0" y="0" width="${miles5.toFixed(1)}" height="6" fill="#33433a"/><rect x="${(miles5 / 2).toFixed(1)}" y="0" width="${(miles5 / 2).toFixed(1)}" height="6" fill="#ffffff" stroke="#33433a"/>
-<text x="0" y="24">0</text><text x="${miles5.toFixed(1)}" y="24" text-anchor="end">5 mi</text>
-<g transform="translate(${(miles5 + 40).toFixed(1)} -8)"><path d="M0 22 L9 0 L18 22 L9 16 Z" fill="#33433a"/><text x="9" y="40" text-anchor="middle">N</text></g>
+// Residential communities cluster in southwestern Walworth County; a soft
+// outline marks that area on the map, and numbered pins (HTML overlay)
+// sit on each community.
+const placePts = Object.values(places).map(([lo, la]) => [px(lo), py(la)]);
+const cx = (Math.min(...placePts.map((p) => p[0])) + Math.max(...placePts.map((p) => p[0]))) / 2;
+const cy = (Math.min(...placePts.map((p) => p[1])) + Math.max(...placePts.map((p) => p[1]))) / 2;
+const rx = (Math.max(...placePts.map((p) => p[0])) - Math.min(...placePts.map((p) => p[0]))) / 2 + 30;
+const ry = (Math.max(...placePts.map((p) => p[1])) - Math.min(...placePts.map((p) => p[1]))) / 2 + 30;
+const label = (txt, x, y, size, extra = "") => `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${size}" ${extra}>${txt}</text>`;
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Map of the NDS service area: Walworth, Rock, Jefferson, Waukesha, and Kenosha counties in southern Wisconsin, with the residential service area in southwestern Walworth County">
+<rect width="${W}" height="${H}" fill="#dce8ee"/>
+<g fill="#f2f4f0" stroke="#dde3da" stroke-width="1">${context.map((f) => `<path d="${pathOf(f.geometry)}"/>`).join("")}</g>
+<g stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round">${service.map((f) => `<path fill="${f.id === "55127" ? "#c9e2cf" : "#e2eee1"}" d="${pathOf(f.geometry)}"/>`).join("")}</g>
+<path d="${lineOf(stateLine)}" fill="none" stroke="#a3afa6" stroke-width="1.2" stroke-dasharray="5 5"/>
+<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="#1d6b3e" fill-opacity="0.08" stroke="#1d6b3e" stroke-opacity="0.55" stroke-width="1.5" stroke-dasharray="4 4"/>
+<g font-family="Public Sans, Arial, sans-serif" font-weight="600" fill="#24382c" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="4" stroke-linejoin="round">${countyLabels.map((c) => label(c.name, c.x, c.id === "55127" ? c.y - 58 : c.y + 5, 15)).join("")}</g>
+<g font-family="Public Sans, Arial, sans-serif" font-weight="600" fill="#6b7a70" letter-spacing="0.04em">
+${label("Wisconsin", W - 16, py(42.4925) - 8, 12, 'text-anchor="end"')}
+${label("Illinois", W - 16, py(42.4925) + 18, 12, 'text-anchor="end"')}
+<text transform="translate(${W - 14} ${(H * 0.3).toFixed(1)}) rotate(90)" fill="#4f7486" text-anchor="middle" font-size="12" font-style="italic">Lake Michigan</text>
 </g>
 </svg>`;
-const detail = {};
-for (const [name, [lo, la]] of Object.entries(places)) detail[name] = { x: +(dx(lo) / DW * 100).toFixed(2), y: +(dy(la) / DH * 100).toFixed(2) };
-fs.writeFileSync(path.join(__dirname, "service-area-detail.svg"), detailSvg);
-fs.writeFileSync(path.join(__dirname, "service-area-detail.json"), JSON.stringify({ width: DW, height: DH, positions: detail }, null, 2));
-console.log("detail", DW, "x", DH, JSON.stringify(detail));
 
-// Copy the SVG to public/nds-assets/ and wordpress/ndses-theme/assets/images/,
-// and the town positions into lib/serviceAreaMap.ts and the theme map renderer.
 fs.writeFileSync(path.join(__dirname, "service-area-map.svg"), svg);
 fs.writeFileSync(path.join(__dirname, "positions.json"), JSON.stringify({ width: W, height: H, positions }, null, 2));
 console.log("size", W, "x", H, "svg bytes", svg.length);

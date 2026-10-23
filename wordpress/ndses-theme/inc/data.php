@@ -157,7 +157,7 @@ function ndses_data(): array
             ['title' => 'Dumpster Rentals', 'body' => 'Temporary roll-off dumpsters for renovations, construction debris, cleanouts, and events.', 'url' => '/dumpster-rentals', 'icon' => 'rolloff'],
         ],
         'communities' => [
-            'town-of-walworth' => array_merge(ndses_community_seed('Town of Walworth', 'Town', 'Thursday', 'Weekly', 'Every Other Week (see service calendar and map below)', 'We will collect up to the equivalent of four 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
+            'town-of-walworth' => array_merge(ndses_community_seed('Town of Walworth', 'Town', 'Thursday', 'Weekly', 'Every Other Week (see the service calendar below)', 'We will collect up to the equivalent of four 32-gallon cans each week for both trash and recycle.', $mission, $accepted_recycling, $recycling_not_accepted, $recycling_never, $bulk_accepted, $bulk_not), [
                 'documents' => [
                     ['title' => '2026 Collection Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-1.webp'],
                     ['title' => '2026 Service Schedule Calendar', 'url' => 'https://ndses.flywheelsites.com/wp-content/uploads/2026/09/walworth-2.webp'],
