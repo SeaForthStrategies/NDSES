@@ -150,6 +150,11 @@ function ndses_render_dumpster_cards(): void
             $included = ndses_lines(get_field('included', $dumpster_post->ID)) ?: ndses_material_list_items($material_lists, 'Included');
             $image = get_field('field_ndses_image', $dumpster_post->ID);
             $image_url = is_array($image) && !empty($image['url']) ? $image['url'] : '';
+            // No graphic uploaded: use the theme's matching size graphic (10 Yard -> dumpster-10-yard.png).
+            if (!$image_url && preg_match('/\b(\d+)\s*yard/i', get_the_title($dumpster_post), $m)
+                && file_exists(get_theme_file_path('/assets/images/dumpster-' . $m[1] . '-yard.png'))) {
+                $image_url = ndses_asset('dumpster-' . $m[1] . '-yard.png');
+            }
             ?>
             <article class="feature-card dumpster-card">
                 <?php if ($image_url) : ?><img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title($dumpster_post)); ?>" loading="lazy" decoding="async"><?php endif; ?>

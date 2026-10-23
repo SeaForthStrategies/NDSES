@@ -1424,6 +1424,11 @@ main:has(> section.soft-section:last-child) + .site-footer .footer-cta {
   object-fit: contain;
 }
 
+/* Safety net: a card with no image frame still gets normal top padding. */
+.dumpster-card:not(:has(> img, > .container-image)) {
+  padding-top: var(--space-5);
+}
+
 .container-image--empty {
   display: grid;
   place-items: center;
