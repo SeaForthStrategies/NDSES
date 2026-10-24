@@ -420,8 +420,15 @@
         const text = label && label.firstChild ? label.firstChild.textContent.trim() : '';
         frame.setAttribute('title', text ? text + ' (secure field)' : 'Secure payment field');
       });
+      // The SDK also adds a 0x0 connection iframe to <body>; hide it from
+      // assistive tech rather than announcing an empty frame.
+      document.querySelectorAll('body > iframe:not([title])').forEach(function (frame) {
+        frame.setAttribute('title', 'Secure payment connection');
+        frame.setAttribute('aria-hidden', 'true');
+        frame.setAttribute('tabindex', '-1');
+      });
     }
-    new MutationObserver(titleSecureFrames).observe(payEngineForm, { childList: true, subtree: true });
+    new MutationObserver(titleSecureFrames).observe(document.body, { childList: true, subtree: true });
 
     if (submitButton) submitButton.disabled = true;
     if (window.PayEngine) {
